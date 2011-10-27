@@ -114,8 +114,7 @@ public class Cache<K,V> {
 			log.warn("Store 获取存储对象异常: " + key);
 			return null;
 		}
-
-		
+	
 		if(storeObject == null){
 			failCount.incrementAndGet();
 			return null;

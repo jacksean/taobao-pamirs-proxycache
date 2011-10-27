@@ -7,7 +7,6 @@ import com.taobao.notify.remotingclient.CheckMessageListener;
 import com.taobao.notify.remotingclient.MessageListener;
 import com.taobao.notify.remotingclient.MessageStatus;
 
-@SuppressWarnings("rawtypes")
 public class NotifyMessageReceiver extends MessageReceiver implements CheckMessageListener,MessageListener{
 	
 	public void receiveCheckMessage(Message message, MessageStatus status) {   

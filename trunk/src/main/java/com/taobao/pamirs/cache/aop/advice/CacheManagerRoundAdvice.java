@@ -31,6 +31,11 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 	
 	public Object invoke(MethodInvocation invocation) throws Throwable {
+		
+		BeanCacheConfig beanCacheConfig;
+		BeanCacheCleanConfig beanCacheCleanConfig;
+		String cacheCode ;
+		
 		try {
 			Method m = invocation.getMethod();
 			Class<?>[] p = m.getParameterTypes();
@@ -39,11 +44,20 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			Map<String,BeanCacheConfig> cacheMap = cacheManager.getBeanCacheConfigMap();
 			Map<String,BeanCacheCleanConfig> cacheCleanMap = cacheManager.getBeanCacheCleanConfigMap();
 				
-			String cacheCode = BeanCacheConfig.generateCacheCode(this.beanName , m.getName() , p);
+			cacheCode = BeanCacheConfig.generateCacheCode(this.beanName , m.getName() , p);
 			
-			BeanCacheConfig beanCacheConfig = cacheMap.get(cacheCode);
-			BeanCacheCleanConfig beanCacheCleanConfig = cacheCleanMap.get(cacheCode);
+			beanCacheConfig = cacheMap.get(cacheCode);
+			beanCacheCleanConfig = cacheCleanMap.get(cacheCode);
+		} catch (Exception e) {		
+			log.error(e.getMessage(),e);
+			return invocation.proceed();
+		}	
 			
+		//玄羽增加该 try /catch 块是因为在外层  cache 块中.
+		//会调用 invocation.proceed();
+		//为了避免执行多次   invocation.proceed()
+		//所以内层增加 try/cache . 不进行执行.
+		try {
 			if(beanCacheConfig != null && cacheManager.isUseCache()){
 				return useCache(invocation,cacheCode);
 			}else if(beanCacheCleanConfig != null){
@@ -53,8 +67,9 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(),e);
-			return invocation.proceed();
+			throw e;
 		}
+
 		
 
 	}

@@ -137,7 +137,7 @@ public class CacheManager {
 	}
 
 	/**
-	 * 获取缓存
+	 * 获取缓存byCode
 	 * 
 	 * @param cacheName
 	 * @return
@@ -146,6 +146,16 @@ public class CacheManager {
 		return caches.get(cacheCode);
 	}
 
+	/**
+	 * 获取缓存byName
+	 * 
+	 * @param cacheName
+	 * @return
+	 */
+	public static Cache<String, Object> getCacheByName(String cacheName) {		
+		return caches.get(cacheNametoCode.get(cacheName));
+	}
+	
 	/**
 	 * 创建缓存
 	 * 

@@ -56,13 +56,18 @@ public class Cache<K,V> {
 			
 	//»º´æÃüÖÐÂÊ
 	public String getHitRate() {
-		double hitRated = 0.00d;
 		
-		if( (this.succesCount.get()+ this.failCount.get()) != 0 ){
-			double allCount = this.succesCount.get()+ this.failCount.get();			
-			hitRated = new BigDecimal( this.succesCount.get()/allCount ).setScale(2).doubleValue();
+		if(this.succesCount == null || this.failCount == null){
+			log.warn("Cache getHitRate warn succesCount=" + succesCount+";failCount="+failCount );
+			return "HitRate Error";
 		}
-		return (hitRated * 100) + "%";
+		
+		long allCount =  this.succesCount.get()+ this.failCount.get();
+		if(allCount != 0){
+			BigDecimal hitRated = new BigDecimal( this.succesCount.get()/allCount ).setScale(2);
+			return hitRated.toString();
+		}
+		return "HitRate Error";
 	}
 		
 	private Store<K,StoreObject<K,V>> store = null;

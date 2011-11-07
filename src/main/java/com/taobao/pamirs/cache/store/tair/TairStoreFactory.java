@@ -1,7 +1,7 @@
 package com.taobao.pamirs.cache.store.tair;
 
-import com.taobao.common.tair.TairManager;
 import com.taobao.pamirs.cache.ApplicationContextUtil;
+import com.taobao.tair.TairManager;
 
 public class TairStoreFactory {
 	

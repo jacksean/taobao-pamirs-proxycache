@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="byName">           
 	
- 	<bean id="tairManager" class="com.taobao.common.tair.impl.DefaultTairManager"
+ 	<bean id="tairManager" class="com.taobao.tair.impl.DefaultTairManager"
 		init-method="init">
 		<property name="configServerList">
 			<list>

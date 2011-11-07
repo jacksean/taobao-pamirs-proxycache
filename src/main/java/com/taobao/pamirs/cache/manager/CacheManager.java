@@ -188,13 +188,4 @@ public class CacheManager {
 			return new String[0];
 		}
 	}
-	
-	//xuanyu add 2011-10-18 增加缓存异步通知机制.
-	public NotifyPublisher notifyPublisher;
-	public NotifyMessageReceiver notifyMessageReceiver;
-	
-	//xuanyu add 2011-10-18 增加缓存异步通知机制.
-	public void notifyCache(String cacheCode , String key){
-		
-	}
 }

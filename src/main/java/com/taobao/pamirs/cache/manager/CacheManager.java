@@ -128,6 +128,11 @@ public class CacheManager {
 	// Map<cacheCode , Cache<String, Object>>
 	// cacheCode = beanName:methodName:parameterTypes
 	private static Map<String, Cache<String, Object>> caches = new ConcurrentHashMap<String, Cache<String, Object>>();
+	
+	/**
+	 * Í¨¹ý CacheName ´æ´¢ CacheCode µÄÓ³Éä map
+	 * **/
+	private static Map<String, String> cacheNametoCode = new ConcurrentHashMap<String,String>();
 
 	public static TimeTaskManager getTimeTaskManager() {
 		return timerTaskManager;
@@ -166,6 +171,7 @@ public class CacheManager {
 		cache = new Cache<String, Object>(beanCacheConfig);
 
 		caches.put(beanCacheConfig.getCacheCode(), cache);
+		cacheNametoCode.put(beanCacheConfig.getCacheName(), beanCacheConfig.getCacheCode());
 
 		String mbeanName = CacheManagerMBean.MBEAN_NAME
 				+ "name="+beanCacheConfig.getCacheName();
@@ -182,8 +188,8 @@ public class CacheManager {
 	}
 
 	public static String[] getCacheNames() {
-		if (caches != null && caches.size() > 0) {
-			return caches.keySet().toArray(new String[0]);
+		if (cacheNametoCode != null && cacheNametoCode.size() > 0) {
+			return cacheNametoCode.keySet().toArray(new String[0]);
 		} else {
 			return new String[0];
 		}

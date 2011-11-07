@@ -21,7 +21,7 @@ import com.taobao.tair.TairManager;
  * 
  */
 
-@SpringApplicationContext({ "CacheManager.xml","CacheNotify.xml" })
+@SpringApplicationContext({ "CacheManager.xml"})
 public class SpringTest extends UnitilsJUnit4 {
 	
 	@SpringBeanByName

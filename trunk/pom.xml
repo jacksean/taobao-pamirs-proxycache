@@ -8,11 +8,20 @@
 	<packaging>jar</packaging>
 	<version>1.2.0</version>
 	<dependencies>
+		
+		<!-- 玄羽 2011-11-07 升级 tair 到新版本. 
 		<dependency>
 			<groupId>com.taobao.common.tair</groupId>
 			<artifactId>common-tair</artifactId>
 			<version>2.2.5</version>
 		</dependency>
+		-->
+		<dependency>
+		  <groupId>com.taobao.tair</groupId>
+		  <artifactId>tair-client</artifactId>
+		  <version>2.3.3</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>cglib</groupId>
   			<artifactId>cglib</artifactId>
@@ -66,13 +75,6 @@
 			<groupId>com.sun.jdmk</groupId>
 			<artifactId>jmxtools</artifactId>
 			<version>1.2.1</version>
-		</dependency>
-		
-		<!-- 玄羽增加于 2011-05-04 缓存增加 TairStroe 实现 -->
-		<dependency>
-		  <groupId>com.taobao.common.tair</groupId>
-		  <artifactId>common-tair</artifactId>
-		  <version>2.2.4</version>
 		</dependency>
 
 		<dependency>

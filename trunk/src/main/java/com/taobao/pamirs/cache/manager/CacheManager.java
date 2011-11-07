@@ -16,8 +16,6 @@ import com.taobao.pamirs.cache.cache.Cache;
 import com.taobao.pamirs.cache.cache.CacheMbean;
 import com.taobao.pamirs.cache.config.BeanCacheCleanConfig;
 import com.taobao.pamirs.cache.config.BeanCacheConfig;
-import com.taobao.pamirs.cache.sync.noitfy.NotifyMessageReceiver;
-import com.taobao.pamirs.cache.sync.noitfy.NotifyPublisher;
 import com.taobao.pamirs.cache.timer.TimeTaskManager;
 
 public class CacheManager {

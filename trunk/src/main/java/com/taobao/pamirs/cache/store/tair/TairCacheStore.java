@@ -83,6 +83,7 @@ public class TairCacheStore<K,V> implements Store<K,V>{
 	}
 	
 	 
+	@SuppressWarnings("deprecation")
 	public void remove(K key) {
 		// 这里采用失效 是因为 收费线系统将 会有在不同的集群中（容灾）
 		ResultCode rc = tairManager.invalid(namespace, getTairKey(key));

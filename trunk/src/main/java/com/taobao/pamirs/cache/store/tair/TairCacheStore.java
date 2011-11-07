@@ -6,11 +6,11 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.taobao.common.tair.DataEntry;
-import com.taobao.common.tair.Result;
-import com.taobao.common.tair.ResultCode;
-import com.taobao.common.tair.TairManager;
 import com.taobao.pamirs.cache.store.Store;
+import com.taobao.tair.DataEntry;
+import com.taobao.tair.Result;
+import com.taobao.tair.ResultCode;
+import com.taobao.tair.TairManager;
 
 /**
  * TairStore 采用淘宝 Tair 的统一缓存存储方案.

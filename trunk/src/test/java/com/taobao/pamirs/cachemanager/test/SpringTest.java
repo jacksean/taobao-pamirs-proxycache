@@ -48,27 +48,27 @@ public class SpringTest extends UnitilsJUnit4 {
 //		this.notifyManagerBean = notifyManagerBean;
 //	}
 	
-	@SpringBeanByName
-	NotifyManagerBean notifyManager;
-	public void setNotifyManager(NotifyManagerBean notifyManager){
-		this.notifyManager = notifyManager;
-	}	
+//	@SpringBeanByName
+//	NotifyManagerBean notifyManager;
+//	public void setNotifyManager(NotifyManagerBean notifyManager){
+//		this.notifyManager = notifyManager;
+//	}	
 	
-	@Test 	
-	public void testNotify(){
-
-		System.out.println("notifyManager" + notifyManager);
-		
-		for (int i = 0; i < 100; i++) {
-			ObjectMessage notifyMessage = new ObjectMessage();
-			notifyMessage.setTopic("UPP-SERVICE");
-			notifyMessage.setMessageType("service-open");
-			notifyMessage.setObject("Hello");
-			
-			notifyManager.sendMessage(notifyMessage);
-		}
-
-	}
+//	@Test 	
+//	public void testNotify(){
+//
+//		System.out.println("notifyManager" + notifyManager);
+//		
+//		for (int i = 0; i < 100; i++) {
+//			ObjectMessage notifyMessage = new ObjectMessage();
+//			notifyMessage.setTopic("UPP-SERVICE");
+//			notifyMessage.setMessageType("service-open");
+//			notifyMessage.setObject("Hello");
+//			
+//			notifyManager.sendMessage(notifyMessage);
+//		}
+//
+//	}
 	
 	@Test
 	public void testCacheManager() throws InterruptedException {

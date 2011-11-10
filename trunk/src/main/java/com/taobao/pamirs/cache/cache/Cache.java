@@ -64,8 +64,8 @@ public class Cache<K,V> {
 		
 		long allCount =  this.succesCount.get()+ this.failCount.get();
 		if(allCount != 0){
-			BigDecimal hitRated = new BigDecimal( this.succesCount.get()/allCount ).setScale(2);
-			return hitRated.toString();
+			BigDecimal hitRated = new BigDecimal( this.succesCount.get() * 100 /allCount );
+			return hitRated.toString() + "%";
 		}
 		return "HitRate Error";
 	}

@@ -6,8 +6,8 @@
 		init-method="init">
 		<property name="configServerList">
 			<list>
-				<value>tair.config-vip.taobao.net:5198</value>
-				<value>tair.config-vip.taobao.net:5198</value>
+				<value>tair2.config-vip.taobao.net:5198</value>
+				<value>tair2.config-vip.taobao.net:5198</value>
 			</list>
 		</property>
 		<property name="groupName">

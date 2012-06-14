@@ -6,7 +6,7 @@
 	<groupId>com.taobao.pamirs.proxycache</groupId>
 	<artifactId>taobao-pamirs-proxycache</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 	<dependencies>
 		
 		<!-- 玄羽 2011-11-07 升级 tair 到新版本. 

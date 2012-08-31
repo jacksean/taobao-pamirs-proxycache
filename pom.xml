@@ -6,31 +6,25 @@
 	<groupId>com.taobao.pamirs.proxycache</groupId>
 	<artifactId>taobao-pamirs-proxycache</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2.2</version>
+	<version>1.2.3-SNAPSHOT</version>
 	<dependencies>
-		
-		<!-- 玄羽 2011-11-07 升级 tair 到新版本. 
+
+		<!-- 玄羽 2011-11-07 升级 tair 到新版本-->
 		<dependency>
-			<groupId>com.taobao.common.tair</groupId>
-			<artifactId>common-tair</artifactId>
-			<version>2.2.5</version>
+			<groupId>com.taobao.tair</groupId>
+			<artifactId>tair-client</artifactId>
+			<version>2.3.4.9</version>
 		</dependency>
-		-->
-		<dependency>
-		  <groupId>com.taobao.tair</groupId>
-		  <artifactId>tair-client</artifactId>
-		  <version>2.3.4.9</version>
-		</dependency>
-		
+
 		<dependency>
 			<groupId>cglib</groupId>
-  			<artifactId>cglib</artifactId>
-  			<version>2.2</version>
-  		</dependency>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
-	  		<artifactId>aspectjweaver</artifactId>
-	  		<version>1.6.8</version>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.6.8</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jdmk</groupId>
@@ -50,8 +44,8 @@
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
-  			<artifactId>commons-beanutils-core</artifactId>
-  			<version>1.7.0</version>
+			<artifactId>commons-beanutils-core</artifactId>
+			<version>1.7.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -70,7 +64,7 @@
 			<version>2.3</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.sun.jdmk</groupId>
 			<artifactId>jmxtools</artifactId>
@@ -78,72 +72,64 @@
 		</dependency>
 
 		<dependency>
-		  <groupId>org.apache.mina</groupId>
-		  <artifactId>mina-core</artifactId>
-		  <version>1.1.5</version>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-core</artifactId>
+			<version>1.1.5</version>
 		</dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.4.3</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.4.3</version>
-      <scope>test</scope>
-    </dependency>				
 
 		<dependency>
-		  <groupId>com.taobao.common.monitor</groupId>
-		  <artifactId>common-monitor</artifactId>
-		  <version>1.0.7</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.4.3</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.4.3</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.taobao.common.monitor</groupId>
+			<artifactId>common-monitor</artifactId>
+			<version>1.0.7</version>
+		</dependency>
+
 		<!-- 玄羽在 2011-08-03 增加 使用 Notify 进行消息通知 -->
-	<dependency>
-	  <groupId>com.taobao.notify</groupId>
-	  <artifactId>notify-tr-client</artifactId>
-	  <version>1.7.9</version>
-	</dependency>
-	
-	<dependency>
+		<dependency>
+			<groupId>com.taobao.notify</groupId>
+			<artifactId>notify-tr-client</artifactId>
+			<version>1.7.9</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.taobao.hsf</groupId>
 			<artifactId>hsf.notify.spring</artifactId>
 			<version>1.4.5</version>
 		</dependency>
-		
+
 		<!-- 玄羽在 2011-08-03 增加 使用 MQ 进行消息通知 -->
 		<dependency>
 			<groupId>com.taobao.metamorphosis</groupId>
 			<artifactId>metamorphosis-client</artifactId>
 			<version>1.2-SNAPSHOT</version>
-		</dependency> 
+		</dependency>
 
 		<dependency>
-		
 			<groupId>com.taobao.diamond</groupId>
-			
 			<artifactId>diamond-client</artifactId>
-			
 			<version>2.0.5.2</version>
-		
 		</dependency>
 		<dependency>
-             <groupId>com.taobao.notify</groupId>
-             <artifactId>notify-remoting</artifactId>
-             <version>1.8.3-SNAPSHOT</version>
-       </dependency>
-
-
-	
-		
+			<groupId>com.taobao.notify</groupId>
+			<artifactId>notify-remoting</artifactId>
+			<version>1.8.3-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
-	
-   <distributionManagement>
+
+	<distributionManagement>
 		<repository>
 			<id>releases</id>
 			<url>http://mvnrepo.taobao.ali.com/mvn/releases</url>
@@ -154,12 +140,11 @@
 		</snapshotRepository>
 	</distributionManagement>
 
-       <parent>
-                <groupId>com.taobao</groupId>
-                <artifactId>parent</artifactId>
-                <version>1.0.1</version>
-        </parent>
-
+	<parent>
+		<groupId>com.taobao</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.1</version>
+	</parent>
 
 	<build>
 		<plugins>

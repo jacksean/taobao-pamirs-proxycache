@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.taobao.pamirs.cache.AbstractDynamicMBean;
 import com.taobao.pamirs.cache.ApplicationContextUtil;
+import com.taobao.pamirs.cache.aop.advice.CacheManagerRoundAdvice;
 import com.taobao.pamirs.cache.config.BeanCacheConfig;
 
 public class CacheMbean<K,V> extends AbstractDynamicMBean {
@@ -86,37 +87,43 @@ public class CacheMbean<K,V> extends AbstractDynamicMBean {
 			Object bean = ApplicationContextUtil.getBean(cacheConfig.getBeanName());
 			
 			String paramterType = cacheConfig.getParameterTypes();
+			String[] keyItems = key.toString().split(CacheManagerRoundAdvice.VALUE_KEY_SPLITE_SIGN);
 			
 			int start = paramterType.indexOf("{");
 			int end = paramterType.indexOf("}");
 
 			String subParameterTypes = paramterType.substring(start + 1,end);
 			String[] parameterTypesArray = subParameterTypes.split(",");
-
+			if(parameterTypesArray.length != keyItems.length){
+				result = (V)("jmx的参数数量和接口的参数数量不一致,请求："+key.toString() + "接口参数:"+paramterType);
+				return result;
+			}
 			Class<?>[] methodParameter = new Class[parameterTypesArray.length];
+			
+			
 			Object [] methodArgs = new Object[parameterTypesArray.length];
 			for (int i = 0; i < parameterTypesArray.length; i++) {
 				if (parameterTypesArray[i].equals("long")){
 					methodParameter[i] = long.class;	
-					methodArgs[i] = new Long(key.toString()).longValue();
+					methodArgs[i] = new Long(keyItems[i]).longValue();
 				}else if(parameterTypesArray[i].equals("Long")){
 				    methodParameter[i] = Long.class;	
-				    methodArgs[i] = new Long(key.toString());
+				    methodArgs[i] = new Long(keyItems[i]);
 				}else if(parameterTypesArray[i].equals("int")){
 				    methodParameter[i] = int.class;	
-				    methodArgs[i] = new Integer(key.toString()).intValue();
+				    methodArgs[i] = new Integer(keyItems[i]).intValue();
 				}else if(parameterTypesArray[i].equals("Integer")){
 				    methodParameter[i] = Integer.class;		
-				    methodArgs[i] = new Integer(key.toString());
+				    methodArgs[i] = new Integer(keyItems[i]);
 				}else if(parameterTypesArray[i].equals("short")){
 				    methodParameter[i] = short.class;	
-				    methodArgs[i] = new Short(key.toString()).shortValue();
+				    methodArgs[i] = new Short(keyItems[i]).shortValue();
 				}else if(parameterTypesArray[i].equals("Short")){
 				    methodParameter[i] = Short.class;	 
-				    methodArgs[i] = new Short(key.toString());
+				    methodArgs[i] = new Short(keyItems[i]);
 				}else if(parameterTypesArray[i].equals("String")){
 				    methodParameter[i] = String.class;
-				    methodArgs[i] = new String(key.toString());
+				    methodArgs[i] = new String(keyItems[i]);
 				}			
 			}
 		
@@ -160,13 +167,13 @@ public class CacheMbean<K,V> extends AbstractDynamicMBean {
 				new MBeanOperationInfo("remove", "缓存删除",new MBeanParameterInfo[] { new MBeanParameterInfo(
 						"CacheRemove", "java.lang.String","输入String Key 进行缓存的 remove 操作.")}, "String",MBeanOperationInfo.ACTION),
 				new MBeanOperationInfo("put", "缓存数据写入",new MBeanParameterInfo[] { 
-						new MBeanParameterInfo("CachePut Key", "java.lang.String","输入String Key."),
+						new MBeanParameterInfo("CachePut Key", "java.lang.String","输入String Key.多参数用@@分隔."),
 						new MBeanParameterInfo("CachePut Value", "java.lang.String","输入String Value.")
 						}, "String",MBeanOperationInfo.ACTION),
 				new MBeanOperationInfo("get", "缓存数据读取",new MBeanParameterInfo[] { new MBeanParameterInfo(
-						"CacheGet", "java.lang.String","输入String Key 进行缓存的 get 操作.")}, "String",MBeanOperationInfo.ACTION),		
+						"CacheGet", "java.lang.String","输入String Key 进行缓存的 get 操作.多参数用@@分隔.")}, "String",MBeanOperationInfo.ACTION),		
 			    new MBeanOperationInfo("getRealValue", "运行期数据读取",new MBeanParameterInfo[] { new MBeanParameterInfo(
-					    "DiskGet", "java.lang.String","输入String Key 进行Disk的 get 操作.")}, "String",MBeanOperationInfo.ACTION)						
+					    "DiskGet", "java.lang.String","输入String Key 进行Disk的 get 操作.多参数用@@分隔.")}, "String",MBeanOperationInfo.ACTION)						
 				};
 		dMBeanInfo = new MBeanInfo(this.getClass().getName(), "HJ-Cache",
 				dAttributes, null, dOperations, null);

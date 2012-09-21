@@ -83,14 +83,20 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 		} finally {
 			Object[] parameters = invocation.getArguments();
 			StringBuffer valueKey = new StringBuffer(256);
+
 			// 支持多个参数组合生成一个KEY进行缓存获取
+			boolean first = true;
 			for (Object param : parameters) {
+				if(first){
+					first = false;
+				}else{
+					valueKey.append(VALUE_KEY_SPLITE_SIGN);
+				}
 				if (null == param) {
 					valueKey.append("null");
 				} else {
 					valueKey.append(param.toString());
 				}
-				valueKey.append(VALUE_KEY_SPLITE_SIGN);
 			}
 
 			// 清空相关的 Cache Value
@@ -114,14 +120,19 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 			Object[] parameters = invocation.getArguments();
 			StringBuffer valueKey = new StringBuffer(256);
+			boolean first = true;
 			// 支持多个参数组合生成一个KEY进行缓存获取
 			for (Object param : parameters) {
+				if(first){
+					first = false;
+				}else{
+					valueKey.append(VALUE_KEY_SPLITE_SIGN);
+				}
 				if (null == param) {
 					valueKey.append("null");
 				} else {
 					valueKey.append(param.toString());
 				}
-				valueKey.append(VALUE_KEY_SPLITE_SIGN);
 			}
 
 			Object result = Cache.get(valueKey.toString());

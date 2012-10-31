@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.cache;
+package com.taobao.pamirs.cache.helper.jmx;
 
 import java.lang.reflect.Method;
 
@@ -10,10 +10,10 @@ import javax.management.MBeanParameterInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.taobao.pamirs.cache.AbstractDynamicMBean;
 import com.taobao.pamirs.cache.ApplicationContextUtil;
-import com.taobao.pamirs.cache.aop.advice.CacheManagerRoundAdvice;
-import com.taobao.pamirs.cache.config.BeanCacheConfig;
+import com.taobao.pamirs.cache.framework.Cache;
+import com.taobao.pamirs.cache.framework.aop.advice.CacheManagerRoundAdvice;
+import com.taobao.pamirs.cache.framework.config.BeanCacheConfig;
 
 public class CacheMbean<K,V> extends AbstractDynamicMBean {
 	private static  Log log = LogFactory.getLog(CacheMbean.class);

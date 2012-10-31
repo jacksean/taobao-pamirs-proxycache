@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.manager;
+package com.taobao.pamirs.cache;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,11 +11,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.taobao.pamirs.cache.MBeanManagerFactory;
-import com.taobao.pamirs.cache.cache.Cache;
-import com.taobao.pamirs.cache.cache.CacheMbean;
-import com.taobao.pamirs.cache.config.BeanCacheCleanConfig;
-import com.taobao.pamirs.cache.config.BeanCacheConfig;
+import com.taobao.pamirs.cache.framework.Cache;
+import com.taobao.pamirs.cache.framework.config.BeanCacheCleanConfig;
+import com.taobao.pamirs.cache.framework.config.BeanCacheConfig;
+import com.taobao.pamirs.cache.helper.jmx.CacheMbean;
+import com.taobao.pamirs.cache.helper.jmx.MBeanManagerFactory;
+import com.taobao.pamirs.cache.manager.CacheManagerMBean;
 import com.taobao.pamirs.cache.timer.TimeTaskManager;
 
 public class CacheManager {

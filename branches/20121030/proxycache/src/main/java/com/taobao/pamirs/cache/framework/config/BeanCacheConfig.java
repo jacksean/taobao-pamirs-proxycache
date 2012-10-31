@@ -1,9 +1,9 @@
-package com.taobao.pamirs.cache.config;
+package com.taobao.pamirs.cache.framework.config;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.taobao.pamirs.cache.store.Store;
+import com.taobao.pamirs.cache.framework.Store;
 
 /**
  * ª∫¥Ê≈‰÷√∂®“Â
@@ -13,13 +13,13 @@ import com.taobao.pamirs.cache.store.Store;
  */
 public class BeanCacheConfig {
 	
-	public static String DEFAULT_STORE_TYPE;
-	public static String DEFAULT_STORE_TAIR_REGION;
-	public static String DEFAULT_STORE_TAIR_NAME_SPACE;
-	public static String DEFAULT_RETURN_TYPE;
-	public static String DEFAULT_GROUP_NAME;
-	public static long   DEFAULT_EXPIRE_TIMES;
-	public static String DEFAULT_CLEAN_TIME;
+//	public static String DEFAULT_STORE_TYPE;
+//	public static String DEFAULT_STORE_TAIR_REGION;
+//	public static String DEFAULT_STORE_TAIR_NAME_SPACE;
+//	public static String DEFAULT_RETURN_TYPE;
+//	public static String DEFAULT_GROUP_NAME;
+//	public static long   DEFAULT_EXPIRE_TIMES;
+//	public static String DEFAULT_CLEAN_TIME;
 	
 	public static String DEFAULT_TAIR_RETURN_TYPE = "serializable";
 
@@ -259,13 +259,13 @@ public class BeanCacheConfig {
 		return result;
 	}
 
-	public static String getDEFAULT_GROUP_NAME() {
-		return DEFAULT_GROUP_NAME;
-	}
-
-	public static long getDEFAULT_EXPIRE_TIMES() {
-		return DEFAULT_EXPIRE_TIMES;
-	}
+//	public static String getDEFAULT_GROUP_NAME() {
+//		return DEFAULT_GROUP_NAME;
+//	}
+//
+//	public static long getDEFAULT_EXPIRE_TIMES() {
+//		return DEFAULT_EXPIRE_TIMES;
+//	}
 
 	public String getBeanName() {
 		return beanName;

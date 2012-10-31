@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.taobao.pamirs.cache.store.Store;
+import com.taobao.pamirs.cache.framework.Store;
 import com.taobao.tair.DataEntry;
 import com.taobao.tair.Result;
 import com.taobao.tair.ResultCode;
@@ -56,18 +56,10 @@ public class TairCacheStore<K,V> implements Store<K,V>{
 		this.tairManager = TairStoreFactory.getTairManager();
 	}
     
-	private String getTairKey(Object key){
-		StringBuilder cacheKey = new StringBuilder();
-		cacheKey.append(region)
-				.append(cacheCode)
-				.append(key);
-		return cacheKey.toString();
-	}
-		
-	@SuppressWarnings("unchecked")
+	@Override
 	public V get(K key) {
-		
 		Object returnValue = null;
+		
 		Result<DataEntry> result = tairManager.get(namespace, getTairKey(key));
 		if (result.isSuccess()) {
 			DataEntry data = result.getValue();// 第一个getValue返回DataEntry对象												
@@ -82,17 +74,8 @@ public class TairCacheStore<K,V> implements Store<K,V>{
 		return (V) returnValue;
 	}
 	
-	 
-	@SuppressWarnings("deprecation")
-	public void remove(K key) {
-		// 这里采用失效 是因为 收费线系统将 会有在不同的集群中（容灾）
-		ResultCode rc = tairManager.invalid(namespace, getTairKey(key));
-		if (!ResultCode.SUCCESS.equals(rc)) {
-			logger.error("Tair Cache failed to invalid object [namespace="
-					+ namespace + ", key=" + getTairKey(key)
-					+ "]. Error Message : " + rc.getMessage());
-		}
-	}
+	
+	@Override
 	public void put(K key, V value) {
 		//put前需要remove
 		remove(key);
@@ -106,15 +89,36 @@ public class TairCacheStore<K,V> implements Store<K,V>{
 		}
 	}
 	
-	public void replaceData(Map<K, V> newData) {
-		throw new RuntimeException("Tair存储 不支持此方法");
+	@Override
+	public void put(K key, V value, long expireTime) {};
+	
+	 
+	@Override
+	public void remove(K key) {
+		// 这里采用失效 是因为 收费线系统将 会有在不同的集群中（容灾）
+		ResultCode rc = tairManager.invalid(namespace, getTairKey(key));
+		if (!ResultCode.SUCCESS.equals(rc)) {
+			logger.error("Tair Cache failed to invalid object [namespace="
+					+ namespace + ", key=" + getTairKey(key)
+					+ "]. Error Message : " + rc.getMessage());
+		}
 	}
 
+	@Override
 	public void clear() {
 		throw new RuntimeException("Tair存储 不支持此方法");
 	}
 
+	@Override
 	public int size() {		
 		throw new RuntimeException("Tair存储 不支持此方法");
+	}
+	
+	private String getTairKey(Object key){
+		StringBuilder cacheKey = new StringBuilder();
+		cacheKey.append(region)
+				.append(cacheCode)
+				.append(key);
+		return cacheKey.toString();
 	}
 }

@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.aop.advice;
+package com.taobao.pamirs.cache.framework.aop.advice;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -11,20 +11,28 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.taobao.pamirs.cache.cache.Cache;
-import com.taobao.pamirs.cache.config.BeanCacheCleanConfig;
-import com.taobao.pamirs.cache.config.BeanCacheConfig;
-import com.taobao.pamirs.cache.manager.CacheManager;
+import com.taobao.pamirs.cache.CacheManager;
+import com.taobao.pamirs.cache.framework.Cache;
+import com.taobao.pamirs.cache.framework.config.BeanCacheCleanConfig;
+import com.taobao.pamirs.cache.framework.config.BeanCacheConfig;
 
+/**
+ * 通知处理类
+ * 
+ * @author xuannan
+ * @author xiaocheng 2012-10-30
+ */
 public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
-	private static transient Log log = LogFactory.getLog(CacheManagerRoundAdvice.class);
 
-	public  static final String VALUE_KEY_SPLITE_SIGN = "@@";
+	private static final Log log = LogFactory
+			.getLog(CacheManagerRoundAdvice.class);
+
+	public static final String VALUE_KEY_SPLITE_SIGN = "@@";
 	/**
 	 * Map<method,缓存对象>
 	 */
-	CacheManager cacheManager;
-	String beanName;
+	private CacheManager cacheManager;
+	private String beanName;
 
 	public CacheManagerRoundAdvice(CacheManager cacheManager, String beanName) {
 		this.cacheManager = cacheManager;
@@ -42,11 +50,13 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			Class<?>[] p = m.getParameterTypes();
 
 			// 获取 cacheMap , cacheCleanMap
-			Map<String, BeanCacheConfig> cacheMap = cacheManager.getBeanCacheConfigMap();
+			Map<String, BeanCacheConfig> cacheMap = cacheManager
+					.getBeanCacheConfigMap();
 			Map<String, BeanCacheCleanConfig> cacheCleanMap = cacheManager
 					.getBeanCacheCleanConfigMap();
 
-			cacheCode = BeanCacheConfig.generateCacheCode(this.beanName, m.getName(), p);
+			cacheCode = BeanCacheConfig.generateCacheCode(this.beanName,
+					m.getName(), p);
 
 			beanCacheConfig = cacheMap.get(cacheCode);
 			beanCacheCleanConfig = cacheCleanMap.get(cacheCode);
@@ -63,7 +73,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			if (beanCacheConfig != null && cacheManager.isUseCache()) {
 				return useCache(invocation, cacheCode);
 			} else if (beanCacheCleanConfig != null) {
-				return cleanCache(invocation, beanCacheCleanConfig.getCacheCleanCodes());
+				return cleanCache(invocation,
+						beanCacheCleanConfig.getCacheCleanCodes());
 			} else {
 				return invocation.proceed();
 			}
@@ -74,8 +85,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 	}
 
-	public Object cleanCache(MethodInvocation invocation, String[] cacheCleanCodes)
-		throws Throwable {
+	public Object cleanCache(MethodInvocation invocation,
+			String[] cacheCleanCodes) throws Throwable {
 
 		try {
 			// 执行方法
@@ -87,9 +98,9 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			// 支持多个参数组合生成一个KEY进行缓存获取
 			boolean first = true;
 			for (Object param : parameters) {
-				if(first){
+				if (first) {
 					first = false;
-				}else{
+				} else {
 					valueKey.append(VALUE_KEY_SPLITE_SIGN);
 				}
 				if (null == param) {
@@ -101,7 +112,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 			// 清空相关的 Cache Value
 			for (int i = 0; i < cacheCleanCodes.length; i++) {
-				Cache<String, Object> cache = CacheManager.getCache(cacheCleanCodes[i]);
+				Cache<String, Object> cache = CacheManager
+						.getCache(cacheCleanCodes[i]);
 				if (cache != null) {
 					cache.remove(valueKey.toString());
 				}
@@ -110,7 +122,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	}
 
 	public Object useCache(MethodInvocation invocation, String cacheCode)
-		throws Throwable {
+			throws Throwable {
 
 		Cache<String, Object> Cache = CacheManager.getCache(cacheCode);
 
@@ -123,9 +135,9 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			boolean first = true;
 			// 支持多个参数组合生成一个KEY进行缓存获取
 			for (Object param : parameters) {
-				if(first){
+				if (first) {
 					first = false;
-				}else{
+				} else {
 					valueKey.append(VALUE_KEY_SPLITE_SIGN);
 				}
 				if (null == param) {

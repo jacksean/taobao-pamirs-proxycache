@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache;
+package com.taobao.pamirs.cache.helper.jmx;
 
 import java.util.Iterator;
 

@@ -3,8 +3,8 @@ package com.taobao.pamirs.cachemanager.test;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.taobao.pamirs.cache.config.BeanCacheCleanConfig;
-import com.taobao.pamirs.cache.config.BeanCacheConfig;
+import com.taobao.pamirs.cache.framework.config.BeanCacheCleanConfig;
+import com.taobao.pamirs.cache.framework.config.BeanCacheConfig;
 
 public class BeanConfigTest {
 	@Test

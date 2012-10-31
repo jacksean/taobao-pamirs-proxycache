@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.config;
+package com.taobao.pamirs.cache.framework.config;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,8 +7,9 @@ import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanParameterInfo;
 
-import com.taobao.pamirs.cache.AbstractDynamicMBean;
-import com.taobao.pamirs.cache.cache.Cache;
+import com.taobao.pamirs.cache.CacheManager;
+import com.taobao.pamirs.cache.framework.Cache;
+import com.taobao.pamirs.cache.helper.jmx.AbstractDynamicMBean;
 
 public class CacheManagerMBean extends AbstractDynamicMBean {
 	

@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.cache;
+package com.taobao.pamirs.cache.framework;
 
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicLong;
@@ -6,11 +6,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.taobao.pamirs.cache.config.BeanCacheConfig;
-import com.taobao.pamirs.cache.manager.CacheManager;
-import com.taobao.pamirs.cache.store.Store;
-import com.taobao.pamirs.cache.store.StoreObject;
+import com.taobao.pamirs.cache.CacheManager;
+import com.taobao.pamirs.cache.framework.config.BeanCacheConfig;
 import com.taobao.pamirs.cache.store.map.MapStore;
+import com.taobao.pamirs.cache.store.map.StoreObject;
 import com.taobao.pamirs.cache.store.tair.TairCacheStore;
 
 public class Cache<K,V> {

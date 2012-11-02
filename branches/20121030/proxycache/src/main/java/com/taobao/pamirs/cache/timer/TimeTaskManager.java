@@ -34,7 +34,7 @@ public class TimeTaskManager {
 
 class  CacheManagerTimerTask extends TimerTask{
 	private static transient Log log = LogFactory.getLog(CacheManagerTimerTask.class);
-	CacheAdapter<String,Object> Cache;
+	CacheProxy<String,Object> Cache;
 	String cronTabExpress;
 	TimeTaskManager manager;
 	public CacheManagerTimerTask(TimeTaskManager aManager,CacheAdapter<String,Object> aCache,String aCronTabExpress){
@@ -59,7 +59,7 @@ class  CacheManagerTimerTask extends TimerTask{
 }
 
 class CleanCacheTask implements Runnable{
-	CacheAdapter<String,Object> item;
+	CacheProxy<String,Object> item;
 	CleanCacheTask(CacheAdapter<String,Object> aItem){
 		this.item =aItem;
 	}

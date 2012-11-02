@@ -19,7 +19,7 @@ import com.taobao.pamirs.cache.jmx.mbean.AbstractDynamicMBean;
 public class CacheMbean<K,V> extends AbstractDynamicMBean {
 	private static  Log log = LogFactory.getLog(CacheMbean.class);
 	
-	CacheAdapter<K,V> cache = null;
+	CacheProxy<K,V> cache = null;
 	
 	public CacheMbean(CacheAdapter<K,V> cache){
 		this.cache = cache;

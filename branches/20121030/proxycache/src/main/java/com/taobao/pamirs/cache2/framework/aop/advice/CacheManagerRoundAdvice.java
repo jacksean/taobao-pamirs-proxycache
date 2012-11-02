@@ -12,7 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.taobao.pamirs.cache2.CacheManager;
-import com.taobao.pamirs.cache2.framework.CacheAdapter;
+import com.taobao.pamirs.cache2.framework.CacheProxy;
 import com.taobao.pamirs.cache2.framework.config.CacheBean;
 import com.taobao.pamirs.cache2.framework.config.CacheCleanBean;
 import com.taobao.pamirs.cache2.framework.config.CacheConfig;
@@ -69,7 +69,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			if (cacheManager.isUseCache() && cacheBean != null) {
 				String adapterKey = CacheCodeUtil.getCacheAdapterKey(
 						storeRegion, cacheBean);
-				CacheAdapter<String, Serializable> cacheAdapter = cacheManager
+				CacheProxy<String, Serializable> cacheAdapter = cacheManager
 						.getCacheAdapter(adapterKey);
 
 				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
@@ -107,7 +107,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	 * @return
 	 * @throws Throwable
 	 */
-	private Object useCache(CacheAdapter<String, Serializable> cacheAdapter,
+	private Object useCache(CacheProxy<String, Serializable> cacheAdapter,
 			String cacheCode, Integer expireTime, MethodInvocation invocation)
 			throws Throwable {
 		if (cacheAdapter == null)
@@ -149,7 +149,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 				String adapterKey = CacheCodeUtil.getCacheAdapterKey(
 						storeRegion, methodConfig);
-				CacheAdapter<String, Serializable> cacheAdapter = cacheManager
+				CacheProxy<String, Serializable> cacheAdapter = cacheManager
 						.getCacheAdapter(adapterKey);
 
 				if (cacheAdapter != null) {

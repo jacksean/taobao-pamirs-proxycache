@@ -16,14 +16,14 @@ import com.taobao.pamirs.cache2.framework.listener.CacheObservable;
  * 
  * @author xiaocheng 2012-10-31
  */
-public class CacheAdapter<K extends Serializable, V extends Serializable>
+public class CacheProxy<K extends Serializable, V extends Serializable>
 		extends CacheObservable implements ICache<K, V> {
 
 	/** 注入真正的cache实现 */
 	private ICache<K, V> cache;
 	private MethodConfig methodConfig;
 
-	public CacheAdapter(ICache<K, V> cache, MethodConfig methodConfig) {
+	public CacheProxy(ICache<K, V> cache, MethodConfig methodConfig) {
 		this.cache = cache;
 		this.methodConfig = methodConfig;
 	}

@@ -146,7 +146,7 @@ public class CacheManager {
 	 * @param cacheName
 	 * @return
 	 */
-	public static CacheAdapter<String, Object> getCache(String cacheCode) {
+	public static CacheProxy<String, Object> getCache(String cacheCode) {
 		return caches.get(cacheCode);
 	}
 
@@ -156,7 +156,7 @@ public class CacheManager {
 	 * @param cacheName
 	 * @return
 	 */
-	public static CacheAdapter<String, Object> getCacheByName(String cacheName) {
+	public static CacheProxy<String, Object> getCacheByName(String cacheName) {
 		return caches.get(cacheNametoCode.get(cacheName));
 	}
 
@@ -172,7 +172,7 @@ public class CacheManager {
 	 * @param isInitialCache
 	 * @return
 	 */
-	public CacheAdapter<String, Object> createCache(BeanCacheConfig beanCacheConfig) {
+	public CacheProxy<String, Object> createCache(BeanCacheConfig beanCacheConfig) {
 
 		if (caches.containsKey(beanCacheConfig.getCacheCode())) {
 			throw new RuntimeException("缓存重复定义，请检查配置文件："

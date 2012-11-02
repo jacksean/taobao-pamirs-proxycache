@@ -9,7 +9,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import com.taobao.pamirs.cache2.framework.CacheAdapter;
+import com.taobao.pamirs.cache2.framework.CacheProxy;
 import com.taobao.pamirs.cache2.framework.ICache;
 import com.taobao.pamirs.cache2.framework.config.CacheBean;
 import com.taobao.pamirs.cache2.framework.config.CacheConfig;
@@ -34,7 +34,7 @@ public class CacheManager implements ApplicationContextAware {
 	/**
 	 * 每一个method对应一个adapter实例
 	 */
-	private final Map<String, CacheAdapter<String, Serializable>> cacheAdapters = new ConcurrentHashMap<String, CacheAdapter<String, Serializable>>();
+	private final Map<String, CacheProxy<String, Serializable>> cacheAdapters = new ConcurrentHashMap<String, CacheProxy<String, Serializable>>();
 
 	private TairManager tairManager;
 
@@ -71,12 +71,12 @@ public class CacheManager implements ApplicationContextAware {
 		}
 
 		if (cache != null) {
-			cacheAdapters.put(key, new CacheAdapter<String, Serializable>(
+			cacheAdapters.put(key, new CacheProxy<String, Serializable>(
 					cache, methodConfig));
 		}
 	}
 
-	public CacheAdapter<String, Serializable> getCacheAdapter(String key) {
+	public CacheProxy<String, Serializable> getCacheAdapter(String key) {
 		if (key == null || cacheAdapters == null)
 			return null;
 

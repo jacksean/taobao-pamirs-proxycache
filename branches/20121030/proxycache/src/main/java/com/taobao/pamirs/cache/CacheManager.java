@@ -11,58 +11,28 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.taobao.pamirs.cache.framework.Cache;
+import com.taobao.pamirs.cache.framework.CacheAdapter;
 import com.taobao.pamirs.cache.framework.config.BeanCacheCleanConfig;
 import com.taobao.pamirs.cache.framework.config.BeanCacheConfig;
-import com.taobao.pamirs.cache.helper.jmx.CacheMbean;
-import com.taobao.pamirs.cache.helper.jmx.MBeanManagerFactory;
-import com.taobao.pamirs.cache.manager.CacheManagerMBean;
+import com.taobao.pamirs.cache.jmx.CacheManagerMBean;
+import com.taobao.pamirs.cache.jmx.CacheMbean;
+import com.taobao.pamirs.cache.jmx.mbean.MBeanManagerFactory;
 import com.taobao.pamirs.cache.timer.TimeTaskManager;
 
+/**
+ * 缓存管理类--框架入口
+ * 
+ * @author xuannan
+ * @author xiaocheng 2012-10-31
+ */
 public class CacheManager {
 
-	private static Log log = LogFactory.getLog(CacheManager.class);
+	private static final Log log = LogFactory.getLog(CacheManager.class);
 
-	static {
-		try {
-			MBeanManagerFactory.registerMBean(CacheManagerMBean.MBEAN_NAME
-					+ "name=cacheManager", new CacheManagerMBean());
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-		}
-	}
-	private static TimeTaskManager timerTaskManager = new TimeTaskManager();
-
-	/**
-	 * 通过 CacheConfig.xml 配置注入
-	 * **/
+	private String defaultCacheConfig;
 	private List<String> cacheConfig;
 	private List<String> cacheCleanConfig;
 
-	/**
-	 * 需要进行缓存管理的 cacheCode Map
-	 */
-	private Map<String, BeanCacheConfig> beanCacheConfigMap = new HashMap<String, BeanCacheConfig>();
-	private Map<String, BeanCacheCleanConfig> beanCacheCleanConfigMap = new HashMap<String, BeanCacheCleanConfig>();
-
-	public Map<String, BeanCacheConfig> getBeanCacheConfigMap() {
-		return this.beanCacheConfigMap;
-	}
-
-	public Map<String, BeanCacheCleanConfig> getBeanCacheCleanConfigMap() {
-		return this.beanCacheCleanConfigMap;
-	}
-
-	// Bean PointCut Set
-	private Set<String> cacheBeanNameSet = new HashSet<String>();
-
-	public Set<String> getCacheBeanNameSet() {
-		return this.cacheBeanNameSet;
-	}
-	/**
-	 * 通过 CacheConfig.xml 配置注入缓存配置默认值
-	 */
-	private String defaultCacheConfig;
 	public void setDefaultCacheConfig(String defaultCacheConfig) {
 		this.defaultCacheConfig = defaultCacheConfig;
 	}
@@ -71,7 +41,8 @@ public class CacheManager {
 	public void setCacheConfig(List<String> aCcheConfig) {
 		this.cacheConfig = aCcheConfig;
 		for (String item : this.cacheConfig) {
-			BeanCacheConfig config = new BeanCacheConfig(this.defaultCacheConfig,item);
+			BeanCacheConfig config = new BeanCacheConfig(
+					this.defaultCacheConfig, item);
 			if (!beanCacheConfigMap.containsKey(config.getCacheCode())) {
 				beanCacheConfigMap.put(config.getCacheCode(), config);
 				cacheBeanNameSet.add(config.getBeanName());
@@ -97,6 +68,37 @@ public class CacheManager {
 		}
 	}
 
+	static {
+		try {
+			MBeanManagerFactory.registerMBean(CacheManagerMBean.MBEAN_NAME
+					+ "name=cacheManager", new CacheManagerMBean());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+	private static TimeTaskManager timerTaskManager = new TimeTaskManager();
+
+	/**
+	 * 需要进行缓存管理的 cacheCode Map
+	 */
+	private Map<String, BeanCacheConfig> beanCacheConfigMap = new HashMap<String, BeanCacheConfig>();
+	private Map<String, BeanCacheCleanConfig> beanCacheCleanConfigMap = new HashMap<String, BeanCacheCleanConfig>();
+
+	public Map<String, BeanCacheConfig> getBeanCacheConfigMap() {
+		return this.beanCacheConfigMap;
+	}
+
+	public Map<String, BeanCacheCleanConfig> getBeanCacheCleanConfigMap() {
+		return this.beanCacheCleanConfigMap;
+	}
+
+	// Bean PointCut Set
+	private Set<String> cacheBeanNameSet = new HashSet<String>();
+
+	public Set<String> getCacheBeanNameSet() {
+		return this.cacheBeanNameSet;
+	}
+
 	// 缓存是否初始化标志位.
 	private boolean cacheInitFlag;
 
@@ -113,25 +115,26 @@ public class CacheManager {
 			}
 		}
 	}
-	
+
 	// 缓存是否初始化标志位.
 	private boolean cacheUseFlag;
 
 	public void setCacheUseFlag(boolean cacheUseFlag) {
 		this.cacheUseFlag = cacheUseFlag;
 	}
-	public boolean isUseCache(){
+
+	public boolean isUseCache() {
 		return this.cacheUseFlag;
 	}
-	
+
 	// Map<cacheCode , Cache<String, Object>>
 	// cacheCode = beanName:methodName:parameterTypes
-	private static Map<String, Cache<String, Object>> caches = new ConcurrentHashMap<String, Cache<String, Object>>();
-	
+	private static Map<String, CacheAdapter<String, Object>> caches = new ConcurrentHashMap<String, CacheAdapter<String, Object>>();
+
 	/**
 	 * 通过 CacheName 存储 CacheCode 的映射 map
 	 * **/
-	private static Map<String, String> cacheNametoCode = new ConcurrentHashMap<String,String>();
+	private static Map<String, String> cacheNametoCode = new ConcurrentHashMap<String, String>();
 
 	public static TimeTaskManager getTimeTaskManager() {
 		return timerTaskManager;
@@ -143,7 +146,7 @@ public class CacheManager {
 	 * @param cacheName
 	 * @return
 	 */
-	public static Cache<String, Object> getCache(String cacheCode) {
+	public static CacheAdapter<String, Object> getCache(String cacheCode) {
 		return caches.get(cacheCode);
 	}
 
@@ -153,10 +156,10 @@ public class CacheManager {
 	 * @param cacheName
 	 * @return
 	 */
-	public static Cache<String, Object> getCacheByName(String cacheName) {		
+	public static CacheAdapter<String, Object> getCacheByName(String cacheName) {
 		return caches.get(cacheNametoCode.get(cacheName));
 	}
-	
+
 	/**
 	 * 创建缓存
 	 * 
@@ -169,24 +172,26 @@ public class CacheManager {
 	 * @param isInitialCache
 	 * @return
 	 */
-	public Cache<String, Object> createCache(BeanCacheConfig beanCacheConfig) {
+	public CacheAdapter<String, Object> createCache(BeanCacheConfig beanCacheConfig) {
 
 		if (caches.containsKey(beanCacheConfig.getCacheCode())) {
 			throw new RuntimeException("缓存重复定义，请检查配置文件："
 					+ beanCacheConfig.getCacheName());
 		}
-		Cache<String, Object> cache = null;
+		CacheAdapter<String, Object> cache = null;
 
-		cache = new Cache<String, Object>(beanCacheConfig);
+		cache = new CacheAdapter<String, Object>(beanCacheConfig);
 
 		caches.put(beanCacheConfig.getCacheCode(), cache);
-		cacheNametoCode.put(beanCacheConfig.getCacheName(), beanCacheConfig.getCacheCode());
+		cacheNametoCode.put(beanCacheConfig.getCacheName(),
+				beanCacheConfig.getCacheCode());
 
-		String mbeanName = CacheManagerMBean.MBEAN_NAME
-				+ "name="+beanCacheConfig.getCacheName();
+		String mbeanName = CacheManagerMBean.MBEAN_NAME + "name="
+				+ beanCacheConfig.getCacheName();
 
-		CacheMbean<String, Object> cacheMbean = new CacheMbean<String, Object>(cache); 
-		
+		CacheMbean<String, Object> cacheMbean = new CacheMbean<String, Object>(
+				cache);
+
 		try {
 			MBeanManagerFactory.registerMBean(mbeanName, cacheMbean);
 		} catch (Exception e) {

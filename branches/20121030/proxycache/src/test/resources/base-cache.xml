@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+	<bean id="tairManager" class="com.taobao.tair.impl.DefaultTairManager"
+		init-method="init">
+		<property name="configServerList">
+			<list>
+				<value>${tair.config.server1}</value>
+				<value>${tair.config.server2}</value>
+			</list>
+		</property>
+		<property name="groupName">
+			<value>${tair.group.name}</value>
+		</property>
+	</bean>
+</beans>

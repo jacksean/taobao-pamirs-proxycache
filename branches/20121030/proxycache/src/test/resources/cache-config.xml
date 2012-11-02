@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="GBK"?>
+<cacheConfig>
+	<!-- tair -->
+	<storeType>tair/map</storeType>
+	<storeRegion>${store.tair.region}</storeRegion><!-- 环境分区，可选 -->
+	<storeTairNameSpace>318</storeTairNameSpace><!-- just for tair -->
+	<storeMapCleanTime></storeMapCleanTime><!-- just for map -->
+
+	<!-- 缓存Bean配置 -->
+	<cacheBeans list="true">
+		<cacheBean>
+			<beanName></beanName>
+			<methodName></methodName>
+			<parameterTypes list="true"><!-- 可选，如果有重载方法时，必须要指定 -->
+				<String>{String}</String>
+				<String>{String}</String>
+			</parameterTypes>
+			<expiredTime></expiredTime><!-- 单位：秒。可以是相对时间，也可以是绝对时间(大于当前时间戳是绝对时间过期)。不传或0都是不过期 -->
+		</cacheBean>
+		<cacheBean>
+			<beanName></beanName>
+			<methodName></methodName>
+			<parameterTypes list="true">
+				<String>{String}</String>
+				<String>{String}</String>
+			</parameterTypes>
+			<expiredTime></expiredTime>
+		</cacheBean>
+	</cacheBeans>
+
+	<!-- 缓存清理Bean配置 -->
+	<cacheCleanBeans list="true">
+		<cacheCleanBean>
+			<beanName></beanName>
+			<methodName></methodName>
+			<parameterTypes list="true"><!-- 可选，如果有重载方法时，必须要指定 -->
+				<String>String</String>
+				<String>String</String>
+			</parameterTypes>
+			<cleanCodes list="true">
+				<methodConfig>
+					<beanName>activityReadService</beanName>
+					<methodName>getActivityByCode</methodName>
+					<parameterTypes /><!-- 不用配置，参数必须和上面的一致 -->
+				</methodConfig>
+			</cleanCodes>
+		</cacheCleanBean>
+	</cacheCleanBeans>
+
+</cacheConfig>

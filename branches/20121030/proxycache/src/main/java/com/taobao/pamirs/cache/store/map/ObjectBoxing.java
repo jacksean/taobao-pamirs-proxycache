@@ -3,7 +3,7 @@ package com.taobao.pamirs.cache.store.map;
 import java.io.Serializable;
 
 /**
- * 缓存对象包装类
+ * 缓存对象包装类，支持expireTime
  * 
  * @author xuanyu
  * @author xiaocheng 2012-10-30

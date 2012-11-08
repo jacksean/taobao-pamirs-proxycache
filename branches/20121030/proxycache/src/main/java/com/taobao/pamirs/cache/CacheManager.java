@@ -29,6 +29,7 @@ import com.taobao.tair.TairManager;
 /**
  * »º´æ¿ò¼ÜÈë¿ÚÀà
  * 
+ * @author xuanyu
  * @author xiaocheng 2012-11-2
  */
 public class CacheManager implements ApplicationContextAware {

@@ -25,6 +25,7 @@ import com.taobao.pamirs.cache.util.CacheCodeUtil;
 /**
  * »º´æbeanµÄMbean
  * 
+ * @author xuanyu
  * @author xiaocheng 2012-11-8
  */
 public class CacheMbean<K extends Serializable, V extends Serializable> extends

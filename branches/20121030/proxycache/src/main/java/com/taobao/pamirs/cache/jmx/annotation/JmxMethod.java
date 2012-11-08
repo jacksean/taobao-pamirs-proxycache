@@ -7,12 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
  * 是否需要暴露成JmxMethod
- * </p>
  * 
- * @author:shixian
- * 
+ * @author xiaocheng 2012-11-8
  */
 @Target({ METHOD })
 @Retention(RetentionPolicy.RUNTIME)

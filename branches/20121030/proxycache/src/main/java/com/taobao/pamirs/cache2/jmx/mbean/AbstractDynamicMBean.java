@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.jmx.mbean;
+package com.taobao.pamirs.cache2.jmx.mbean;
 
 import java.util.Iterator;
 

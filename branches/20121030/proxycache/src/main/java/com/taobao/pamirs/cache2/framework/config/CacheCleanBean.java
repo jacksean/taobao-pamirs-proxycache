@@ -12,6 +12,9 @@ public class CacheCleanBean extends MethodConfig {
 	//
 	private static final long serialVersionUID = -4582877908557906265L;
 
+	/**
+	 * 需要remove缓存的方法列表
+	 */
 	private List<MethodConfig> cleanCodes;
 
 	public List<MethodConfig> getCleanCodes() {

@@ -69,8 +69,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			if (cacheManager.isUseCache() && cacheBean != null) {
 				String adapterKey = CacheCodeUtil.getCacheAdapterKey(
 						storeRegion, cacheBean);
-				CacheProxy<String, Serializable> cacheAdapter = cacheManager
-						.getCacheAdapter(adapterKey);
+				CacheProxy<Serializable, Serializable> cacheAdapter = cacheManager
+						.getCacheProxys(adapterKey);
 
 				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
 						cacheBean, invocation);
@@ -107,7 +107,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	 * @return
 	 * @throws Throwable
 	 */
-	private Object useCache(CacheProxy<String, Serializable> cacheAdapter,
+	private Object useCache(
+			CacheProxy<Serializable, Serializable> cacheAdapter,
 			String cacheCode, Integer expireTime, MethodInvocation invocation)
 			throws Throwable {
 		if (cacheAdapter == null)
@@ -149,8 +150,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 				String adapterKey = CacheCodeUtil.getCacheAdapterKey(
 						storeRegion, methodConfig);
-				CacheProxy<String, Serializable> cacheAdapter = cacheManager
-						.getCacheAdapter(adapterKey);
+				CacheProxy<Serializable, Serializable> cacheAdapter = cacheManager
+						.getCacheProxys(adapterKey);
 
 				if (cacheAdapter != null) {
 					String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,

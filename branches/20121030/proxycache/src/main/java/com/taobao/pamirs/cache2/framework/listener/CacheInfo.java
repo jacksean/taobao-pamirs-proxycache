@@ -17,12 +17,15 @@ public class CacheInfo extends MethodConfig implements Serializable {
 
 	private Serializable key;
 	private long methodTime;
+	/**  «∑Ò√¸÷–£®for GET£© */
+	private boolean isHitting;
 	private CacheException cacheException;
 
-	public CacheInfo(Serializable key, long methodTime,
+	public CacheInfo(Serializable key, long methodTime, boolean isHitting,
 			MethodConfig methodConfig, CacheException exception) {
 		this.key = key;
 		this.methodTime = methodTime;
+		this.isHitting = isHitting;
 		this.cacheException = exception;
 
 		if (methodConfig != null) {
@@ -47,6 +50,10 @@ public class CacheInfo extends MethodConfig implements Serializable {
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+
+	public boolean isHitting() {
+		return isHitting;
 	}
 
 	public long getMethodTime() {

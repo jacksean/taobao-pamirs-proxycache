@@ -15,7 +15,25 @@ import com.taobao.pamirs.cache2.framework.config.MethodConfig;
 public class CacheCodeUtil {
 
 	/**
-	 * 取得最终的缓存Code
+	 * Key的主分隔符<br>
+	 * 格式：regionbeanName#methodName#{String}
+	 */
+	public static final String KEY_SPLITE_SIGN = "#";
+	/**
+	 * key中方法参数的分隔符<br>
+	 * 格式：{String,Long}
+	 */
+	public static final String KEY_PARAMS_SPLITE_SIGN = ",";
+
+	/**
+	 * 取得最终的缓存Code中参数值分隔符<br>
+	 * 格式：regionbeanName#methodName#{String,Long}abc@@123
+	 */
+	public static final String CODE_PARAM_VALUES_SPLITE_SIGN = "@@";
+
+	/**
+	 * 取得最终的缓存Code<br>
+	 * 格式：regionbeanName#methodName#{String,Long}abc@@123
 	 * 
 	 * @param region
 	 * @param methodConfig
@@ -38,7 +56,7 @@ public class CacheCodeUtil {
 		StringBuilder valus = new StringBuilder();
 		for (Object param : parameters) {
 			if (valus.length() != 0) {
-				valus.append("@@");
+				valus.append(CODE_PARAM_VALUES_SPLITE_SIGN);
 			}
 
 			valus.append(param == null ? "null" : param.toString());
@@ -49,7 +67,8 @@ public class CacheCodeUtil {
 	}
 
 	/**
-	 * 缓存适配器的key
+	 * 缓存适配器的key<br>
+	 * 格式：regionbeanName#methodName#{String,Long}
 	 * 
 	 * @param region
 	 * @param methodConfig
@@ -74,7 +93,7 @@ public class CacheCodeUtil {
 		if (parameterTypes != null) {
 			for (Class<?> clazz : parameterTypes) {
 				if (parameter.length() != 1) {
-					parameter.append(",");
+					parameter.append(KEY_PARAMS_SPLITE_SIGN);
 				}
 
 				parameter.append(clazz.getSimpleName());
@@ -82,8 +101,8 @@ public class CacheCodeUtil {
 		}
 		parameter.append("}");
 
-		key.append(beanName).append("#");
-		key.append(methodName).append("#");
+		key.append(beanName).append(KEY_SPLITE_SIGN);
+		key.append(methodName).append(KEY_SPLITE_SIGN);
 		key.append(parameter.toString());
 
 		return key.toString();

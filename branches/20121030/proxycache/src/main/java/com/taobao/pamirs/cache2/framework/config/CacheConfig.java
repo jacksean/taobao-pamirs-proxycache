@@ -29,11 +29,15 @@ public class CacheConfig implements Serializable {
 
 	/**
 	 * Tair命名空间（just for tair）
+	 * 
+	 * @see StoreType.TAIR
 	 */
 	private int storeTairNameSpace;
 
 	/**
 	 * Map自动清理表达式（just for map）
+	 * 
+	 * @see StoreType.MAP
 	 */
 	private String storeMapCleanTime;
 

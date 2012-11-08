@@ -15,6 +15,9 @@ public class MethodConfig implements Serializable {
 
 	private String beanName;
 	private String methodName;
+	/**
+	 * 参数类型
+	 */
 	private List<Class<?>> parameterTypes;
 
 	public String getBeanName() {

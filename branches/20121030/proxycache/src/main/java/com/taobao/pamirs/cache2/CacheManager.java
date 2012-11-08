@@ -14,6 +14,9 @@ import com.taobao.pamirs.cache2.framework.ICache;
 import com.taobao.pamirs.cache2.framework.config.CacheBean;
 import com.taobao.pamirs.cache2.framework.config.CacheConfig;
 import com.taobao.pamirs.cache2.framework.config.MethodConfig;
+import com.taobao.pamirs.cache2.jmx.CacheMbean;
+import com.taobao.pamirs.cache2.jmx.CacheMbeanListener;
+import com.taobao.pamirs.cache2.jmx.mbean.MBeanManagerFactory;
 import com.taobao.pamirs.cache2.store.StoreType;
 import com.taobao.pamirs.cache2.store.map.MapStore;
 import com.taobao.pamirs.cache2.store.tair.TairStore;
@@ -34,9 +37,11 @@ public class CacheManager implements ApplicationContextAware {
 	/**
 	 * 每一个method对应一个adapter实例
 	 */
-	private final Map<String, CacheProxy<String, Serializable>> cacheAdapters = new ConcurrentHashMap<String, CacheProxy<String, Serializable>>();
+	private final Map<String, CacheProxy<Serializable, Serializable>> cacheProxys = new ConcurrentHashMap<String, CacheProxy<Serializable, Serializable>>();
 
 	private TairManager tairManager;
+
+	private ApplicationContext applicationContext;
 
 	public void init() {
 		String storeRegion = cacheConfig.getStoreRegion();
@@ -60,27 +65,53 @@ public class CacheManager implements ApplicationContextAware {
 
 	private void initCacheAdapters(String region, MethodConfig methodConfig) {
 		String key = CacheCodeUtil.getCacheAdapterKey(region, methodConfig);
-		ICache<String, Serializable> cache = null;
+		StoreType storeType = StoreType.toEnum(cacheConfig.getStoreType());
+		ICache<Serializable, Serializable> cache = null;
 
-		if (StoreType.TAIR == StoreType.toEnum(cacheConfig.getStoreType())) {
-			cache = new TairStore<String, Serializable>(tairManager,
+		if (StoreType.TAIR == storeType) {
+			cache = new TairStore<Serializable, Serializable>(tairManager,
 					cacheConfig.getStoreTairNameSpace());
-		} else if (StoreType.MAP == StoreType
-				.toEnum(cacheConfig.getStoreType())) {
-			cache = new MapStore<String, Serializable>();
+		} else if (StoreType.MAP == storeType) {
+			cache = new MapStore<Serializable, Serializable>();
 		}
 
 		if (cache != null) {
-			cacheAdapters.put(key, new CacheProxy<String, Serializable>(
-					cache, methodConfig));
+			CacheProxy<Serializable, Serializable> cacheProxy = new CacheProxy<Serializable, Serializable>(
+					storeType, key, cache, methodConfig);
+
+			cacheProxys.put(key, cacheProxy);
+
+			// 注册JMX
+			registerCacheMbean(key, cacheProxy);
 		}
 	}
 
-	public CacheProxy<String, Serializable> getCacheAdapter(String key) {
-		if (key == null || cacheAdapters == null)
+	/**
+	 * 注册JMX
+	 * 
+	 * @param key
+	 * @param cacheProxy
+	 */
+	private void registerCacheMbean(String key,
+			CacheProxy<Serializable, Serializable> cacheProxy) {
+		try {
+			String mbeanName = "Pamirs-Cache:name=" + key;
+			CacheMbeanListener listener = new CacheMbeanListener();
+			cacheProxy.addListener(listener);
+			CacheMbean<Serializable, Serializable> cacheMbean = new CacheMbean<Serializable, Serializable>(
+					cacheProxy, listener, applicationContext);
+			MBeanManagerFactory.registerMBean(mbeanName, cacheMbean);
+		} catch (Exception e) {
+			// TODO
+			e.printStackTrace();
+		}
+	}
+
+	public CacheProxy<Serializable, Serializable> getCacheProxys(String key) {
+		if (key == null || cacheProxys == null)
 			return null;
 
-		return cacheAdapters.get(key);
+		return cacheProxys.get(key);
 	}
 
 	public boolean isUseCache() {
@@ -102,7 +133,7 @@ public class CacheManager implements ApplicationContextAware {
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
-
+		this.applicationContext = applicationContext;
 	}
 
 }

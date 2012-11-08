@@ -16,7 +16,7 @@ import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.jmx.CacheMbean;
 import com.taobao.pamirs.cache.jmx.CacheMbeanListener;
-import com.taobao.pamirs.cache.jmx.mbean.MBeanManagerFactory;
+import com.taobao.pamirs.cache.jmx.dynamicmbean.MBeanManagerFactory;
 import com.taobao.pamirs.cache.store.StoreType;
 import com.taobao.pamirs.cache.store.map.MapStore;
 import com.taobao.pamirs.cache.store.tair.TairStore;

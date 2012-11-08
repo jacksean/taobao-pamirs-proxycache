@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContext;
 import com.taobao.pamirs.cache.ApplicationContextUtil;
 import com.taobao.pamirs.cache.framework.CacheProxy;
 import com.taobao.pamirs.cache.framework.aop.advice.CacheManagerRoundAdvice;
-import com.taobao.pamirs.cache.jmx.mbean.AbstractDynamicMBean;
+import com.taobao.pamirs.cache.jmx.dynamicmbean.AbstractDynamicMBean;
 
 public class CacheMbean<K extends Serializable, V extends Serializable> extends
 		AbstractDynamicMBean {

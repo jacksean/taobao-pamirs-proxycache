@@ -1,69 +1,96 @@
 package com.taobao.pamirs.cache.framework.timer;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.taobao.pamirs.cache.framework.CacheAdapter;
+import com.taobao.pamirs.cache.framework.CacheProxy;
 
+/**
+ * 定时任务
+ * 
+ * @author xiaocheng 2012-11-8
+ */
 public class TimeTaskManager {
+
+	private static final Log log = LogFactory.getLog(TimeTaskManager.class);
+
 	private Timer timer;
-	private Map<String,CacheManagerTimerTask> taskMap = new ConcurrentHashMap<String,CacheManagerTimerTask>();
-	
-	public TimeTaskManager(){
-		timer = new Timer("CacheManagerTimeTaskManager");
+
+	public TimeTaskManager() {
+		timer = new Timer("CacheManagerTimeTaskManager", false);// 守护进程
 	}
-	public void createCleanCacheTask(CacheAdapter<String,Object> Cache,String aCronTabExpress) throws Exception{
+
+	public void createCleanCacheTask(
+			final CacheProxy<Serializable, Serializable> cache,
+			final String aCronTabExpress) throws Exception {
+
 		CronExpression cexp = new CronExpression(aCronTabExpress);
-		Date current = new Date(System.currentTimeMillis());
-		Date nextTime = cexp.getNextValidTimeAfter(current);
-		CacheManagerTimerTask task = new CacheManagerTimerTask(this,Cache,aCronTabExpress);
-		taskMap.put(Cache.getCacheName(), task);
+		Date nextTime = cexp.getNextValidTimeAfter(new Date(System
+				.currentTimeMillis()));
+
+		CleanCacheTask task = new CleanCacheTask(cache, new CleanNotice() {
+
+			@Override
+			public void cleaned(CleanCacheTask task) {
+				// 1. 确保废弃自身
+				task.cancel();
+
+				// 2. 创建一个新的（因为要支持自定义的调度表达式CronExpression）
+				try {
+					TimeTaskManager.this.createCleanCacheTask(cache,
+							aCronTabExpress);
+				} catch (Exception e) {
+					log.fatal("严重错误，定时器处理失败：" + e.getMessage(), e);
+				}
+
+			}
+		});
+
 		this.timer.schedule(task, nextTime);
 	}
-	public void removeCleanCacheTask(String cacheName){
-		CacheManagerTimerTask task = this.taskMap.remove(cacheName);
-		task.cancel();
-	}
-}
 
-class  CacheManagerTimerTask extends TimerTask{
-	private static transient Log log = LogFactory.getLog(CacheManagerTimerTask.class);
-	CacheProxy<String,Object> Cache;
-	String cronTabExpress;
-	TimeTaskManager manager;
-	public CacheManagerTimerTask(TimeTaskManager aManager,CacheAdapter<String,Object> aCache,String aCronTabExpress){
-		this.manager = aManager;
-		this.Cache = aCache;
-		this.cronTabExpress = aCronTabExpress;
+	/**
+	 * 清理完成后通知
+	 * 
+	 * @author xiaocheng 2012-11-8
+	 */
+	interface CleanNotice {
+		void cleaned(CleanCacheTask task);
 	}
-	public void run() {
-		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-		this.manager.removeCleanCacheTask(this.Cache.getCacheName());
-		try{
-			this.Cache.clear();
-		}finally{
-			try{
-				this.manager.createCleanCacheTask(this.Cache,this.cronTabExpress);
-			}catch(Exception e){
-				log.fatal("严重错误，定时器处理失败：" + e.getMessage(),e);
-			}
 
+	/**
+	 * 清理Task
+	 * 
+	 * @author xiaocheng 2012-11-8
+	 */
+	class CleanCacheTask extends TimerTask {
+
+		private CacheProxy<Serializable, Serializable> cache;
+
+		/** 清理后通知 */
+		private CleanNotice notice;
+
+		public CleanCacheTask(CacheProxy<Serializable, Serializable> cache,
+				CleanNotice notice) {
+			this.cache = cache;
+			this.notice = notice;
 		}
-	}
-}
 
-class CleanCacheTask implements Runnable{
-	CacheProxy<String,Object> item;
-	CleanCacheTask(CacheAdapter<String,Object> aItem){
-		this.item =aItem;
+		@Override
+		public void run() {
+			try {
+				cache.clear();
+			} catch (Exception e) {
+				log.error("清理Map失败", e);
+			} finally {
+				notice.cleaned(this);
+			}
+		}
+
 	}
-	public void run() {
-		 this.item.clear();	
-	}	
 }

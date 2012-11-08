@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.jmx.dynamicmbean;
+package com.taobao.pamirs.cache.jmx.mbean;
 
 import java.util.Iterator;
 
@@ -14,6 +14,12 @@ import javax.management.ReflectionException;
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
+/**
+ * ¶¯Ì¬MBean
+ * 
+ * @author xuanyu
+ * @author xiaocheng 2012-11-8
+ */
 public abstract class AbstractDynamicMBean implements DynamicMBean {
 	protected MBeanInfo dMBeanInfo = null;
 

@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.jmx.annotation;
+package com.taobao.pamirs.cache.jmx.mbean;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -19,16 +19,16 @@ import org.springframework.core.JdkVersion;
 import org.springframework.jmx.export.MBeanExportException;
 import org.springframework.jmx.export.assembler.AbstractReflectiveMBeanInfoAssembler;
 
-import com.taobao.fuwu.util.jmx.annotation.JmxClass;
-import com.taobao.fuwu.util.jmx.annotation.JmxMethod;
+import com.taobao.pamirs.cache.jmx.annotation.JmxClass;
+import com.taobao.pamirs.cache.jmx.annotation.JmxMethod;
 
 /**
  * 只需要配置这个bean与注解，就可以使用mbean了 目前不支持方法中参数是接口的Mbean注入
  * 
  * @author wuxiang
- * 
+ * @author xiaocheng 2012-11-8
  */
-public class FwConfigurableMBeanInfoAssembler extends
+public class ConfigurableMBeanInfoAssembler extends
 		AbstractReflectiveMBeanInfoAssembler implements
 		ApplicationContextAware, InitializingBean {
 
@@ -62,8 +62,8 @@ public class FwConfigurableMBeanInfoAssembler extends
 	private void injectMbean(Object obj, String beanClass) {
 		try {
 			ModelMBean mbean = createAndConfigureMBean(obj, beanClass);
-			FwMBeanManagerFactory.registerMBean("fuwu:name=$" + beanClass
-					+ "$", mbean);
+			MBeanManagerFactory.registerMBean("fuwu:name=$" + beanClass + "$",
+					mbean);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

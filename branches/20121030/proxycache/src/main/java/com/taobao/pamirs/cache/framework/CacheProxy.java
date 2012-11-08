@@ -130,7 +130,7 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 	public void setIsUseCache(boolean isUseCache) {
 		this.isUseCache = isUseCache;
 	}
-	
+
 	public boolean isUseCache() {
 		return isUseCache;
 	}
@@ -153,6 +153,10 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+
+	public MethodConfig getMethodConfig() {
+		return methodConfig;
 	}
 
 }

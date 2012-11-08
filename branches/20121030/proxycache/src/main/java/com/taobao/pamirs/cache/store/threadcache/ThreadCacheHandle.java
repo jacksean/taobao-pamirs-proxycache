@@ -20,8 +20,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.core.PriorityOrdered;
 
-import com.taobao.fuwu.util.jmx.annotation.JmxClass;
-import com.taobao.fuwu.util.jmx.annotation.JmxMethod;
+import com.taobao.pamirs.cache.jmx.annotation.JmxClass;
+import com.taobao.pamirs.cache.jmx.annotation.JmxMethod;
 
 /**
  * Ïß³Ì»º´æ

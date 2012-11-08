@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.jmx.dynamicmbean;
+package com.taobao.pamirs.cache.jmx.mbean;
 
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;

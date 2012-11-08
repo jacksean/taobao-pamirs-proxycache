@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -13,10 +16,10 @@ import com.taobao.pamirs.cache.framework.CacheProxy;
 import com.taobao.pamirs.cache.framework.ICache;
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
-import com.taobao.pamirs.cache.framework.config.MethodConfig;
+import com.taobao.pamirs.cache.framework.timer.TimeTaskManager;
 import com.taobao.pamirs.cache.jmx.CacheMbean;
 import com.taobao.pamirs.cache.jmx.CacheMbeanListener;
-import com.taobao.pamirs.cache.jmx.dynamicmbean.MBeanManagerFactory;
+import com.taobao.pamirs.cache.jmx.mbean.MBeanManagerFactory;
 import com.taobao.pamirs.cache.store.StoreType;
 import com.taobao.pamirs.cache.store.map.MapStore;
 import com.taobao.pamirs.cache.store.tair.TairStore;
@@ -29,6 +32,8 @@ import com.taobao.tair.TairManager;
  * @author xiaocheng 2012-11-2
  */
 public class CacheManager implements ApplicationContextAware {
+
+	private static final Log log = LogFactory.getLog(CacheManager.class);
 
 	private CacheConfig cacheConfig;
 
@@ -43,28 +48,39 @@ public class CacheManager implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
 
+	private TimeTaskManager timeTask;
+
+	/**
+	 * spring定义时的初始化方法
+	 */
 	public void init() {
 		String storeRegion = cacheConfig.getStoreRegion();
 		List<CacheBean> cacheBeans = cacheConfig.getCacheBeans();
-		// List<CacheCleanBean> cacheCleanBeans =
-		// cacheConfig.getCacheCleanBeans();
 
+		// 只需注册cacheBean,目前cacheCleanBeans必须是它的子集
 		if (cacheBeans != null) {
 			for (CacheBean bean : cacheBeans) {
-				initCacheAdapters(storeRegion, bean);
+				initCacheAdapters(storeRegion, bean,
+						cacheConfig.getStoreMapCleanTime());
 			}
 		}
 
-		// if (cacheCleanBeans != null) {
-		// for (CacheCleanBean bean : cacheCleanBeans) {
-		// initCacheAdapters(storeRegion, bean);
-		// }
-		// }
-
+		timeTask = new TimeTaskManager();
 	}
 
-	private void initCacheAdapters(String region, MethodConfig methodConfig) {
-		String key = CacheCodeUtil.getCacheAdapterKey(region, methodConfig);
+	/**
+	 * 初始化Bean/Method对应的缓存，包括： <br>
+	 * 1. CacheProxy <br>
+	 * 2. 定时清理任务：storeMapCleanTime <br>
+	 * 3. 注册JMX <br>
+	 * 
+	 * @param region
+	 * @param cacheBean
+	 * @param storeMapCleanTime
+	 */
+	private void initCacheAdapters(String region, CacheBean cacheBean,
+			String storeMapCleanTime) {
+		String key = CacheCodeUtil.getCacheAdapterKey(region, cacheBean);
 		StoreType storeType = StoreType.toEnum(cacheConfig.getStoreType());
 		ICache<Serializable, Serializable> cache = null;
 
@@ -77,12 +93,23 @@ public class CacheManager implements ApplicationContextAware {
 
 		if (cache != null) {
 			CacheProxy<Serializable, Serializable> cacheProxy = new CacheProxy<Serializable, Serializable>(
-					storeType, key, cache, methodConfig);
+					storeType, key, cache, cacheBean);
 
 			cacheProxys.put(key, cacheProxy);
 
+			// 定时清理任务：storeMapCleanTime
+			if (StoreType.MAP == storeType
+					&& StringUtils.isNotBlank(storeMapCleanTime)) {
+				try {
+					timeTask.createCleanCacheTask(cacheProxy, storeMapCleanTime);
+				} catch (Exception e) {
+					log.error("[严重]设置Map定时清理任务失败!", e);
+				}
+			}
+
 			// 注册JMX
-			registerCacheMbean(key, cacheProxy);
+			registerCacheMbean(key, cacheProxy, storeMapCleanTime,
+					cacheBean.getExpiredTime());
 		}
 	}
 
@@ -93,17 +120,18 @@ public class CacheManager implements ApplicationContextAware {
 	 * @param cacheProxy
 	 */
 	private void registerCacheMbean(String key,
-			CacheProxy<Serializable, Serializable> cacheProxy) {
+			CacheProxy<Serializable, Serializable> cacheProxy,
+			String storeMapCleanTime, Integer expiredTime) {
 		try {
-			String mbeanName = "Pamirs-Cache:name=" + key;
+			String mbeanName = CacheMbean.MBEAN_NAME + ":name=" + key;
 			CacheMbeanListener listener = new CacheMbeanListener();
 			cacheProxy.addListener(listener);
 			CacheMbean<Serializable, Serializable> cacheMbean = new CacheMbean<Serializable, Serializable>(
-					cacheProxy, listener, applicationContext);
+					cacheProxy, listener, applicationContext,
+					storeMapCleanTime, expiredTime);
 			MBeanManagerFactory.registerMBean(mbeanName, cacheMbean);
 		} catch (Exception e) {
-			// TODO
-			e.printStackTrace();
+			log.error("注册JMX失败", e);
 		}
 	}
 

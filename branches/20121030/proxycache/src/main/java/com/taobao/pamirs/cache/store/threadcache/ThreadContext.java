@@ -1,5 +1,8 @@
 package com.taobao.pamirs.cache.store.threadcache;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +17,17 @@ public class ThreadContext {
 
 	public static void startLocalCache() {
 		context.set(new HashMap<String, Object>());
+	}
+	
+	public static void main(String[] args) throws ParseException {
+		String s= "a";
+		System.out.println(s.toCharArray()[0]);
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = format.parse("2012-11-12 00:00:01");
+		System.out.println(date);
+		System.out.println(format.format(date));
+		System.out.println(format.parseObject("2012-11-12 00:00:01"));
 	}
 
 	public static void put(String key, Object value) {

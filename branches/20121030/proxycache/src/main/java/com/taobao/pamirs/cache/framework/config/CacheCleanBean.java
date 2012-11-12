@@ -1,5 +1,6 @@
 package com.taobao.pamirs.cache.framework.config;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,22 +8,32 @@ import java.util.List;
  * 
  * @author xiaocheng 2012-11-2
  */
-public class CacheCleanBean extends MethodConfig {
+public class CacheCleanBean implements Serializable {
 
 	//
 	private static final long serialVersionUID = -4582877908557906265L;
 
-	/**
-	 * 需要remove缓存的方法列表
-	 */
-	private List<MethodConfig> cleanCodes;
+	private String beanName;
 
-	public List<MethodConfig> getCleanCodes() {
-		return cleanCodes;
+	/**
+	 * 需要清理的原生方法
+	 */
+	private List<CacheCleanMethod> methods;
+
+	public String getBeanName() {
+		return beanName;
 	}
 
-	public void setCleanCodes(List<MethodConfig> cleanCodes) {
-		this.cleanCodes = cleanCodes;
+	public void setBeanName(String beanName) {
+		this.beanName = beanName;
+	}
+
+	public List<CacheCleanMethod> getMethods() {
+		return methods;
+	}
+
+	public void setMethods(List<CacheCleanMethod> methods) {
+		this.methods = methods;
 	}
 
 }

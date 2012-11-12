@@ -13,6 +13,6 @@ public interface CacheOprateListener {
 	 * @param oprator
 	 * @param cacheInfo
 	 */
-	void oprate(CacheOprator oprator, CacheInfo cacheInfo);
+	void oprate(CacheOprator oprator, CacheOprateInfo cacheInfo);
 
 }

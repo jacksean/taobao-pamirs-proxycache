@@ -13,8 +13,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.CacheProxy;
-import com.taobao.pamirs.cache.framework.config.CacheBean;
-import com.taobao.pamirs.cache.framework.config.CacheCleanBean;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
@@ -40,23 +38,23 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	}
 
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		CacheBean cacheBean = null;
-		CacheCleanBean cacheCleanBean = null;
-		String storeRegion;
+		String storeRegion = cacheManager.getStoreRegion();
+
+		MethodConfig cacheMethod = null;
+		List<MethodConfig> cacheCleanMethods = null;
 
 		try {
 			CacheConfig cacheConfig = cacheManager.getCacheConfig();
 
 			Method method = invocation.getMethod();
 			String methodName = method.getName();
-			Class<?>[] parameterTypes = method.getParameterTypes();
+			List<Class<?>> parameterTypes = Arrays.asList(method
+					.getParameterTypes());
 
-			cacheBean = ConfigUtil.getCacheBean(cacheConfig, methodName,
-					methodName, Arrays.asList(parameterTypes));
-			cacheCleanBean = ConfigUtil.getCacheClean(cacheConfig, methodName,
-					methodName, Arrays.asList(parameterTypes));
-
-			storeRegion = cacheConfig.getStoreRegion();
+			cacheMethod = ConfigUtil.getCacheMethod(cacheConfig, beanName,
+					methodName, parameterTypes);
+			cacheCleanMethods = ConfigUtil.getCacheCleanMethods(cacheConfig,
+					beanName, methodName, parameterTypes);
 
 		} catch (Exception e) {
 			log.error("CacheManager:切面解析配置出错:" + beanName + "#"
@@ -66,25 +64,26 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 		try {
 			// 1. cache
-			if (cacheManager.isUseCache() && cacheBean != null) {
+			if (cacheManager.isUseCache() && cacheMethod != null) {
 				String adapterKey = CacheCodeUtil.getCacheAdapterKey(
-						storeRegion, cacheBean);
+						storeRegion, beanName, cacheMethod);
 				CacheProxy<Serializable, Serializable> cacheAdapter = cacheManager
 						.getCacheProxys(adapterKey);
 
 				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
-						cacheBean, invocation);
+						beanName, cacheMethod, invocation);
 
 				return useCache(cacheAdapter, cacheCode,
-						cacheBean.getExpiredTime(), invocation);
+						cacheMethod.getExpiredTime(), invocation);
 			}
 
 			// 2. cache clean
-			if (cacheCleanBean != null) {
+			if (cacheCleanMethods != null) {
 				try {
 					return invocation.proceed();
 				} finally {
-					cleanCache(cacheCleanBean, invocation, storeRegion);
+					cleanCache(beanName, cacheCleanMethods, invocation,
+							storeRegion);
 				}
 			}
 
@@ -142,22 +141,23 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	 * @return
 	 * @throws Throwable
 	 */
-	private void cleanCache(CacheCleanBean cacheCleanBean,
-			MethodInvocation invocation, String storeRegion) throws Throwable {
-		List<MethodConfig> cleanCodes = cacheCleanBean.getCleanCodes();
-		if (cleanCodes != null && !cleanCodes.isEmpty()) {
-			for (MethodConfig methodConfig : cleanCodes) {
+	private void cleanCache(String beanName,
+			List<MethodConfig> cacheCleanMethods, MethodInvocation invocation,
+			String storeRegion) throws Throwable {
+		if (cacheCleanMethods == null || cacheCleanMethods.isEmpty())
+			return;
 
-				String adapterKey = CacheCodeUtil.getCacheAdapterKey(
-						storeRegion, methodConfig);
-				CacheProxy<Serializable, Serializable> cacheAdapter = cacheManager
-						.getCacheProxys(adapterKey);
+		for (MethodConfig methodConfig : cacheCleanMethods) {
 
-				if (cacheAdapter != null) {
-					String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
-							methodConfig, invocation);// 这里的invocation直接用主bean的，因为清理的bean的参数必须和主bean保持一致
-					cacheAdapter.remove(cacheCode);
-				}
+			String adapterKey = CacheCodeUtil.getCacheAdapterKey(storeRegion,
+					beanName, methodConfig);
+			CacheProxy<Serializable, Serializable> cacheAdapter = cacheManager
+					.getCacheProxys(adapterKey);
+
+			if (cacheAdapter != null) {
+				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
+						beanName, methodConfig, invocation);// 这里的invocation直接用主bean的，因为清理的bean的参数必须和主bean保持一致
+				cacheAdapter.remove(cacheCode);
 			}
 		}
 	}

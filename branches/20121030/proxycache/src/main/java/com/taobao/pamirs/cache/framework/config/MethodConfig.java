@@ -13,20 +13,18 @@ public class MethodConfig implements Serializable {
 	//
 	private static final long serialVersionUID = 1L;
 
-	private String beanName;
 	private String methodName;
 	/**
 	 * 参数类型
 	 */
 	private List<Class<?>> parameterTypes;
 
-	public String getBeanName() {
-		return beanName;
-	}
-
-	public void setBeanName(String beanName) {
-		this.beanName = beanName;
-	}
+	/**
+	 * 失效时间，单位：秒。<br>
+	 * 可以是相对时间，也可以是绝对时间(大于当前时间戳是绝对时间过期)。不传或0都是不过期 <br>
+	 * 【可选项】
+	 */
+	private Integer expiredTime;
 
 	public String getMethodName() {
 		return methodName;
@@ -43,33 +41,38 @@ public class MethodConfig implements Serializable {
 	public void setParameterTypes(List<Class<?>> parameterTypes) {
 		this.parameterTypes = parameterTypes;
 	}
-	
-	public boolean isMe(String name, String method, List<Class<?>> types) {
-		if (!this.beanName.equals(name))
-			return false;
-		
+
+	public Integer getExpiredTime() {
+		return expiredTime;
+	}
+
+	public void setExpiredTime(Integer expiredTime) {
+		this.expiredTime = expiredTime;
+	}
+
+	public boolean isMe(String method, List<Class<?>> types) {
 		if (!this.methodName.equals(method))
 			return false;
-		
+
 		if (this.parameterTypes == null && types != null)
 			return false;
-		
+
 		if (this.parameterTypes != null && types == null)
 			return false;
-		
+
 		if (this.parameterTypes != null) {
 			if (this.parameterTypes.size() != types.size())
 				return false;
-			
-			
+
 			for (int i = 0; i < parameterTypes.size(); i++) {
-				if (!parameterTypes.get(i).getSimpleName().equals(types.get(i).getSimpleName()))
+				if (!parameterTypes.get(i).getSimpleName()
+						.equals(types.get(i).getSimpleName()))
 					return false;
 			}
-			
+
 		}
-		
+
 		return true;
 	}
-	
+
 }

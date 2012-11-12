@@ -36,12 +36,13 @@ public class CacheCodeUtil {
 	 * 格式：regionbeanName#methodName#{String,Long}abc@@123
 	 * 
 	 * @param region
+	 * @param beanName
 	 * @param methodConfig
 	 * @param invocation
 	 * @return
 	 */
-	public static String getCacheCode(String region, MethodConfig methodConfig,
-			MethodInvocation invocation) {
+	public static String getCacheCode(String region, String beanName,
+			MethodConfig methodConfig, MethodInvocation invocation) {
 		Assert.notNull(invocation);
 
 		// 最终的缓存code
@@ -49,7 +50,7 @@ public class CacheCodeUtil {
 
 		// 1. region
 		// 2. bean + method + parameter
-		code.append(getCacheAdapterKey(region, methodConfig));
+		code.append(getCacheAdapterKey(region, beanName, methodConfig));
 
 		// 3. value
 		Object[] parameters = invocation.getArguments();
@@ -71,10 +72,11 @@ public class CacheCodeUtil {
 	 * 格式：regionbeanName#methodName#{String,Long}
 	 * 
 	 * @param region
+	 * @param beanName
 	 * @param methodConfig
 	 * @return
 	 */
-	public static String getCacheAdapterKey(String region,
+	public static String getCacheAdapterKey(String region, String beanName,
 			MethodConfig methodConfig) {
 		Assert.notNull(methodConfig);
 
@@ -85,7 +87,6 @@ public class CacheCodeUtil {
 		key.append(region);
 
 		// 2. bean + method + parameter
-		String beanName = methodConfig.getBeanName();
 		String methodName = methodConfig.getMethodName();
 		List<Class<?>> parameterTypes = methodConfig.getParameterTypes();
 

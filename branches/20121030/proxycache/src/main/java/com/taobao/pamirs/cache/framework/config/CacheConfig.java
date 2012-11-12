@@ -23,18 +23,6 @@ public class CacheConfig implements Serializable {
 	private String storeType;
 
 	/**
-	 * 缓存分区（可选）
-	 */
-	private String storeRegion;
-
-	/**
-	 * Tair命名空间（just for tair）
-	 * 
-	 * @see StoreType.TAIR
-	 */
-	private int storeTairNameSpace;
-
-	/**
 	 * Map自动清理表达式（just for map）
 	 * 
 	 * @see StoreType.MAP
@@ -57,22 +45,6 @@ public class CacheConfig implements Serializable {
 
 	public void setStoreType(String storeType) {
 		this.storeType = storeType;
-	}
-
-	public String getStoreRegion() {
-		return storeRegion;
-	}
-
-	public void setStoreRegion(String storeRegion) {
-		this.storeRegion = storeRegion;
-	}
-
-	public int getStoreTairNameSpace() {
-		return storeTairNameSpace;
-	}
-
-	public void setStoreTairNameSpace(int storeTairNameSpace) {
-		this.storeTairNameSpace = storeTairNameSpace;
 	}
 
 	public String getStoreMapCleanTime() {

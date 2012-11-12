@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheCleanBean;
+import com.taobao.pamirs.cache.framework.config.CacheCleanMethod;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 
@@ -25,7 +26,7 @@ public class ConfigUtil {
 			String beanName) {
 		if (cacheConfig == null || beanName == null)
 			return false;
-		
+
 		List<CacheBean> cacheBeans = cacheConfig.getCacheBeans();
 		List<CacheCleanBean> cacheCleanBeans = cacheConfig.getCacheCleanBeans();
 
@@ -47,7 +48,7 @@ public class ConfigUtil {
 	}
 
 	/**
-	 * 获取method对应的CacheBean配置
+	 * 获取对应的缓存MethodConfig配置
 	 * 
 	 * @param cacheConfig
 	 * @param beanName
@@ -55,31 +56,22 @@ public class ConfigUtil {
 	 * @param parameterTypes
 	 * @return
 	 */
-	public static CacheBean getCacheBean(CacheConfig cacheConfig,
+	public static MethodConfig getCacheMethod(CacheConfig cacheConfig,
 			String beanName, String methodName, List<Class<?>> parameterTypes) {
 
 		List<CacheBean> cacheBeans = cacheConfig.getCacheBeans();
 
-		return (CacheBean) getMethodConfig(cacheBeans, cacheConfig, beanName,
-				methodName, parameterTypes);
-	}
+		for (CacheBean bean : cacheBeans) {
+			if (!beanName.equals(bean.getBeanName()))
+				continue;
 
-	/**
-	 * 获取method对应的CacheCleanBean配置
-	 * 
-	 * @param cacheConfig
-	 * @param beanName
-	 * @param methodName
-	 * @param parameterTypes
-	 * @return
-	 */
-	public static CacheCleanBean getCacheClean(CacheConfig cacheConfig,
-			String beanName, String methodName, List<Class<?>> parameterTypes) {
+			List<MethodConfig> cacheMethods = bean.getCacheMethods();
 
-		List<CacheCleanBean> cacheCleanBeans = cacheConfig.getCacheCleanBeans();
+			return (MethodConfig) getMethodConfig(cacheMethods, cacheConfig,
+					beanName, methodName, parameterTypes);
+		}
 
-		return (CacheCleanBean) getMethodConfig(cacheCleanBeans, cacheConfig,
-				beanName, methodName, parameterTypes);
+		return null;
 	}
 
 	private static MethodConfig getMethodConfig(
@@ -93,8 +85,37 @@ public class ConfigUtil {
 			return null;
 
 		for (MethodConfig bean : list) {
-			if (bean.isMe(beanName, methodName, parameterTypes))
+			if (bean.isMe(methodName, parameterTypes))
 				return bean;
+		}
+
+		return null;
+	}
+
+	/**
+	 * 获取对应的缓存清理的MethodConfig配置列表
+	 * 
+	 * @param cacheConfig
+	 * @param beanName
+	 * @param methodName
+	 * @param parameterTypes
+	 * @return
+	 */
+	public static List<MethodConfig> getCacheCleanMethods(
+			CacheConfig cacheConfig, String beanName, String methodName,
+			List<Class<?>> parameterTypes) {
+
+		List<CacheCleanBean> cacheCleanBeans = cacheConfig.getCacheCleanBeans();
+
+		for (CacheCleanBean bean : cacheCleanBeans) {
+			if (!beanName.equals(bean.getBeanName()))
+				continue;
+
+			List<CacheCleanMethod> methods = bean.getMethods();
+			for (CacheCleanMethod cacheCleanMethod : methods) {
+				if (cacheCleanMethod.isMe(methodName, parameterTypes))
+					return cacheCleanMethod.getCleanMethods();
+			}
 		}
 
 		return null;

@@ -36,7 +36,7 @@ public class CacheObservable {
 		}
 	}
 
-	public void notifyListeners(CacheOprator oprator, CacheInfo cacheInfo) {
+	public void notifyListeners(CacheOprator oprator, CacheOprateInfo cacheInfo) {
 		lock.lock();
 		try {
 			if (listeners != null) {

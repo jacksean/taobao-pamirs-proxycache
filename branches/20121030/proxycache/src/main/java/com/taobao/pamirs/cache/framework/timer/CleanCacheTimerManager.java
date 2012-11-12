@@ -11,18 +11,18 @@ import org.apache.commons.logging.LogFactory;
 import com.taobao.pamirs.cache.framework.CacheProxy;
 
 /**
- * 定时任务
+ * 缓存清理Timer任务
  * 
  * @author xiaocheng 2012-11-8
  */
-public class TimeTaskManager {
+public class CleanCacheTimerManager {
 
-	private static final Log log = LogFactory.getLog(TimeTaskManager.class);
+	private static final Log log = LogFactory.getLog(CleanCacheTimerManager.class);
 
 	private Timer timer;
 
-	public TimeTaskManager() {
-		timer = new Timer("CacheManagerTimeTaskManager", false);// 守护进程
+	public CleanCacheTimerManager() {
+		timer = new Timer("CleanCacheTimerManager", false);// 守护进程
 	}
 
 	public void createCleanCacheTask(
@@ -42,7 +42,7 @@ public class TimeTaskManager {
 
 				// 2. 创建一个新的（因为要支持自定义的调度表达式CronExpression）
 				try {
-					TimeTaskManager.this.createCleanCacheTask(cache,
+					CleanCacheTimerManager.this.createCleanCacheTask(cache,
 							aCronTabExpress);
 				} catch (Exception e) {
 					log.fatal("严重错误，定时器处理失败：" + e.getMessage(), e);

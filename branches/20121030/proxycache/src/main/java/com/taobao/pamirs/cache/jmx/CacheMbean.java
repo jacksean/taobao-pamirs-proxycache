@@ -31,7 +31,7 @@ import com.taobao.pamirs.cache.util.CacheCodeUtil;
 public class CacheMbean<K extends Serializable, V extends Serializable> extends
 		AbstractDynamicMBean {
 	private static final Log log = LogFactory.getLog(CacheMbean.class);
-	
+
 	public static final String MBEAN_NAME = "Pamirs-Cache";
 
 	private CacheProxy<K, V> cache = null;
@@ -135,8 +135,7 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 
 		try {
 			MethodConfig methodConfig = cache.getMethodConfig();
-			Object bean = applicationContext
-					.getBean(methodConfig.getBeanName());
+			Object bean = applicationContext.getBean(cache.getBeanName());
 			List<Class<?>> parameterTypes = methodConfig.getParameterTypes();
 
 			Method method = null;

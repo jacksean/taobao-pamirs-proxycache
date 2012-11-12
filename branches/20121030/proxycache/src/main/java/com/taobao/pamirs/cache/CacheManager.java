@@ -16,10 +16,12 @@ import com.taobao.pamirs.cache.framework.CacheProxy;
 import com.taobao.pamirs.cache.framework.ICache;
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
-import com.taobao.pamirs.cache.framework.timer.TimeTaskManager;
+import com.taobao.pamirs.cache.framework.config.MethodConfig;
+import com.taobao.pamirs.cache.framework.timer.CleanCacheTimerManager;
 import com.taobao.pamirs.cache.jmx.CacheMbean;
 import com.taobao.pamirs.cache.jmx.CacheMbeanListener;
 import com.taobao.pamirs.cache.jmx.mbean.MBeanManagerFactory;
+import com.taobao.pamirs.cache.load.ILoadConfig;
 import com.taobao.pamirs.cache.store.StoreType;
 import com.taobao.pamirs.cache.store.map.MapStore;
 import com.taobao.pamirs.cache.store.tair.TairStore;
@@ -32,13 +34,11 @@ import com.taobao.tair.TairManager;
  * @author xuanyu
  * @author xiaocheng 2012-11-2
  */
-public class CacheManager implements ApplicationContextAware {
+public abstract class CacheManager implements ApplicationContextAware ,ILoadConfig {
 
 	private static final Log log = LogFactory.getLog(CacheManager.class);
 
 	private CacheConfig cacheConfig;
-
-	private boolean useCache = true;
 
 	/**
 	 * 每一个method对应一个adapter实例
@@ -49,24 +49,45 @@ public class CacheManager implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
 
-	private TimeTaskManager timeTask;
+	private CleanCacheTimerManager timeTask;
+
+	private boolean useCache = true;
+
+	/**
+	 * 缓存分区（可选）
+	 */
+	private String storeRegion;
+
+	/**
+	 * Tair命名空间（just for tair）
+	 * 
+	 * @see StoreType.TAIR
+	 */
+	private int storeTairNameSpace;
 
 	/**
 	 * spring定义时的初始化方法
 	 */
 	public void init() {
-		String storeRegion = cacheConfig.getStoreRegion();
+		// 1. 加载/校验config
+		cacheConfig = loadConfig();
+		
+		// 2. 初始化缓存
 		List<CacheBean> cacheBeans = cacheConfig.getCacheBeans();
-
-		// 只需注册cacheBean,目前cacheCleanBeans必须是它的子集
 		if (cacheBeans != null) {
+			// 只需注册cacheBean,目前cacheCleanBeans必须是它的子集
 			for (CacheBean bean : cacheBeans) {
-				initCacheAdapters(storeRegion, bean,
-						cacheConfig.getStoreMapCleanTime());
+
+				List<MethodConfig> cacheMethods = bean.getCacheMethods();
+				for (MethodConfig method : cacheMethods) {
+					initCacheAdapters(storeRegion, bean.getBeanName(), method,
+							cacheConfig.getStoreMapCleanTime());
+				}
+
 			}
 		}
 
-		timeTask = new TimeTaskManager();
+		timeTask = new CleanCacheTimerManager();
 	}
 
 	/**
@@ -79,22 +100,23 @@ public class CacheManager implements ApplicationContextAware {
 	 * @param cacheBean
 	 * @param storeMapCleanTime
 	 */
-	private void initCacheAdapters(String region, CacheBean cacheBean,
-			String storeMapCleanTime) {
-		String key = CacheCodeUtil.getCacheAdapterKey(region, cacheBean);
+	private void initCacheAdapters(String region, String beanName,
+			MethodConfig cacheMethod, String storeMapCleanTime) {
+		String key = CacheCodeUtil.getCacheAdapterKey(region, beanName,
+				cacheMethod);
 		StoreType storeType = StoreType.toEnum(cacheConfig.getStoreType());
 		ICache<Serializable, Serializable> cache = null;
 
 		if (StoreType.TAIR == storeType) {
 			cache = new TairStore<Serializable, Serializable>(tairManager,
-					cacheConfig.getStoreTairNameSpace());
+					storeTairNameSpace);
 		} else if (StoreType.MAP == storeType) {
 			cache = new MapStore<Serializable, Serializable>();
 		}
 
 		if (cache != null) {
 			CacheProxy<Serializable, Serializable> cacheProxy = new CacheProxy<Serializable, Serializable>(
-					storeType, key, cache, cacheBean);
+					storeType, key, cache, beanName, cacheMethod);
 
 			cacheProxys.put(key, cacheProxy);
 
@@ -110,7 +132,7 @@ public class CacheManager implements ApplicationContextAware {
 
 			// 注册JMX
 			registerCacheMbean(key, cacheProxy, storeMapCleanTime,
-					cacheBean.getExpiredTime());
+					cacheMethod.getExpiredTime());
 		}
 	}
 
@@ -135,6 +157,9 @@ public class CacheManager implements ApplicationContextAware {
 			log.error("注册JMX失败", e);
 		}
 	}
+	
+	@Override
+	public abstract CacheConfig loadConfig();
 
 	public CacheProxy<Serializable, Serializable> getCacheProxys(String key) {
 		if (key == null || cacheProxys == null)
@@ -163,6 +188,22 @@ public class CacheManager implements ApplicationContextAware {
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
 		this.applicationContext = applicationContext;
+	}
+
+	public String getStoreRegion() {
+		return storeRegion;
+	}
+
+	public void setStoreRegion(String storeRegion) {
+		this.storeRegion = storeRegion;
+	}
+
+	public int getStoreTairNameSpace() {
+		return storeTairNameSpace;
+	}
+
+	public void setStoreTairNameSpace(int storeTairNameSpace) {
+		this.storeTairNameSpace = storeTairNameSpace;
 	}
 
 }

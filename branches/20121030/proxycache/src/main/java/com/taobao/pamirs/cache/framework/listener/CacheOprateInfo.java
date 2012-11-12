@@ -10,10 +10,12 @@ import com.taobao.pamirs.cache.framework.config.MethodConfig;
  * 
  * @author xiaocheng 2012-10-31
  */
-public class CacheInfo extends MethodConfig implements Serializable {
+public class CacheOprateInfo extends MethodConfig implements Serializable {
 
 	//
 	private static final long serialVersionUID = 7100282651039776916L;
+
+	private String beanName;
 
 	private Serializable key;
 	private long methodTime;
@@ -21,18 +23,26 @@ public class CacheInfo extends MethodConfig implements Serializable {
 	private boolean isHitting;
 	private CacheException cacheException;
 
-	public CacheInfo(Serializable key, long methodTime, boolean isHitting,
-			MethodConfig methodConfig, CacheException exception) {
+	public CacheOprateInfo(Serializable key, long methodTime, boolean isHitting,
+			String beanName, MethodConfig methodConfig, CacheException exception) {
 		this.key = key;
 		this.methodTime = methodTime;
 		this.isHitting = isHitting;
 		this.cacheException = exception;
 
 		if (methodConfig != null) {
-			this.setBeanName(methodConfig.getBeanName());
+			this.setBeanName(beanName);
 			this.setMethodName(methodConfig.getMethodName());
 			this.setParameterTypes(methodConfig.getParameterTypes());
 		}
+	}
+
+	public String getBeanName() {
+		return beanName;
+	}
+
+	public void setBeanName(String beanName) {
+		this.beanName = beanName;
 	}
 
 	/**

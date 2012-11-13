@@ -128,8 +128,10 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 
 	/**
 	 * 这个方法通过 Cache 获取真实值.
-	 * **/
-
+	 * 
+	 * @param key
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public V getRealValue(K key) {
 

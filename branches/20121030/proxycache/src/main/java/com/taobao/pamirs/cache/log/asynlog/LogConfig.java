@@ -14,7 +14,7 @@ public class LogConfig {
 	/**
 	 * 异步日志线程池大小
 	 */
-	private int asynWriterThreadSize = 2;
+	private int asynWriterThreadSize = 1;
 
 	/**
 	 * 日志列表的最大记录数
@@ -24,7 +24,7 @@ public class LogConfig {
 	/**
 	 * 日志刷新时间间隔(单位:秒)
 	 */
-	private int flushInterval = 50;
+	private int flushInterval = 2;
 
 	/**
 	 * 日志LOG

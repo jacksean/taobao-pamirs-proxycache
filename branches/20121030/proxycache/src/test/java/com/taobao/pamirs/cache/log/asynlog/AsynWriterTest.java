@@ -8,10 +8,13 @@ public class AsynWriterTest {
 	public void testAsynWriter() throws InterruptedException {
 		AsynWriter<String> s = new AsynWriter<String>();
 		
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < 8; i++) {
 			s.write("abc" + i);
 		}
 		
+		Thread.sleep(3000);
+		
+		s.write("jeck");
 		Thread.sleep(100000);
 	}
 

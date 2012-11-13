@@ -36,7 +36,7 @@ public class WriterTask<T> implements Runnable {
 
 	private List<T> records = new ArrayList<T>();
 
-	private long timestamp;
+	private long timestamp = System.currentTimeMillis();
 
 	@Override
 	public void run() {
@@ -45,13 +45,13 @@ public class WriterTask<T> implements Runnable {
 			while (activeFlag) {
 
 				// ¼ÇÂ¼Âú
-				if (records.size() > config.getRecordsMaxSize()) {
+				if (records.size() >= config.getRecordsMaxSize()) {
 					flush();
 				}
 
 				// ¶¨Ê±
 				if (records.size() > 0
-						&& System.currentTimeMillis() > (timestamp + config
+						&& System.currentTimeMillis() >= (timestamp + config
 								.getFlushInterval() * 1000L)) {
 					flush();
 				}
@@ -73,9 +73,8 @@ public class WriterTask<T> implements Runnable {
 
 		for (T r : records) {
 			if (logWriter.isFatalEnabled()) {
-				// logWriter.fatal(r);
-				// logWriter.fatal(LINE_SEPARATOR);
-				System.out.println(r);
+				logWriter.fatal(r);
+				logWriter.fatal(LINE_SEPARATOR);
 
 			}
 		}

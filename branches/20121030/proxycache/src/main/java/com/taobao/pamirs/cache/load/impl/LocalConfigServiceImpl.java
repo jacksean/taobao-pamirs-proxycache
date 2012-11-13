@@ -39,6 +39,8 @@ public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 			cacheConfig.getCacheCleanBeans().addAll(
 					cacheModule.getCacheCleanBeans());
 		}
+		// 自动填充默认的配置
+		autoFillConfig(cacheConfig);
 		// 缓存配置合法性校验
 		CacheConfigVerify cacheConfigVerify = new CacheConfigVerify(
 				getApplicationContext());

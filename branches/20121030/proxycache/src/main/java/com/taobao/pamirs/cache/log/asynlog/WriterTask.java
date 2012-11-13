@@ -52,7 +52,7 @@ public class WriterTask<T> implements Runnable {
 				// ¶¨Ê±
 				if (records.size() > 0
 						&& System.currentTimeMillis() > (timestamp + config
-								.getFlushInterval() * 100L)) {
+								.getFlushInterval() * 1000L)) {
 					flush();
 				}
 
@@ -73,9 +73,10 @@ public class WriterTask<T> implements Runnable {
 
 		for (T r : records) {
 			if (logWriter.isFatalEnabled()) {
-//				logWriter.fatal(r);
-//				logWriter.fatal(LINE_SEPARATOR);
-				
+				// logWriter.fatal(r);
+				// logWriter.fatal(LINE_SEPARATOR);
+				System.out.println(r);
+
 			}
 		}
 
@@ -97,6 +98,14 @@ public class WriterTask<T> implements Runnable {
 
 	public void setActiveFlag(boolean activeFlag) {
 		this.activeFlag = activeFlag;
+	}
+
+	public LogConfig getConfig() {
+		return config;
+	}
+
+	public void setConfig(LogConfig config) {
+		this.config = config;
 	}
 
 }

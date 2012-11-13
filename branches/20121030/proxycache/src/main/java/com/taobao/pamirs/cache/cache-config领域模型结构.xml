@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="GBK"?>
-
-<!-- 	<storeRegion>${store.tair.region}</storeRegion>环境分区，可选 -->
-<!-- 	<storeMapCleanTime></storeMapCleanTime>just for map -->
-
 <cacheConfig>
-	<!-- tair -->
 	<storeType>tair/map</storeType>
 	<storeTairNameSpace>318</storeTairNameSpace><!-- just for tair -->
+	<storeMapCleanTime></storeMapCleanTime><!-- just for map -->
+	<storeRegion>${store.tair.region}</storeRegion><!-- 环境分区，可选 -->
 
 	<!-- 缓存Bean配置 -->
 	<cacheBeans list="true">

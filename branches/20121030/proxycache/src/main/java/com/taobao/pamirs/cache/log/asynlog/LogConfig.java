@@ -24,7 +24,7 @@ public class LogConfig {
 	/**
 	 * 日志刷新时间间隔(单位:秒)
 	 */
-	private int flushInterval = 5;
+	private int flushInterval = 50;
 
 	/**
 	 * 日志LOG

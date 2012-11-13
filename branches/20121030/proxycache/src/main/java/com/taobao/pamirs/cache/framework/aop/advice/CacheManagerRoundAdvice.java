@@ -38,13 +38,14 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	}
 
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		String storeRegion = cacheManager.getStoreRegion();
 
 		MethodConfig cacheMethod = null;
 		List<MethodConfig> cacheCleanMethods = null;
+		String storeRegion ="";
 
 		try {
 			CacheConfig cacheConfig = cacheManager.getCacheConfig();
+			storeRegion = cacheConfig.getStoreRegion();
 
 			Method method = invocation.getMethod();
 			String methodName = method.getName();
@@ -56,6 +57,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			cacheCleanMethods = ConfigUtil.getCacheCleanMethods(cacheConfig,
 					beanName, methodName, parameterTypes);
 
+			
 		} catch (Exception e) {
 			log.error("CacheManager:«–√ÊΩ‚Œˆ≈‰÷√≥ˆ¥Ì:" + beanName + "#"
 					+ invocation.getMethod().getName(), e);

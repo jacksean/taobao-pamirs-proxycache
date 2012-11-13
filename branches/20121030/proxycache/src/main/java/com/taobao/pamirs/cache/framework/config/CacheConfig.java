@@ -30,6 +30,18 @@ public class CacheConfig implements Serializable {
 	private String storeMapCleanTime;
 
 	/**
+	 * 缓存分区（可选）
+	 */
+	private String storeRegion;
+
+	/**
+	 * Tair命名空间（just for tair）
+	 * 
+	 * @see StoreType.TAIR
+	 */
+	private int storeTairNameSpace;
+
+	/**
 	 * 缓存bean配置
 	 */
 	private List<CacheBean> cacheBeans;
@@ -53,6 +65,22 @@ public class CacheConfig implements Serializable {
 
 	public void setStoreMapCleanTime(String storeMapCleanTime) {
 		this.storeMapCleanTime = storeMapCleanTime;
+	}
+
+	public String getStoreRegion() {
+		return storeRegion;
+	}
+
+	public void setStoreRegion(String storeRegion) {
+		this.storeRegion = storeRegion;
+	}
+
+	public int getStoreTairNameSpace() {
+		return storeTairNameSpace;
+	}
+
+	public void setStoreTairNameSpace(int storeTairNameSpace) {
+		this.storeTairNameSpace = storeTairNameSpace;
 	}
 
 	public List<CacheBean> getCacheBeans() {

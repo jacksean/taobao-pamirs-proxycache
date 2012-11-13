@@ -42,6 +42,7 @@ public class AsynWriter<T> implements IWriter<T> {
 				.getAsynWriterThreadSize());
 		for (int i = 0; i < config.getAsynWriterThreadSize(); i++) {
 			WriterTask<T> task = new WriterTask<T>();
+			task.setConfig(config);
 			task.setLogQueue(logQueue);
 			tasks.add(task);
 			asynWriterService.submit(task);

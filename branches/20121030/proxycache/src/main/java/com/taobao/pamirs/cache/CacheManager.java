@@ -21,7 +21,7 @@ import com.taobao.pamirs.cache.framework.timer.CleanCacheTimerManager;
 import com.taobao.pamirs.cache.jmx.CacheMbean;
 import com.taobao.pamirs.cache.jmx.CacheMbeanListener;
 import com.taobao.pamirs.cache.jmx.mbean.MBeanManagerFactory;
-import com.taobao.pamirs.cache.load.ILoadConfig;
+import com.taobao.pamirs.cache.load.ICacheConfigService;
 import com.taobao.pamirs.cache.store.StoreType;
 import com.taobao.pamirs.cache.store.map.MapStore;
 import com.taobao.pamirs.cache.store.tair.TairStore;
@@ -34,7 +34,7 @@ import com.taobao.tair.TairManager;
  * @author xuanyu
  * @author xiaocheng 2012-11-2
  */
-public abstract class CacheManager implements ApplicationContextAware ,ILoadConfig {
+public abstract class CacheManager implements ApplicationContextAware, ICacheConfigService {
 
 	private static final Log log = LogFactory.getLog(CacheManager.class);
 
@@ -53,24 +53,15 @@ public abstract class CacheManager implements ApplicationContextAware ,ILoadConf
 
 	private boolean useCache = true;
 
-	/**
-	 * 缓存分区（可选）
-	 */
-	private String storeRegion;
-
-	/**
-	 * Tair命名空间（just for tair）
-	 * 
-	 * @see StoreType.TAIR
-	 */
-	private int storeTairNameSpace;
-
+	private ICacheConfigService cacheConfigServices;
+	
 	/**
 	 * spring定义时的初始化方法
 	 */
 	public void init() {
 		// 1. 加载/校验config
 		cacheConfig = loadConfig();
+		
 		
 		// 2. 初始化缓存
 		List<CacheBean> cacheBeans = cacheConfig.getCacheBeans();
@@ -80,7 +71,7 @@ public abstract class CacheManager implements ApplicationContextAware ,ILoadConf
 
 				List<MethodConfig> cacheMethods = bean.getCacheMethods();
 				for (MethodConfig method : cacheMethods) {
-					initCacheAdapters(storeRegion, bean.getBeanName(), method,
+					initCacheAdapters(cacheConfig.getStoreRegion(), bean.getBeanName(), method,
 							cacheConfig.getStoreMapCleanTime());
 				}
 
@@ -109,7 +100,7 @@ public abstract class CacheManager implements ApplicationContextAware ,ILoadConf
 
 		if (StoreType.TAIR == storeType) {
 			cache = new TairStore<Serializable, Serializable>(tairManager,
-					storeTairNameSpace);
+					cacheConfig.getStoreTairNameSpace());
 		} else if (StoreType.MAP == storeType) {
 			cache = new MapStore<Serializable, Serializable>();
 		}
@@ -159,8 +150,10 @@ public abstract class CacheManager implements ApplicationContextAware ,ILoadConf
 	}
 	
 	@Override
-	public abstract CacheConfig loadConfig();
-
+	public CacheConfig loadConfig() {
+		return cacheConfigServices.loadConfig();
+	}
+	
 	public CacheProxy<Serializable, Serializable> getCacheProxys(String key) {
 		if (key == null || cacheProxys == null)
 			return null;
@@ -188,22 +181,6 @@ public abstract class CacheManager implements ApplicationContextAware ,ILoadConf
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
 		this.applicationContext = applicationContext;
-	}
-
-	public String getStoreRegion() {
-		return storeRegion;
-	}
-
-	public void setStoreRegion(String storeRegion) {
-		this.storeRegion = storeRegion;
-	}
-
-	public int getStoreTairNameSpace() {
-		return storeTairNameSpace;
-	}
-
-	public void setStoreTairNameSpace(int storeTairNameSpace) {
-		this.storeTairNameSpace = storeTairNameSpace;
 	}
 
 }

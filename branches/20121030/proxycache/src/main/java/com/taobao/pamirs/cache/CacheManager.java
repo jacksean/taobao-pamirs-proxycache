@@ -59,7 +59,7 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 	/**
 	 * spring定义时的初始化方法
 	 */
-	public void init() {
+	public void init() throws Exception {
 		// 1. 加载/校验config
 		cacheConfig = loadConfig();
 		
@@ -156,7 +156,7 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 	}
 	
 	@Override
-	public CacheConfig loadConfig() {
+	public CacheConfig loadConfig() throws Exception{
 		return cacheConfigServices.loadConfig();
 	}
 	

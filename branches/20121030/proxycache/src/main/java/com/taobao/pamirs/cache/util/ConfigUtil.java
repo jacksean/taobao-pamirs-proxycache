@@ -1,12 +1,16 @@
 package com.taobao.pamirs.cache.util;
 
+import java.io.InputStream;
 import java.util.List;
 
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheCleanBean;
 import com.taobao.pamirs.cache.framework.config.CacheCleanMethod;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
+import com.taobao.pamirs.cache.framework.config.CacheModule;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * 配置辅助类
@@ -45,6 +49,50 @@ public class ConfigUtil {
 		}
 
 		return false;
+	}
+
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static CacheModule getCacheConfigModule(String content)
+			throws Exception {
+		XStream xStream = new XStream(new DomDriver());
+		xStream.alias("cacheModule", CacheModule.class);
+		xStream.alias("cacheBean", CacheBean.class);
+		xStream.alias("methodConfig", MethodConfig.class);
+		xStream.alias("cacheCleanBean", CacheCleanBean.class);
+		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
+		if (content != null) {
+			CacheModule cacheConfig = (CacheModule) xStream.fromXML(content
+					.trim());
+			return cacheConfig;
+		}
+		throw new Exception("输入的配置信息为Null");
+	}
+
+	/**
+	 * 
+	 * @param inputStream
+	 * @return
+	 * @throws Exception
+	 */
+	public static CacheModule getCacheConfigModule(InputStream inputStream)
+			throws Exception {
+		XStream xStream = new XStream(new DomDriver());
+		xStream.alias("cacheModule", CacheModule.class);
+		xStream.alias("cacheBean", CacheBean.class);
+		xStream.alias("methodConfig", MethodConfig.class);
+		xStream.alias("cacheCleanBean", CacheCleanBean.class);
+		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
+		if (inputStream != null) {
+
+			CacheModule cacheConfig = (CacheModule) xStream
+					.fromXML(inputStream);
+			return cacheConfig;
+		}
+		throw new Exception("输入的配置信息为Null");
 	}
 
 	/**

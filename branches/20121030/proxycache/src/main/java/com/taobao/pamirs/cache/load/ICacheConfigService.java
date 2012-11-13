@@ -10,10 +10,9 @@ import com.taobao.pamirs.cache.framework.config.CacheConfig;
 public interface ICacheConfigService {
 
 	/**
-	 * º”‘ÿconfig
+	 * º”‘ÿº”‘ÿª∫¥Ê≈‰÷√
 	 * 
 	 * @return
 	 */
-	CacheConfig loadConfig();
-
+	CacheConfig loadConfig() throws Exception;
 }

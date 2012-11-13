@@ -22,6 +22,7 @@ import com.taobao.pamirs.cache.jmx.CacheMbean;
 import com.taobao.pamirs.cache.jmx.CacheMbeanListener;
 import com.taobao.pamirs.cache.jmx.mbean.MBeanManagerFactory;
 import com.taobao.pamirs.cache.load.ICacheConfigService;
+import com.taobao.pamirs.cache.log.xray.XrayLogListener;
 import com.taobao.pamirs.cache.store.StoreType;
 import com.taobao.pamirs.cache.store.map.MapStore;
 import com.taobao.pamirs.cache.store.tair.TairStore;
@@ -86,6 +87,7 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 	 * 1. CacheProxy <br>
 	 * 2. 定时清理任务：storeMapCleanTime <br>
 	 * 3. 注册JMX <br>
+	 * 4. 注册Xray log <br>
 	 * 
 	 * @param region
 	 * @param cacheBean
@@ -106,12 +108,13 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 		}
 
 		if (cache != null) {
+			// 1. CacheProxy
 			CacheProxy<Serializable, Serializable> cacheProxy = new CacheProxy<Serializable, Serializable>(
 					storeType, key, cache, beanName, cacheMethod);
 
 			cacheProxys.put(key, cacheProxy);
 
-			// 定时清理任务：storeMapCleanTime
+			// 2. 定时清理任务：storeMapCleanTime
 			if (StoreType.MAP == storeType
 					&& StringUtils.isNotBlank(storeMapCleanTime)) {
 				try {
@@ -121,9 +124,12 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 				}
 			}
 
-			// 注册JMX
+			// 3. 注册JMX
 			registerCacheMbean(key, cacheProxy, storeMapCleanTime,
 					cacheMethod.getExpiredTime());
+			
+			// 4. 注册Xray log
+			cacheProxy.addListener(new XrayLogListener(beanName, cacheMethod.getMethodName()));
 		}
 	}
 

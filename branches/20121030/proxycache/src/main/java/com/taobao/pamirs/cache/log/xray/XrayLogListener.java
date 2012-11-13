@@ -18,11 +18,10 @@ public class XrayLogListener implements CacheOprateListener {
 	private String methodName;
 
 	private static final String SEPARATOR = ",";
-	
+
 	public XrayLogListener(String beanName, String methodName) {
 		this.beanName = beanName;
 		this.methodName = methodName;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import com.taobao.pamirs.cache.store.StoreType;
  * 
  * @author xiaocheng 2012-11-12
  */
-public interface ILoadCacheConfig {
+public interface ICacheConfigService {
 
 	/**
 	 * º”‘ÿconfig

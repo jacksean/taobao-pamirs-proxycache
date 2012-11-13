@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
-import com.taobao.pamirs.cache.load.ILoadCacheConfig;
+import com.taobao.pamirs.cache.load.ICacheConfigService;
 
-public class CacheResourceZookeeperService implements ILoadCacheConfig {
+public class ZKConfigServiceImpl implements ICacheConfigService {
 
 	@Override
 	public List<CacheConfig> loadConfig() {

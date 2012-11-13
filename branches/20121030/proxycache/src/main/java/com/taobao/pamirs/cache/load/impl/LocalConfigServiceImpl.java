@@ -3,9 +3,9 @@ package com.taobao.pamirs.cache.load.impl;
 import java.util.List;
 
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
-import com.taobao.pamirs.cache.load.ILoadCacheConfig;
+import com.taobao.pamirs.cache.load.ICacheConfigService;
 
-public class CacheResourceLocalService implements ILoadCacheConfig {
+public class LocalConfigServiceImpl implements ICacheConfigService {
 
 	@Override
 	public List<CacheConfig> loadConfig() {

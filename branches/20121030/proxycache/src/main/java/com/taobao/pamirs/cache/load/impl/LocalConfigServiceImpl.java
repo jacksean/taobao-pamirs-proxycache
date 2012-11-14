@@ -18,6 +18,10 @@ import com.taobao.pamirs.cache.util.ConfigUtil;
 public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 
 	private List<String> configFilePaths;
+	
+	private boolean isInit = false;
+	
+	private CacheConfig cacheConfig;
 
 	/**
 	 * 加载加载缓存配置
@@ -25,6 +29,19 @@ public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 	 * @return
 	 */
 	public CacheConfig loadConfig() throws Exception {
+		if (this.isInit) {
+			return cacheConfig;
+		}
+		throw new Exception("加载缓存出现系统异常");
+	}
+	
+	
+	/**
+	 * 进行启动缓存初始化加载
+	 * 
+	 * @throws Exception
+	 */
+	public void init() throws Exception {
 		CacheConfig cacheConfig = new CacheConfig();
 		cacheConfig.setStoreType(getStoreType());
 		cacheConfig.setStoreMapCleanTime(getMapCleanTime());
@@ -45,9 +62,10 @@ public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 		CacheConfigVerify cacheConfigVerify = new CacheConfigVerify(
 				getApplicationContext());
 		if (!cacheConfigVerify.checkCacheConfig(cacheConfig)) {
-			return null;
+			throw new Exception("启动初始化缓存配置失败");
 		}
-		return cacheConfig;
+		this.cacheConfig = cacheConfig;
+		this.isInit = true;
 	}
 
 	/**

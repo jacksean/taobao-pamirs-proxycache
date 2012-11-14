@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+
+	<bean id="cacheConfigService" class="com.taobao.pamirs.cache.load.impl.LocalConfigServiceImpl" init-method="init">
+		<property name="storeType">
+			<value>tair</value>
+		</property>
+		<property name="tairNameSpace">
+			<value>296</value>
+		</property>
+		<property name="storeRegion">
+			<value>hj-daily</value>
+		</property>
+		<property name="configFilePaths">
+			<list>
+				<value>goods-cache-simple.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>

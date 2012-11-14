@@ -1,6 +1,7 @@
 package com.taobao.pamirs.cache.framework.config;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.taobao.pamirs.cache.store.StoreType;
@@ -44,12 +45,12 @@ public class CacheConfig implements Serializable {
 	/**
 	 * ª∫¥Êbean≈‰÷√
 	 */
-	private List<CacheBean> cacheBeans;
+	private List<CacheBean> cacheBeans = new ArrayList<CacheBean>();
 
 	/**
 	 * «Â¿Ìª∫¥Êbean≈‰÷√
 	 */
-	private List<CacheCleanBean> cacheCleanBeans;
+	private List<CacheCleanBean> cacheCleanBeans = new ArrayList<CacheCleanBean>();
 
 	public String getStoreType() {
 		return storeType;

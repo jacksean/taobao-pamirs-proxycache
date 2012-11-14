@@ -146,19 +146,21 @@ public class CacheConfigVerify {
 	 * @return
 	 */
 	private boolean checkCacheBeanMethodInvalid(List<CacheBean> cacheBeans) {
-		for (CacheBean cacheBean : cacheBeans) {
-			Object bean = getBean(cacheBean.getBeanName());
-			if (bean == null) {
-				//
-				return false;
-			}
-			for (MethodConfig methodConfig : cacheBean.getCacheMethods()) {
-				if (methodConfig.getParameterTypes() == null
-						|| methodConfig.getParameterTypes().size() <= 0) {
-					// 缓存方法的参数不能为空
+		if (false) {
+			for (CacheBean cacheBean : cacheBeans) {
+				Object bean = getBean(cacheBean.getBeanName());
+				if (bean == null) {
+					//
 					return false;
 				}
-				
+				for (MethodConfig methodConfig : cacheBean.getCacheMethods()) {
+					if (methodConfig.getParameterTypes() == null
+							|| methodConfig.getParameterTypes().size() <= 0) {
+						// 缓存方法的参数不能为空
+						return false;
+					}
+					
+				}
 			}
 		}
 		return true;
@@ -171,6 +173,7 @@ public class CacheConfigVerify {
 	 * @param methodConfig
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private boolean isBeanMethodValid(Object bean, MethodConfig methodConfig) {
 		Class<?>[] interfaces = bean.getClass().getInterfaces();
 		for (Class<?> interface_ : interfaces) {

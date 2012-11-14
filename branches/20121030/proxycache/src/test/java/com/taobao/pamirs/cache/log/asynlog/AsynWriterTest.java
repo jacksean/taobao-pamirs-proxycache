@@ -2,6 +2,8 @@ package com.taobao.pamirs.cache.log.asynlog;
 
 import org.junit.Test;
 
+import com.taobao.pamirs.cache.extend.log.asynlog.AsynWriter;
+
 public class AsynWriterTest {
 
 	@Test

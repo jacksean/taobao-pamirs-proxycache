@@ -32,19 +32,25 @@ public class MapStore<K extends Serializable, V extends Serializable>
 		if (storeObject == null)
 			datas.remove(key, storeObject);
 
-		return storeObject.getObject();
+		V v = storeObject.getObject();
+		if (v == null)
+			datas.remove(key, storeObject);
+
+		return v;
 	}
 
 	@Override
 	public void put(K key, V value) {
-		ObjectBoxing<V> storeObject = new ObjectBoxing<V>(value);
-		datas.putIfAbsent(key, storeObject);
+		this.put(key, value, 0);
 	}
 
 	@Override
 	public void put(K key, V value, int expireTime) {
+		if (value == null)
+			return;
+
 		ObjectBoxing<V> storeObject = new ObjectBoxing<V>(value, expireTime);
-		datas.putIfAbsent(key, storeObject);
+		datas.put(key, storeObject);
 	}
 
 	@Override

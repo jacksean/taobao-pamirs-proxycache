@@ -4,9 +4,9 @@
 package com.taobao.pamirs.cache.store.map;
 
 import java.io.Serializable;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.taobao.pamirs.cache.framework.ICache;
+import com.taobao.pamirs.cache.util.lru.ConcurrentLRUCacheMap;
 
 /**
  * MapStore 使用本地 Map 作为 CacheManage 的缓存存储方案.
@@ -24,17 +24,17 @@ import com.taobao.pamirs.cache.framework.ICache;
 public class MapStore<K extends Serializable, V extends Serializable>
 		implements ICache<K, V> {
 
-	private final ConcurrentHashMap<K, ObjectBoxing<V>> datas = new ConcurrentHashMap<K, ObjectBoxing<V>>();
+	private final ConcurrentLRUCacheMap<K, ObjectBoxing<V>> datas = new ConcurrentLRUCacheMap<K, ObjectBoxing<V>>();
 
 	@Override
 	public V get(K key) {
 		ObjectBoxing<V> storeObject = datas.get(key);
 		if (storeObject == null)
-			datas.remove(key, storeObject);
+			datas.remove(key);
 
 		V v = storeObject.getObject();
 		if (v == null)
-			datas.remove(key, storeObject);
+			datas.remove(key);
 
 		return v;
 	}

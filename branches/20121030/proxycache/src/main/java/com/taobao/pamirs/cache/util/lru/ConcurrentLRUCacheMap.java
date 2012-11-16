@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 线程安全、高性能的LRUCacheMap <br>
  * 
  * <pre>
- * 1. 采用分区(segment)提升并发性能。 -- by Doug Lea 大师
+ * 1. 采用分区策略(segment)提升并发性能。 -- by Doug Lea 大师
  * 2. 为缓存专门设计的SoftReference包装，避免Cache引起JVM的OOM
  * </pre>
  * 
@@ -22,10 +22,10 @@ public class ConcurrentLRUCacheMap<K, V> implements Serializable {
 	private static final long serialVersionUID = -6742744299745956041L;
 
 	/** 默认大小 */
-	static final int DEFAULT_INITIAL_CAPACITY = 16 * 16;
+	static final int DEFAULT_INITIAL_CAPACITY = 1 << 10;
 
 	/** 默认的分区数量 */
-	static final int DEFAULT_CONCURRENCY_LEVEL = 16;
+	static final int DEFAULT_CONCURRENCY_LEVEL = 1 << 4;
 
 	/** 最大容量 */
 	static final int MAXIMUM_CAPACITY = 1 << 30;
@@ -37,19 +37,31 @@ public class ConcurrentLRUCacheMap<K, V> implements Serializable {
 	 * Mask value for indexing into segments. The upper bits of a key's hash
 	 * code are used to choose the segment.
 	 */
-	final int segmentMask;
+	private final int segmentMask;
 
 	/**
 	 * Shift value for indexing within segments.
 	 */
-	final int segmentShift;
+	private final int segmentShift;
 
-	LRUMapLocked<K, SoftReference<V>, V>[] segments;
+	private LRUMapLocked<K, SoftReference<V>, V>[] segments;
 
+	/**
+	 * 默认构造器：1024/16
+	 */
 	public ConcurrentLRUCacheMap() {
 		this(DEFAULT_INITIAL_CAPACITY, DEFAULT_CONCURRENCY_LEVEL);
 	}
 
+	/**
+	 * 推荐构造函数 <br>
+	 * 如果key hash碰巧热点到部分segment中，会有LRU的整个size未满时，也可能被remove
+	 * 
+	 * @param initialCapacity
+	 *            必须能被concurrencyLevel整除
+	 * @param concurrencyLevel
+	 *            必须2的倍数
+	 */
 	@SuppressWarnings("unchecked")
 	public ConcurrentLRUCacheMap(int initialCapacity, int concurrencyLevel) {
 		if (initialCapacity < 0 || concurrencyLevel <= 0)
@@ -66,6 +78,10 @@ public class ConcurrentLRUCacheMap<K, V> implements Serializable {
 			ssize <<= 1;
 		}
 
+		if (ssize != concurrencyLevel)
+			throw new IllegalArgumentException(
+					"concurrencyLevel must be power-of-two!");
+
 		segmentShift = 32 - sshift;
 		segmentMask = ssize - 1;
 		this.segments = new LRUMapLocked[ssize];
@@ -73,6 +89,9 @@ public class ConcurrentLRUCacheMap<K, V> implements Serializable {
 		if (initialCapacity > MAXIMUM_CAPACITY)
 			initialCapacity = MAXIMUM_CAPACITY;
 		int c = initialCapacity / ssize;
+		if (c * ssize != initialCapacity)
+			throw new IllegalArgumentException(
+					"initialCapacity must divide exactly for concurrencyLevel!");
 		if (c * ssize < initialCapacity)
 			++c;
 		int cap = 1;// 平摊到每个分区Map的size
@@ -106,6 +125,18 @@ public class ConcurrentLRUCacheMap<K, V> implements Serializable {
 			segments[i].clear();
 	}
 
+	public int size() {
+		final LRUMapLocked<K, SoftReference<V>, V>[] segments = this.segments;
+		long sum = 0;
+		for (int i = 0; i < segments.length; ++i) {
+			sum += segments[i].size();
+		}
+		if (sum > Integer.MAX_VALUE)
+			return Integer.MAX_VALUE;
+		else
+			return (int) sum;
+	}
+
 	/**
 	 * Applies a supplemental hash function to a given hashCode, which defends
 	 * against poor quality hash functions. This is critical because
@@ -131,7 +162,7 @@ public class ConcurrentLRUCacheMap<K, V> implements Serializable {
 	 *            the hash code for the key
 	 * @return the segment
 	 */
-	final LRUMapLocked<K, SoftReference<V>, V> segmentFor(int hash) {
+	private final LRUMapLocked<K, SoftReference<V>, V> segmentFor(int hash) {
 		return segments[(hash >>> segmentShift) & segmentMask];
 	}
 
@@ -140,7 +171,7 @@ public class ConcurrentLRUCacheMap<K, V> implements Serializable {
 	 * 
 	 * @author xiaocheng 2012-11-16
 	 */
-	static final class LRUMapLocked<KK, TT extends SoftReference<VV>, VV>
+	public static final class LRUMapLocked<KK, TT extends SoftReference<VV>, VV>
 			extends LRUMap<KK, TT> {
 		//
 		private static final long serialVersionUID = -1357125210052412116L;

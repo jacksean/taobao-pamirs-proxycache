@@ -1,7 +1,5 @@
 package com.taobao.pamirs.load;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.junit.Test;
 import org.unitils.UnitilsJUnit4;

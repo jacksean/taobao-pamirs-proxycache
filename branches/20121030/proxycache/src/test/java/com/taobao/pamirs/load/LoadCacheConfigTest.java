@@ -14,7 +14,7 @@ import com.taobao.pamirs.cache.load.ICacheConfigService;
  * @author Administrator
  * 
  */
-@SpringApplicationContext({ "load-cache-config.xml" })
+@SpringApplicationContext({ "/load/load-cache-config.xml" })
 public class LoadCacheConfigTest extends UnitilsJUnit4 {
 
 	@SpringBeanByName
@@ -25,5 +25,4 @@ public class LoadCacheConfigTest extends UnitilsJUnit4 {
 		CacheConfig cacheConfig = cacheConfigService.loadConfig();
 		System.out.println(ToStringBuilder.reflectionToString(cacheConfig));
 	}
-
 }

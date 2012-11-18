@@ -1,12 +1,10 @@
 package com.taobao.pamirs.cache.load.verify;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
 import com.taobao.pamirs.cache.framework.config.CacheBean;
@@ -18,20 +16,29 @@ import com.taobao.pamirs.cache.framework.config.MethodConfig;
 /**
  * 缓存配置合法性校验
  * 
- * @author Administrator
+ * <pre>
+ * 	  缓存校验内容：
+ * 		1：缓存关键配置数据不能为空
+ * 		2：缓存关键配置常量不能乱写[tair/map]
+ * 		3：缓存方法是否存在重复配置校验
+ * 		4：缓存清理方法是否存在重复配置校验
+ * 		5：缓存方法配置在Spring中的需要存在，并且合法
+ * 		6：缓存清理方法在Spring中需要存在，并且合法
+ * </pre>
  * 
+ * @author poxiao.gj
+ * @date 2012-11-18
  */
-public class CacheConfigVerify {
+public class CacheConfigVerify extends AbstractCacheConfigVerify {
 
-	public static final Logger logger = Logger
-			.getLogger(CacheConfigVerify.class);
+	public static final String STORE_TAIR = "tair";
+	public static final String STORE_MAP = "map";
 
-	private ApplicationContext applicationContext;
-
-	private Object getBean(String beanName) {
-		return applicationContext.getBean(beanName);
-	}
-
+	/**
+	 * 缓存校验构造函数
+	 * 
+	 * @param applicationContext
+	 */
 	public CacheConfigVerify(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
@@ -46,6 +53,9 @@ public class CacheConfigVerify {
 		if (!checkConfigNotEmpty(cacheConfig)) {
 			return false;
 		}
+		if (!checkCacheConfigConstants(cacheConfig)) {
+			return false;
+		}
 		if (!checkCacheBeanDuplicate(cacheConfig.getCacheBeans())
 				|| !checkCacheCleanBeanDuplicate(cacheConfig
 						.getCacheCleanBeans())) {
@@ -54,6 +64,21 @@ public class CacheConfigVerify {
 		if (!checkCacheBeanMethodInvalid(cacheConfig.getCacheBeans())
 				|| !checkCacheCleanBeanMethodInvalid(cacheConfig
 						.getCacheCleanBeans())) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 缓存配置厂里的合法性
+	 * 
+	 * @param cacheConfig
+	 * @return
+	 */
+	private boolean checkCacheConfigConstants(CacheConfig cacheConfig) {
+		if (!(STORE_TAIR.equals(cacheConfig.getStoreType()) || STORE_MAP
+				.equals(cacheConfig.getStoreType()))) {
+			logCheckInvalid("缓存配置类型必须为tair或者map");
 			return false;
 		}
 		return true;
@@ -80,9 +105,15 @@ public class CacheConfigVerify {
 			logCheckInvalid("缓存配置数据CacheBeans为空");
 			return false;
 		}
+		if (!checkCacheNotEmpty(cacheConfig.getCacheBeans())) {
+			return false;
+		}
 		if (cacheConfig.getCacheCleanBeans() == null
 				|| cacheConfig.getCacheCleanBeans().isEmpty()) {
 			logCheckInvalid("缓存配置数据CacheCleanBeans为空");
+			return false;
+		}
+		if (!checkCleanCacheNotEmpty(cacheConfig.getCacheCleanBeans())) {
 			return false;
 		}
 		return true;
@@ -98,8 +129,9 @@ public class CacheConfigVerify {
 		Map<String, Boolean> dup = new HashMap<String, Boolean>();
 		for (CacheBean cacheBean : cacheBeans) {
 			for (MethodConfig methodConfig : cacheBean.getCacheMethods()) {
-				String key = cacheBean.getBeanName() + "."
-						+ methodConfig.getMethodName();
+				String key = getBeanMethodKey(cacheBean.getBeanName(),
+						methodConfig.getMethodName(),
+						methodConfig.getParameterTypes());
 				if (dup.containsKey(key)) {
 					logCheckInvalid("缓存对象" + key + "重复定义");
 					return false;
@@ -122,44 +154,52 @@ public class CacheConfigVerify {
 		for (CacheCleanBean cacheCleanBean : cacheCleanBeans) {
 			for (CacheCleanMethod cacheCleanMethod : cacheCleanBean
 					.getMethods()) {
-				String key = cacheCleanBean.getBeanName() + "."
-						+ cacheCleanMethod.getMethodName();
+				String key = getBeanMethodKey(cacheCleanBean.getBeanName(),
+						cacheCleanMethod.getMethodName(),
+						cacheCleanMethod.getParameterTypes());
 				if (dup.containsKey(key)) {
 					logCheckInvalid("清理缓存对象" + key + "重复定义");
 					return false;
 				}
 				dup.put(key, Boolean.TRUE);
 			}
-
 		}
 		return true;
 	}
 
 	/**
-	 * 判断缓存的bean在spring中是否存在
+	 * 判断缓存对象列表是否合法
 	 * 
 	 * <pre>
-	 * 
+	 * 	校验：
+	 * 		1: 在Spring中，缓存的Bean是否存在。
+	 * 		2：缓存对象方法是否的确存在。
 	 * </pre>
 	 * 
 	 * @param cacheConfig
 	 * @return
 	 */
 	private boolean checkCacheBeanMethodInvalid(List<CacheBean> cacheBeans) {
-		if (false) {
-			for (CacheBean cacheBean : cacheBeans) {
-				Object bean = getBean(cacheBean.getBeanName());
-				if (bean == null) {
-					//
+		for (CacheBean cacheBean : cacheBeans) {
+			Object bean = getBean(cacheBean.getBeanName());
+			if (bean == null) {
+				logCheckInvalid("在Spring中查询不到对应的Bean，BeanName="
+						+ cacheBean.getBeanName());
+				return false;
+			}
+			for (MethodConfig methodConfig : cacheBean.getCacheMethods()) {
+				if (methodConfig.getParameterTypes() == null
+						|| methodConfig.getParameterTypes().size() <= 0) {
+					// 缓存方法的参数不能为空
+					logCheckInvalid("缓存对象方法：" + cacheBean.getBeanName() + "."
+							+ methodConfig.getMethodName() + "的缓存参数为空");
 					return false;
 				}
-				for (MethodConfig methodConfig : cacheBean.getCacheMethods()) {
-					if (methodConfig.getParameterTypes() == null
-							|| methodConfig.getParameterTypes().size() <= 0) {
-						// 缓存方法的参数不能为空
-						return false;
-					}
-					
+				// 判断当前缓存方法是否合法
+				if (!isBeanMethodValid(bean.getClass(), cacheBean.getBeanName(),
+						methodConfig.getMethodName(),
+						methodConfig.getParameterTypes())) {
+					return false;
 				}
 			}
 		}
@@ -167,49 +207,53 @@ public class CacheConfigVerify {
 	}
 
 	/**
-	 * 判断
+	 * 判断缓存清理列表方法是否合法
 	 * 
-	 * @param bean
-	 * @param methodConfig
-	 * @return
-	 */
-	@SuppressWarnings("unused")
-	private boolean isBeanMethodValid(Object bean, MethodConfig methodConfig) {
-		Class<?>[] interfaces = bean.getClass().getInterfaces();
-		for (Class<?> interface_ : interfaces) {
-			Method[] methods = interface_.getClass().getMethods();
-			for (Method method : methods) {
-				if (method.getName().equals(methodConfig.getMethodName())) {
-					Class<?>[] paramTypes = method.getParameterTypes();
-					for (int i = 0; i < methodConfig.getParameterTypes().size(); i++) {
-						if (paramTypes[i].getName().equals(
-								(methodConfig.getParameterTypes().get(i)
-										.getName()))) {
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
+	 * <pre>
+	 * 校验：
+	 * 		1: 在Spring中，缓存清理的Bean是否存在。
+	 * 		2：缓存清理对象方法是否的确存在。
+	 * </pre>
 	 * 
 	 * @param cacheCleanBeans
 	 * @return
 	 */
 	private boolean checkCacheCleanBeanMethodInvalid(
 			List<CacheCleanBean> cacheCleanBeans) {
+		for (CacheCleanBean cacheCleanBean : cacheCleanBeans) {
+			Object bean = getBean(cacheCleanBean.getBeanName());
+			if (bean == null) {
+				logCheckInvalid("在Spring中查询不到对应的Bean，BeanName="
+						+ cacheCleanBean.getBeanName());
+				return false;
+			}
+			for (CacheCleanMethod cacheCleanMethod : cacheCleanBean
+					.getMethods()) {
+				if (cacheCleanMethod.getParameterTypes() == null
+						|| cacheCleanMethod.getParameterTypes().size() <= 0) {
+					// 缓存清理方法的参数不能为空
+					logCheckInvalid("缓存对象方法：" + cacheCleanBean.getBeanName()
+							+ "." + cacheCleanMethod.getMethodName()
+							+ "的缓存参数为空");
+					return false;
+				}
+				// 判断当前缓存清理方法是否合法
+				if (!isBeanMethodValid(bean.getClass(), cacheCleanBean.getBeanName(),
+						cacheCleanMethod.getMethodName(),
+						cacheCleanMethod.getParameterTypes())) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
 	/**
-	 * 记录校验出错的信息
+	 * 获取错误信息
 	 * 
-	 * @param msg
+	 * @return
 	 */
-	private void logCheckInvalid(String msg) {
-		logger.error(msg);
+	public String getErrorMsg() {
+		return errorMsg;
 	}
 }

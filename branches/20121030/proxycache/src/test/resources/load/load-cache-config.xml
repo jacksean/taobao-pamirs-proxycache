@@ -14,8 +14,10 @@
 		</property>
 		<property name="configFilePaths">
 			<list>
-				<value>goods-cache-simple.xml</value>
+				<value>load/cache-config-loadcache.xml</value>
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="loadCacheService" class="com.taobao.pamirs.load.LoadCacheServiceImpl"/>
 </beans>

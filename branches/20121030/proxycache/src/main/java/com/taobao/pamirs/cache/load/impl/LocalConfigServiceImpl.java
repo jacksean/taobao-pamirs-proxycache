@@ -12,15 +12,14 @@ import com.taobao.pamirs.cache.util.ConfigUtil;
 /**
  * 本地加载缓存配置服务
  * 
- * @author Administrator
+ * @author poxiao.gj
+ * @date 2012-11-13
  * 
  */
 public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 
 	private List<String> configFilePaths;
-	
 	private boolean isInit = false;
-	
 	private CacheConfig cacheConfig;
 
 	/**
@@ -28,14 +27,13 @@ public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 	 * 
 	 * @return
 	 */
-	public CacheConfig loadConfig() throws Exception {
+	public CacheConfig loadConfig() {
 		if (this.isInit) {
 			return cacheConfig;
 		}
-		throw new Exception("加载缓存出现系统异常");
+		throw new RuntimeException("缓存初始化未完成，isInit=false");
 	}
-	
-	
+
 	/**
 	 * 进行启动缓存初始化加载
 	 * 
@@ -49,7 +47,7 @@ public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 		cacheConfig.setStoreTairNameSpace(getTairNameSpace());
 		List<CacheModule> cacheModules = getCacheModules();
 		if (cacheModules.size() <= 0) {
-			throw new IllegalArgumentException("非法的缓存配置");
+			throw new Exception("非法的缓存配置，CacheModule列表为空");
 		}
 		for (CacheModule cacheModule : cacheModules) {
 			cacheConfig.getCacheBeans().addAll(cacheModule.getCacheBeans());
@@ -62,7 +60,7 @@ public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 		CacheConfigVerify cacheConfigVerify = new CacheConfigVerify(
 				getApplicationContext());
 		if (!cacheConfigVerify.checkCacheConfig(cacheConfig)) {
-			throw new Exception("启动初始化缓存配置失败");
+			throw new Exception("缓存加载配置时，配置校验失败");
 		}
 		this.cacheConfig = cacheConfig;
 		this.isInit = true;

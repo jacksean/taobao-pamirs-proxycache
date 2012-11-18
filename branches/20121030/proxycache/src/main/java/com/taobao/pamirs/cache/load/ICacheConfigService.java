@@ -14,5 +14,5 @@ public interface ICacheConfigService {
 	 * 
 	 * @return
 	 */
-	CacheConfig loadConfig() throws Exception;
+	CacheConfig loadConfig();
 }

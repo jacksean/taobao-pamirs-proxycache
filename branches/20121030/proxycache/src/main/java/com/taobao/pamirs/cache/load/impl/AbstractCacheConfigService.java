@@ -10,9 +10,10 @@ import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.load.ICacheConfigService;
 
 /**
+ * »º´æ³éÏó¹«¹²
  * 
- * @author Administrator
- * 
+ * @author poxiao.gj
+ * @date 2012-11-13
  */
 public abstract class AbstractCacheConfigService implements
 		ICacheConfigService, ApplicationContextAware {

@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.log.asynlog;
+package com.taobao.pamirs.cache.extend.log.asynlog;
 
 import org.junit.Test;
 

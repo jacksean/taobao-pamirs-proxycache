@@ -1,4 +1,4 @@
-package com.taobao.pamirs.load;
+package com.taobao.pamirs.cache.load;
 
 /**
  * ¼ÓÔØ»º´æ·şÎñ

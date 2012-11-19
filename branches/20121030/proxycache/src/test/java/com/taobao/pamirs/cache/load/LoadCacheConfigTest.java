@@ -1,4 +1,4 @@
-package com.taobao.pamirs.load;
+package com.taobao.pamirs.cache.load;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.junit.Test;

@@ -48,18 +48,16 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 
 	private TairManager tairManager;
 
-	private ApplicationContext applicationContext;
+	protected ApplicationContext applicationContext;
 
 	private CleanCacheTimerManager timeTask;
 
 	private boolean useCache = true;
 
-	private ICacheConfigService cacheConfigServices;
-	
 	/**
 	 * spring定义时的初始化方法
 	 */
-	public void init() {
+	public void initCache() {
 		// 1. 加载/校验config
 		cacheConfig = loadConfig();
 		
@@ -81,6 +79,9 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 
 		timeTask = new CleanCacheTimerManager();
 	}
+	
+	@Override
+	public abstract CacheConfig loadConfig();
 
 	/**
 	 * 初始化Bean/Method对应的缓存，包括： <br>
@@ -153,11 +154,6 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 		} catch (Exception e) {
 			log.error("注册JMX失败", e);
 		}
-	}
-	
-	@Override
-	public CacheConfig loadConfig() {
-		return cacheConfigServices.loadConfig();
 	}
 	
 	public CacheProxy<Serializable, Serializable> getCacheProxys(String key) {

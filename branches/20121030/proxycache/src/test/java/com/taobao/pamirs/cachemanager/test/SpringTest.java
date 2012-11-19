@@ -7,8 +7,6 @@ import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByName;
 
-import com.taobao.notify.message.ObjectMessage;
-import com.taobao.notify.remotingclient.NotifyManagerBean;
 import com.taobao.pamirs.cache.framework.aop.handle.CacheManagerHandle;
 import com.taobao.tair.DataEntry;
 import com.taobao.tair.Result;

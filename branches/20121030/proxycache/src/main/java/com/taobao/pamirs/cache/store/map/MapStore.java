@@ -29,8 +29,10 @@ public class MapStore<K extends Serializable, V extends Serializable>
 	@Override
 	public V get(K key) {
 		ObjectBoxing<V> storeObject = datas.get(key);
-		if (storeObject == null)
+		if (storeObject == null) {
 			datas.remove(key);
+			return null;
+		}
 
 		V v = storeObject.getObject();
 		if (v == null)

@@ -23,18 +23,6 @@ public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 	private CacheConfig cacheConfig;
 
 	/**
-	 * 加载加载缓存配置
-	 * 
-	 * @return
-	 */
-	public CacheConfig loadConfig() {
-		if (this.isInit) {
-			return cacheConfig;
-		}
-		throw new RuntimeException("缓存初始化未完成，isInit=false");
-	}
-
-	/**
 	 * 进行启动缓存初始化加载
 	 * 
 	 * @throws Exception
@@ -58,12 +46,15 @@ public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 		autoFillConfig(cacheConfig);
 		// 缓存配置合法性校验
 		CacheConfigVerify cacheConfigVerify = new CacheConfigVerify(
-				getApplicationContext());
+				applicationContext);
 		if (!cacheConfigVerify.checkCacheConfig(cacheConfig)) {
 			throw new Exception("缓存加载配置时，配置校验失败");
 		}
 		this.cacheConfig = cacheConfig;
 		this.isInit = true;
+
+		// 初始化cache
+		super.initCache();
 	}
 
 	/**
@@ -97,6 +88,18 @@ public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 				input.close();
 			}
 		}
+	}
+
+	/**
+	 * 加载加载缓存配置
+	 * 
+	 * @return
+	 */
+	public CacheConfig loadConfig() {
+		if (this.isInit) {
+			return cacheConfig;
+		}
+		throw new RuntimeException("缓存初始化未完成，isInit=false");
 	}
 
 	public void setConfigFilePaths(List<String> configFilePaths) {

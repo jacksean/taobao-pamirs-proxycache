@@ -43,13 +43,13 @@ public class TairStore<K extends Serializable, V extends Serializable>
 		Result<DataEntry> result = tairManager.get(namespace, key);
 		if (result.isSuccess()) {
 			DataEntry tairData = result.getValue();// 第一个getValue返回DataEntry对象
-			if (tairData == null) // 理论上不会出现
+			if (tairData == null)
 				return null;
 
 			return (V) tairData.getValue();// 第二个getValue返回真正的value
 		}
 
-		// 失败
+		// 失败（包括已经expireTime到期）
 		throw new CacheException(result.getRc().getCode(), result.getRc()
 				.getMessage());
 	}

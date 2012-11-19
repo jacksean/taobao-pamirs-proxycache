@@ -4,6 +4,11 @@ import org.junit.Test;
 
 import com.taobao.pamirs.cache.extend.log.asynlog.AsynWriter;
 
+/**
+ * “Ï≤Ωlogµ•‘™≤‚ ‘
+ * 
+ * @author xiaocheng 2012-11-19
+ */
 public class AsynWriterTest {
 
 	@Test

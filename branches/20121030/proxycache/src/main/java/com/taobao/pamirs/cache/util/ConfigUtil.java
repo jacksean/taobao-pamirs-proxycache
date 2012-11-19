@@ -52,50 +52,6 @@ public class ConfigUtil {
 	}
 
 	/**
-	 * 
-	 * @param path
-	 * @return
-	 */
-	public static CacheModule getCacheConfigModule(String content)
-			throws Exception {
-		XStream xStream = new XStream(new DomDriver());
-		xStream.alias("cacheModule", CacheModule.class);
-		xStream.alias("cacheBean", CacheBean.class);
-		xStream.alias("methodConfig", MethodConfig.class);
-		xStream.alias("cacheCleanBean", CacheCleanBean.class);
-		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
-		if (content != null) {
-			CacheModule cacheConfig = (CacheModule) xStream.fromXML(content
-					.trim());
-			return cacheConfig;
-		}
-		throw new Exception("输入的配置信息为Null");
-	}
-
-	/**
-	 * 
-	 * @param inputStream
-	 * @return
-	 * @throws Exception
-	 */
-	public static CacheModule getCacheConfigModule(InputStream inputStream)
-			throws Exception {
-		XStream xStream = new XStream(new DomDriver());
-		xStream.alias("cacheModule", CacheModule.class);
-		xStream.alias("cacheBean", CacheBean.class);
-		xStream.alias("methodConfig", MethodConfig.class);
-		xStream.alias("cacheCleanBean", CacheCleanBean.class);
-		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
-		if (inputStream != null) {
-
-			CacheModule cacheConfig = (CacheModule) xStream
-					.fromXML(inputStream);
-			return cacheConfig;
-		}
-		throw new Exception("输入的配置信息为Null");
-	}
-
-	/**
 	 * 获取对应的缓存MethodConfig配置
 	 * 
 	 * @param cacheConfig
@@ -167,6 +123,50 @@ public class ConfigUtil {
 		}
 
 		return null;
+	}
+
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static CacheModule getCacheConfigModule(String content)
+			throws Exception {
+		XStream xStream = new XStream(new DomDriver());
+		xStream.alias("cacheModule", CacheModule.class);
+		xStream.alias("cacheBean", CacheBean.class);
+		xStream.alias("methodConfig", MethodConfig.class);
+		xStream.alias("cacheCleanBean", CacheCleanBean.class);
+		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
+		if (content != null) {
+			CacheModule cacheConfig = (CacheModule) xStream.fromXML(content
+					.trim());
+			return cacheConfig;
+		}
+		throw new Exception("输入的配置信息为Null");
+	}
+
+	/**
+	 * 
+	 * @param inputStream
+	 * @return
+	 * @throws Exception
+	 */
+	public static CacheModule getCacheConfigModule(InputStream inputStream)
+			throws Exception {
+		XStream xStream = new XStream(new DomDriver());
+		xStream.alias("cacheModule", CacheModule.class);
+		xStream.alias("cacheBean", CacheBean.class);
+		xStream.alias("methodConfig", MethodConfig.class);
+		xStream.alias("cacheCleanBean", CacheCleanBean.class);
+		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
+		if (inputStream != null) {
+
+			CacheModule cacheConfig = (CacheModule) xStream
+					.fromXML(inputStream);
+			return cacheConfig;
+		}
+		throw new Exception("输入的配置信息为Null");
 	}
 
 }

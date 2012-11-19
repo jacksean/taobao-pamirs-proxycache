@@ -1,9 +1,15 @@
 package com.taobao.pamirs.cache.load.impl;
 
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
-import com.taobao.pamirs.cache.load.ICacheConfigService;
 
-public class ZKConfigServiceImpl implements ICacheConfigService {
+public class ZKConfigServiceImpl extends AbstractCacheConfigService {
+
+	public void init() {
+		// ....
+
+		// ≥ı ºªØcache
+		super.initCache();
+	}
 
 	@Override
 	public CacheConfig loadConfig() {

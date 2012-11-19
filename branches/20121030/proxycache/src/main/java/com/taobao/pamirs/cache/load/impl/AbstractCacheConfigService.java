@@ -1,13 +1,10 @@
 package com.taobao.pamirs.cache.load.impl;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
+import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.config.CacheCleanBean;
 import com.taobao.pamirs.cache.framework.config.CacheCleanMethod;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
-import com.taobao.pamirs.cache.load.ICacheConfigService;
 
 /**
  * 缓存抽象公共
@@ -15,14 +12,7 @@ import com.taobao.pamirs.cache.load.ICacheConfigService;
  * @author poxiao.gj
  * @date 2012-11-13
  */
-public abstract class AbstractCacheConfigService implements
-		ICacheConfigService, ApplicationContextAware {
-
-	private static ApplicationContext applicationContext;
-
-	public static ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
+public abstract class AbstractCacheConfigService extends CacheManager {
 
 	/**
 	 * 缓存存储类型
@@ -50,7 +40,6 @@ public abstract class AbstractCacheConfigService implements
 	 * @param cacheConfig
 	 */
 	protected void autoFillConfig(CacheConfig cacheConfig) {
-
 		// 填充清理缓存的参数类型
 		for (CacheCleanBean cleanBean : cacheConfig.getCacheCleanBeans()) {
 			for (CacheCleanMethod cacheCleanMethod : cleanBean.getMethods()) {
@@ -95,8 +84,4 @@ public abstract class AbstractCacheConfigService implements
 		this.storeRegion = storeRegion;
 	}
 
-	@SuppressWarnings("static-access")
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-	}
 }

@@ -21,7 +21,7 @@
 三、使用方法
 1. 注入spring bean：
 
-	<bean class="com.taobao.fuwu.util.threadcache.ThreadCacheHandle">
+	<bean class="com.taobao.pamirs.cache.store.threadcache.ThreadCacheHandle">
 		<property name="beansMap">
 		<!-- the void method not support， will ignore cache -->
 			<map>
@@ -55,7 +55,7 @@
         </layout>
     </appender>
     
-    <logger name="com.taobao.fuwu.util.threadcache" additivity="false">
+    <logger name="com.taobao.pamirs.cache.store.threadcache" additivity="false">
         <level value="warn"/>
         <appender-ref ref="threadcache"/>
     </logger>

@@ -184,5 +184,9 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 			throws BeansException {
 		this.applicationContext = applicationContext;
 	}
+	
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
 
 }

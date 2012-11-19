@@ -6,23 +6,23 @@ import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByName;
 
+import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
-import com.taobao.pamirs.cache.load.ICacheConfigService;
 
 /**
  * 
  * @author Administrator
  * 
  */
-@SpringApplicationContext({ "/load/load-cache-config.xml" })
+@SpringApplicationContext({ "/load/cache-spring.xml" })
 public class LoadCacheConfigTest extends UnitilsJUnit4 {
 
 	@SpringBeanByName
-	private ICacheConfigService cacheConfigService;
+	private CacheManager cacheManager;
 
 	@Test
 	public void testGetConfig() throws Exception {
-		CacheConfig cacheConfig = cacheConfigService.loadConfig();
+		CacheConfig cacheConfig = cacheManager.loadConfig();
 		System.out.println(ToStringBuilder.reflectionToString(cacheConfig));
 	}
 }

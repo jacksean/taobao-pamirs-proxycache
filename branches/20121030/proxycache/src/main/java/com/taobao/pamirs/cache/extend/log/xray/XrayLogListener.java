@@ -26,17 +26,18 @@ public class XrayLogListener implements CacheOprateListener {
 
 	@Override
 	public void oprate(CacheOprator oprator, CacheOprateInfo cacheInfo) {
-		log(oprator, cacheInfo.isHitting(), cacheInfo.getMethodTime());
+		writer.write(getXrayLog(oprator, cacheInfo.isHitting(),
+				cacheInfo.getMethodTime()));
 	}
 
 	/**
-	 * 打印日志
+	 * Xray日志格式
 	 * 
 	 * @param type
 	 * @param isHit
 	 * @param useTime
 	 */
-	private void log(CacheOprator type, boolean isHit, long useTime) {
+	private String getXrayLog(CacheOprator type, boolean isHit, long useTime) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SEPARATOR).append(beanName);
 		sb.append(SEPARATOR).append(methodName);
@@ -44,7 +45,7 @@ public class XrayLogListener implements CacheOprateListener {
 		sb.append(SEPARATOR).append(isHit);
 		sb.append(SEPARATOR).append(useTime);
 
-		writer.write(sb.toString());
+		return sb.toString();
 	}
 
 }

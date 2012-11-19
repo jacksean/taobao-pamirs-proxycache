@@ -1,9 +1,5 @@
 package com.taobao.pamirs.cache.framework.config;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.taobao.pamirs.cache.store.StoreType;
 
 /**
@@ -11,7 +7,7 @@ import com.taobao.pamirs.cache.store.StoreType;
  * 
  * @author xiaocheng 2012-11-2
  */
-public class CacheConfig implements Serializable {
+public class CacheConfig extends CacheModule {
 
 	//
 	private static final long serialVersionUID = 8164876688008497503L;
@@ -41,16 +37,6 @@ public class CacheConfig implements Serializable {
 	 * @see StoreType.TAIR
 	 */
 	private int storeTairNameSpace;
-
-	/**
-	 * ª∫¥Êbean≈‰÷√
-	 */
-	private List<CacheBean> cacheBeans = new ArrayList<CacheBean>();
-
-	/**
-	 * «Â¿Ìª∫¥Êbean≈‰÷√
-	 */
-	private List<CacheCleanBean> cacheCleanBeans = new ArrayList<CacheCleanBean>();
 
 	public String getStoreType() {
 		return storeType;
@@ -82,22 +68,6 @@ public class CacheConfig implements Serializable {
 
 	public void setStoreTairNameSpace(int storeTairNameSpace) {
 		this.storeTairNameSpace = storeTairNameSpace;
-	}
-
-	public List<CacheBean> getCacheBeans() {
-		return cacheBeans;
-	}
-
-	public void setCacheBeans(List<CacheBean> cacheBeans) {
-		this.cacheBeans = cacheBeans;
-	}
-
-	public List<CacheCleanBean> getCacheCleanBeans() {
-		return cacheCleanBeans;
-	}
-
-	public void setCacheCleanBeans(List<CacheCleanBean> cacheCleanBeans) {
-		this.cacheCleanBeans = cacheCleanBeans;
 	}
 
 }

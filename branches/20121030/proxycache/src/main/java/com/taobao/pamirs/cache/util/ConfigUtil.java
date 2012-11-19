@@ -1,7 +1,12 @@
 package com.taobao.pamirs.cache.util;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.util.Assert;
 
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheCleanBean;
@@ -9,6 +14,7 @@ import com.taobao.pamirs.cache.framework.config.CacheCleanMethod;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.CacheModule;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
+import com.taobao.pamirs.cache.load.LoadConfigException;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -126,47 +132,98 @@ public class ConfigUtil {
 	}
 
 	/**
-	 * 
-	 * @param path
-	 * @return
-	 */
-	public static CacheModule getCacheConfigModule(String content)
-			throws Exception {
-		XStream xStream = new XStream(new DomDriver());
-		xStream.alias("cacheModule", CacheModule.class);
-		xStream.alias("cacheBean", CacheBean.class);
-		xStream.alias("methodConfig", MethodConfig.class);
-		xStream.alias("cacheCleanBean", CacheCleanBean.class);
-		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
-		if (content != null) {
-			CacheModule cacheConfig = (CacheModule) xStream.fromXML(content
-					.trim());
-			return cacheConfig;
-		}
-		throw new Exception("输入的配置信息为Null");
-	}
-
-	/**
+	 * xml转换成CacheModule
 	 * 
 	 * @param inputStream
 	 * @return
 	 * @throws Exception
 	 */
-	public static CacheModule getCacheConfigModule(InputStream inputStream)
-			throws Exception {
+	public static CacheModule getCacheConfigModule(InputStream inputStream) {
 		XStream xStream = new XStream(new DomDriver());
 		xStream.alias("cacheModule", CacheModule.class);
 		xStream.alias("cacheBean", CacheBean.class);
 		xStream.alias("methodConfig", MethodConfig.class);
 		xStream.alias("cacheCleanBean", CacheCleanBean.class);
 		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
-		if (inputStream != null) {
 
+		if (inputStream != null) {
 			CacheModule cacheConfig = (CacheModule) xStream
 					.fromXML(inputStream);
 			return cacheConfig;
 		}
-		throw new Exception("输入的配置信息为Null");
+
+		throw new LoadConfigException("输入的配置信息为Null");
+	}
+
+	/**
+	 * 自动填充配置信息
+	 * 
+	 * @param cacheConfig
+	 * @param applicationContext
+	 */
+	public static void autoFillCacheConfig(CacheConfig cacheConfig,
+			ApplicationContext applicationContext) {
+		Assert.notNull(cacheConfig);
+		Assert.notNull(applicationContext);
+		Assert.notNull(cacheConfig.getCacheBeans());
+		Assert.notNull(cacheConfig.getCacheCleanBeans());
+
+		// 1. 对method定义，如果没有parameterTypes，则自动寻找配对（有重名方法报错）
+		// 1.1 包括：cacheBean.methodConfig
+		for (CacheBean cacheBean : cacheConfig.getCacheBeans()) {
+			for (MethodConfig methodConfig : cacheBean.getCacheMethods()) {
+				if (methodConfig.getParameterTypes() != null)
+					continue;
+
+				List<Class<?>> parameterTypes = fillParameterTypes(
+						cacheBean.getBeanName(), applicationContext,
+						methodConfig.getMethodName());
+				methodConfig.setParameterTypes(parameterTypes);
+			}
+		}
+		// 1.2 包括：cacheCleanBean.cacheCleanMethod
+		for (CacheCleanBean cleanBean : cacheConfig.getCacheCleanBeans()) {
+			for (CacheCleanMethod method : cleanBean.getMethods()) {
+				if (method.getParameterTypes() != null)
+					continue;
+
+				List<Class<?>> parameterTypes = fillParameterTypes(
+						cleanBean.getBeanName(), applicationContext,
+						method.getMethodName());
+				method.setParameterTypes(parameterTypes);
+			}
+		}
+
+		// 2. 填充缓存清理关联的方法参数：cacheCleanBean.methods.cleanMethods.parameterTypes
+		for (CacheCleanBean cleanBean : cacheConfig.getCacheCleanBeans()) {
+			for (CacheCleanMethod method : cleanBean.getMethods()) {
+				for (MethodConfig clearMethod : method.getCleanMethods()) {
+					clearMethod.setParameterTypes(method.getParameterTypes());// 继承
+				}
+			}
+		}
+
+	}
+
+	private static List<Class<?>> fillParameterTypes(String beanName,
+			ApplicationContext applicationContext, String methodName) {
+		// fill
+		Object bean = applicationContext.getBean(beanName);
+		Method[] methods = bean.getClass().getMethods();
+		int num = 0;
+		Method index = null;
+		for (Method m : methods) {
+			if (m.getName().equals(methodName)) {
+				num++;
+				index = m;
+			}
+		}
+
+		if (num > 1)
+			throw new LoadConfigException("有重名方法但没有指定参数:" + beanName + "#"
+					+ methodName);
+
+		return Arrays.asList(index.getParameterTypes());
 	}
 
 }

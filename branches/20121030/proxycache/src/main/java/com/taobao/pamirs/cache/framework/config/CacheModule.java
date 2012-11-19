@@ -1,14 +1,17 @@
 package com.taobao.pamirs.cache.framework.config;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+
 /**
+ * 缓存加载模块--给load用
  * 
- * @author Administrator
- *
+ * @author poxiao.gj
+ * @author xiaocheng 2012-11-19
  */
 public class CacheModule implements Serializable {
-	
+
 	/**
 	 * serialVersionUID
 	 */
@@ -25,6 +28,9 @@ public class CacheModule implements Serializable {
 	private List<CacheCleanBean> cacheCleanBeans;
 
 	public List<CacheBean> getCacheBeans() {
+		if (cacheBeans == null)
+			cacheBeans = new ArrayList<CacheBean>();
+
 		return cacheBeans;
 	}
 
@@ -33,6 +39,9 @@ public class CacheModule implements Serializable {
 	}
 
 	public List<CacheCleanBean> getCacheCleanBeans() {
+		if (cacheCleanBeans == null)
+			cacheCleanBeans = new ArrayList<CacheCleanBean>();
+
 		return cacheCleanBeans;
 	}
 

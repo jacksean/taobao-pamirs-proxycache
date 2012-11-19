@@ -19,5 +19,5 @@
 		</property>
 	</bean>
 	
-	<bean id="loadCacheService" class="com.taobao.pamirs.load.LoadCacheServiceImpl"/>
+	<bean id="loadCacheService" class="com.taobao.pamirs.cache.load.LoadCacheServiceImpl"/>
 </beans>

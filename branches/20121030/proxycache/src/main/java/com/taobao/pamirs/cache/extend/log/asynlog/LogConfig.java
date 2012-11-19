@@ -14,7 +14,7 @@ public class LogConfig {
 	/**
 	 * 异步日志线程池大小
 	 */
-	private int asynWriterThreadSize = 1;
+	private int asynWriterThreadSize = 5;
 
 	/**
 	 * 日志列表的最大记录数

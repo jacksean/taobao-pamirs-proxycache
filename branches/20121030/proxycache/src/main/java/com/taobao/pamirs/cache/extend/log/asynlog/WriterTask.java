@@ -17,8 +17,6 @@ public class WriterTask<T> implements Runnable {
 
 	private static final Log log = LogFactory.getLog(AsynWriter.class);
 
-	private static final String LINE_SEPARATOR = "\r\n";
-
 	/**
 	 * 日志队列
 	 */
@@ -74,8 +72,6 @@ public class WriterTask<T> implements Runnable {
 		for (T r : records) {
 			if (logWriter.isFatalEnabled()) {
 				logWriter.fatal(r);
-				logWriter.fatal(LINE_SEPARATOR);
-
 			}
 		}
 

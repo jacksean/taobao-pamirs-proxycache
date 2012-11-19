@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.util.Assert;
  * 
  * @author xiaocheng 2012-11-19
  */
+@Component("aService")
 public class AServiceImpl implements ASerivce {
 
 	Set<String> names = new HashSet<String>();
@@ -45,18 +47,18 @@ public class AServiceImpl implements ASerivce {
 		names.clear();
 		return names.toString();
 	}
-	
+
 	@Override
 	public String firstHaveValue(String key) {
 		Assert.notNull(key);
-		
+
 		if (firstHaveValueKeys.contains(key))
 			return null;
-		
+
 		firstHaveValueKeys.add(key);
 		return key;
 	}
-	
+
 	@Override
 	public String noRewirteMethod(String arg) {
 		return arg;

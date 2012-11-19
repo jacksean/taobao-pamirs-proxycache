@@ -22,7 +22,6 @@ public class AsynWriterTest {
 		Thread.sleep(3000);
 		
 		s.write("jeck");
-		Thread.sleep(100000);
 	}
 
 }

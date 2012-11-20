@@ -3,6 +3,7 @@ package com.taobao.pamirs.cache.util;
 import java.util.List;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.util.Assert;
 
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
@@ -21,9 +22,12 @@ public class CacheCodeUtil {
 	public static final String KEY_SPLITE_SIGN = "#";
 	/**
 	 * key中方法参数的分隔符<br>
-	 * 格式：{String,Long}
+	 * 格式：{String|Long}
 	 */
 	public static final String KEY_PARAMS_SPLITE_SIGN = "|";
+
+	/** region分隔符 */
+	public static final String REGION_SPLITE_SIGN = "@";
 
 	/**
 	 * 取得最终的缓存Code中参数值分隔符<br>
@@ -84,7 +88,8 @@ public class CacheCodeUtil {
 		StringBuilder key = new StringBuilder();
 
 		// 1. region
-		key.append(region);
+		if (StringUtils.isNotBlank(region))
+			key.append(region).append(REGION_SPLITE_SIGN);
 
 		// 2. bean + method + parameter
 		String methodName = methodConfig.getMethodName();

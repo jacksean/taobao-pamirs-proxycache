@@ -108,7 +108,7 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 		return expiredTime == null ? 0L : expiredTime.longValue();
 	}
 
-	public String getCleanTime() {
+	public String getCleanTimeExpression() {
 		return storeMapCleanTime;
 	}
 
@@ -192,11 +192,17 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 					SimpleDateFormat format = new SimpleDateFormat(
 							"yyyy-MM-dd HH:mm:ss");
 					parameterValues[i] = format.parse(keyItems[i]);
+				} else if (clz.isAssignableFrom(String.class)) {
+					parameterValues[i] = keyItems[i];
 				}
 			}
 
-			method = bean.getClass().getMethod(methodConfig.getMethodName(),
-					(Class<?>[]) parameterTypes.toArray());
+			Class<?>[] parameterTypeArray = new Class<?>[parameterTypes.size()];
+			for (int i = 0; i < parameterTypeArray.length; i++) {
+				parameterTypeArray[i] = parameterTypes.get(i);
+			}
+			
+			method = bean.getClass().getMethod(methodConfig.getMethodName(), parameterTypeArray);
 			return (V) method.invoke(bean, parameterValues);
 		} catch (Exception e) {
 			log.error("getRealValue Error :" + e.getMessage(), e);
@@ -237,7 +243,7 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 						false, false),
 				new MBeanAttributeInfo("expireTime", "long", "缓存数据失效时间", true,
 						false, false),
-				new MBeanAttributeInfo("cleanTime", "String", "缓存清理时间", true,
+				new MBeanAttributeInfo("cleanTimeExpression", "String", "缓存清理时间", true,
 						false, false) };
 
 		MBeanOperationInfo[] dOperations = new MBeanOperationInfo[] {

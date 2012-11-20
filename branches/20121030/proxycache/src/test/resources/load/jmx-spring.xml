@@ -6,23 +6,18 @@
  http://www.springframework.org/schema/context 
  http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<context:component-scan base-package="com.taobao.pamirs.cache.load.testbean" />
-
-	<bean id="cacheManager" class="com.taobao.pamirs.cache.load.impl.LocalConfigServiceImpl" init-method="init">
-		<property name="storeType">
-			<value>tair</value>
-		</property>
-		<property name="tairNameSpace">
-			<value>296</value>
-		</property>
-		<property name="storeRegion">
-			<value>hj-daily</value>
-		</property>
-		<property name="configFilePaths">
-			<list>
-				<value>load/cache-config.xml</value>
-			</list>
+	<bean id="mbExporter" class="org.springframework.jmx.export.MBeanExporter" lazy-init="false">
+		<property name="beans">
+			<map>
+				<entry key="bean:name=htmlAdaptor" value-ref="htmlAdaptor" />
+			</map>
 		</property>
 	</bean>
-	
+
+	<bean id="htmlAdaptor" class="com.sun.jdmk.comm.HtmlAdaptorServer" init-method="start">
+		<property name="port" value="5168" />
+	</bean>
+
+	<bean class="com.taobao.pamirs.cache.extend.jmx.mbean.ConfigurableMBeanInfoAssembler" />
+
 </beans>

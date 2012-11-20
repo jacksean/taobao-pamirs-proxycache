@@ -182,12 +182,13 @@ class ThreadMethodRoundAdvice implements Advice, MethodInterceptor {
 			// do nothing
 			return invocation.proceed();
 		}
-		
+
 		String key = null;
 		try {
 			key = getCacheKey(methodName, invocation);
 		} catch (IllegalArgumentException e) {
-			log.warn("有不支持的参数类型，无法生成缓存key，将会放弃缓存！" + beanName + ":" + methodName);
+			log.warn("有不支持的参数类型，无法生成缓存key，将会放弃缓存！" + beanName + ":"
+					+ methodName);
 			return invocation.proceed();
 		}
 
@@ -232,7 +233,7 @@ class ThreadMethodRoundAdvice implements Advice, MethodInterceptor {
 
 		return beanName + "$" + methodName + "$" + args.toString();
 	}
-	
+
 	/**
 	 * 默认支持的原始类型
 	 * 
@@ -251,10 +252,10 @@ class ThreadMethodRoundAdvice implements Advice, MethodInterceptor {
 				|| Date.class.isAssignableFrom(type)
 				|| Boolean.class.isAssignableFrom(type))
 			return true;
-		
+
 		return false;
 	}
-	
+
 	private void doPrintLog(String key, Object value) {
 		if (handle.isPrintHitLog()) {
 			StringBuilder logInfo = new StringBuilder("线程缓存命中!");

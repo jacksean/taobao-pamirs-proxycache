@@ -54,6 +54,7 @@ public class CacheCodeUtilTest {
 		parameterTypes.add(double.class);
 		parameterTypes.add(Double.class);
 		parameterTypes.add(Date.class);
+		parameterTypes.add(String.class);
 		methodConfig.setParameterTypes(parameterTypes);
 	}
 
@@ -64,7 +65,7 @@ public class CacheCodeUtilTest {
 
 		MethodInvocation invocation = EasyMock
 				.createMock(MethodInvocation.class);
-		Object[] parameters = new Object[17];
+		Object[] parameters = new Object[18];
 		parameters[0] = true;
 		parameters[1] = Boolean.FALSE;
 		parameters[2] = 'a';
@@ -82,6 +83,7 @@ public class CacheCodeUtilTest {
 		parameters[14] = 6.78D;
 		parameters[15] = Double.valueOf(7.89D);
 		parameters[16] = now;
+		parameters[17] = "xyz";
 		expect(invocation.getArguments()).andReturn(parameters).times(1);
 		replay(invocation);
 
@@ -99,6 +101,7 @@ public class CacheCodeUtilTest {
 		result.append("@@1.23@@2.34");
 		result.append("@@6.78@@7.89");
 		result.append("@@").append(now.toString());
+		result.append("@@xyz");
 
 		assertThat(cacheCode, is(result.toString()));
 		verify(invocation);
@@ -115,7 +118,7 @@ public class CacheCodeUtilTest {
 
 	private String GetCacheAdapterKeyResult() {
 		StringBuilder result = new StringBuilder();
-		result.append(region);
+		result.append(region).append("@");
 		result.append(beanName);
 		result.append("#").append(methodConfig.getMethodName());
 		result.append("#{");
@@ -127,7 +130,7 @@ public class CacheCodeUtilTest {
 		result.append("|long|Long");
 		result.append("|float|Float");
 		result.append("|double|Double");
-		result.append("|Date");
+		result.append("|Date|String");
 		result.append("}");
 
 		return result.toString();

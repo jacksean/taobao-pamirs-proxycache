@@ -11,6 +11,6 @@ public interface BService {
 
 	String doVarietyArgs(boolean a, Boolean b, char c, Character d, byte e,
 			Byte f, short g, Short h, int j, Integer k, long l, Long m,
-			float n, Float o, double p, Double q, Date r);
+			float n, Float o, double p, Double q, Date r, String s);
 
 }

@@ -58,7 +58,7 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		boolean isHitting = v != null;//  «∑Ò√¸÷–£¨nullº¥Œ¥√¸÷–
 
 		// listener
-		notifyListeners(GET, new CacheOprateInfo(key, start - end, isHitting,
+		notifyListeners(GET, new CacheOprateInfo(key, end - start, isHitting,
 				beanName, methodConfig, cacheException));
 
 		return v;
@@ -79,7 +79,7 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		long end = System.currentTimeMillis();
 
 		// listener
-		notifyListeners(PUT, new CacheOprateInfo(key, start - end, true, beanName,
+		notifyListeners(PUT, new CacheOprateInfo(key, end - start, true, beanName,
 				methodConfig, cacheException));
 	}
 
@@ -96,7 +96,7 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		long end = System.currentTimeMillis();
 
 		// listener
-		notifyListeners(PUT_EXPIRE, new CacheOprateInfo(key, start - end, true,
+		notifyListeners(PUT_EXPIRE, new CacheOprateInfo(key, end - start, true,
 				beanName, methodConfig, cacheException));
 	}
 
@@ -113,7 +113,7 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		long end = System.currentTimeMillis();
 
 		// listener
-		notifyListeners(REMOVE, new CacheOprateInfo(key, start - end, true, beanName,
+		notifyListeners(REMOVE, new CacheOprateInfo(key, end - start, true, beanName,
 				methodConfig, cacheException));
 	}
 

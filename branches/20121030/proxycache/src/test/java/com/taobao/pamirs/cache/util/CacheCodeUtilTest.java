@@ -119,15 +119,15 @@ public class CacheCodeUtilTest {
 		result.append(beanName);
 		result.append("#").append(methodConfig.getMethodName());
 		result.append("#{");
-		result.append("boolean,Boolean");
-		result.append(",char,Character");
-		result.append(",byte,Byte");
-		result.append(",short,Short");
-		result.append(",int,Integer");
-		result.append(",long,Long");
-		result.append(",float,Float");
-		result.append(",double,Double");
-		result.append(",Date");
+		result.append("boolean|Boolean");
+		result.append("|char|Character");
+		result.append("|byte|Byte");
+		result.append("|short|Short");
+		result.append("|int|Integer");
+		result.append("|long|Long");
+		result.append("|float|Float");
+		result.append("|double|Double");
+		result.append("|Date");
 		result.append("}");
 
 		return result.toString();

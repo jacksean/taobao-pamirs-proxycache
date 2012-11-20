@@ -21,6 +21,8 @@ public class XrayLogListener implements CacheOprateListener {
 	private String methodName;
 	private List<Class<?>> parameterTypes;
 
+	/** ¹Ø¼ü×Ö */
+	private static final String XRAY_KEYWORD = "PAMIRS_XRAY";
 	private static final String SEPARATOR = ",";
 
 	public XrayLogListener(String beanName, String methodName,
@@ -46,6 +48,7 @@ public class XrayLogListener implements CacheOprateListener {
 	 */
 	private String getXrayLog(CacheOprator type, boolean isHit, long useTime) {
 		StringBuilder sb = new StringBuilder();
+		sb.append(SEPARATOR).append(XRAY_KEYWORD);
 		sb.append(SEPARATOR).append(beanName);
 		sb.append(SEPARATOR).append(methodName);
 		sb.append(SEPARATOR).append(

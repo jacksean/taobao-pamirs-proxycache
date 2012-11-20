@@ -39,7 +39,6 @@ public class TairStore<K extends Serializable, V extends Serializable>
 	@SuppressWarnings("unchecked")
 	@Override
 	public V get(K key) {
-
 		Result<DataEntry> result = tairManager.get(namespace, key);
 		if (result.isSuccess()) {
 			DataEntry tairData = result.getValue();// 第一个getValue返回DataEntry对象

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -11,6 +12,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 
 import com.taobao.pamirs.cache.extend.jmx.CacheMbean;
 import com.taobao.pamirs.cache.extend.jmx.CacheMbeanListener;
@@ -23,10 +26,13 @@ import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.framework.timer.CleanCacheTimerManager;
 import com.taobao.pamirs.cache.load.ICacheConfigService;
+import com.taobao.pamirs.cache.load.LoadConfigException;
+import com.taobao.pamirs.cache.load.verify.CacheConfigVerify;
 import com.taobao.pamirs.cache.store.StoreType;
 import com.taobao.pamirs.cache.store.map.MapStore;
 import com.taobao.pamirs.cache.store.tair.TairStore;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
+import com.taobao.pamirs.cache.util.ConfigUtil;
 import com.taobao.tair.TairManager;
 
 /**
@@ -35,7 +41,8 @@ import com.taobao.tair.TairManager;
  * @author xuanyu
  * @author xiaocheng 2012-11-2
  */
-public abstract class CacheManager implements ApplicationContextAware, ICacheConfigService {
+public abstract class CacheManager implements ApplicationContextAware,
+		ApplicationListener, ICacheConfigService {
 
 	private static final Log log = LogFactory.getLog(CacheManager.class);
 
@@ -50,19 +57,54 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 
 	protected ApplicationContext applicationContext;
 
-	private CleanCacheTimerManager timeTask;
+	private CleanCacheTimerManager timeTask = new CleanCacheTimerManager();
 
 	private boolean useCache = true;
 
-	/**
-	 * spring定义时的初始化方法
-	 */
-	public void initCache() {
+	public CountDownLatch countDownLatch = new CountDownLatch(1);
+
+	public void init() throws Exception {
 		// 1. 加载/校验config
 		cacheConfig = loadConfig();
-		
-		
+
 		// 2. 初始化缓存
+		initCache();
+
+		// 后面两个，见onApplicationEvent方法
+	}
+
+	@Override
+	public void onApplicationEvent(ApplicationEvent event) {
+		// 放在onApplicationEvent里，原因是解决CacheManagerHandle里先执行代理，再applicationContext.getBean，否则代理不了
+
+		// 3. 自动填充默认的配置
+		autoFillCacheConfig(cacheConfig);
+
+		// 4. 缓存配置合法性校验
+//		verifyCacheConfig(cacheConfig);
+	}
+
+	@Override
+	public abstract CacheConfig loadConfig();
+
+	@Override
+	public void autoFillCacheConfig(CacheConfig cacheConfig) {
+		ConfigUtil.autoFillCacheConfig(cacheConfig, applicationContext);
+	}
+
+	@Override
+	public void verifyCacheConfig(CacheConfig cacheConfig) {
+		CacheConfigVerify cacheConfigVerify = new CacheConfigVerify(
+				applicationContext);
+		if (!cacheConfigVerify.checkCacheConfig(cacheConfig)) {
+			throw new LoadConfigException("缓存加载配置时，配置校验失败");
+		}
+	}
+
+	/**
+	 * 初始化缓存
+	 */
+	private void initCache() {
 		List<CacheBean> cacheBeans = cacheConfig.getCacheBeans();
 		if (cacheBeans != null) {
 			// 只需注册cacheBean,目前cacheCleanBeans必须是它的子集
@@ -70,18 +112,13 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 
 				List<MethodConfig> cacheMethods = bean.getCacheMethods();
 				for (MethodConfig method : cacheMethods) {
-					initCacheAdapters(cacheConfig.getStoreRegion(), bean.getBeanName(), method,
+					initCacheAdapters(cacheConfig.getStoreRegion(),
+							bean.getBeanName(), method,
 							cacheConfig.getStoreMapCleanTime());
 				}
-
 			}
 		}
-
-		timeTask = new CleanCacheTimerManager();
 	}
-	
-	@Override
-	public abstract CacheConfig loadConfig();
 
 	/**
 	 * 初始化Bean/Method对应的缓存，包括： <br>
@@ -128,7 +165,7 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 			// 3. 注册JMX
 			registerCacheMbean(key, cacheProxy, storeMapCleanTime,
 					cacheMethod.getExpiredTime());
-			
+
 			// 4. 注册Xray log
 			cacheProxy.addListener(new XrayLogListener(beanName, cacheMethod
 					.getMethodName(), cacheMethod.getParameterTypes()));
@@ -156,7 +193,7 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 			log.error("注册JMX失败", e);
 		}
 	}
-	
+
 	public CacheProxy<Serializable, Serializable> getCacheProxy(String key) {
 		if (key == null || cacheProxys == null)
 			return null;
@@ -185,7 +222,7 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 			throws BeansException {
 		this.applicationContext = applicationContext;
 	}
-	
+
 	public ApplicationContext getApplicationContext() {
 		return applicationContext;
 	}

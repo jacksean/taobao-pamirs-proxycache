@@ -5,13 +5,6 @@ import com.taobao.pamirs.cache.load.AbstractCacheConfigService;
 
 public class ZKConfigCacheManager extends AbstractCacheConfigService {
 
-	public void init() {
-		// ....
-
-		// ≥ı ºªØcache
-		super.initCache();
-	}
-
 	@Override
 	public CacheConfig loadConfig() {
 		// TODO Auto-generated method stub

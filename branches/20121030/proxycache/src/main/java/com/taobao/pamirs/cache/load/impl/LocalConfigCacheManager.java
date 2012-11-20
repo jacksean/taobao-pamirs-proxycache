@@ -1,5 +1,6 @@
 package com.taobao.pamirs.cache.load.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.CacheModule;
 import com.taobao.pamirs.cache.load.AbstractCacheConfigService;
-import com.taobao.pamirs.cache.load.verify.CacheConfigVerify;
+import com.taobao.pamirs.cache.load.LoadConfigException;
 import com.taobao.pamirs.cache.util.ConfigUtil;
 
 /**
@@ -19,19 +20,20 @@ import com.taobao.pamirs.cache.util.ConfigUtil;
 public class LocalConfigCacheManager extends AbstractCacheConfigService {
 
 	private List<String> configFilePaths;
-	private boolean isInit = false;
-	private CacheConfig cacheConfig;
+
+	public void setConfigFilePaths(List<String> configFilePaths) {
+		this.configFilePaths = configFilePaths;
+	}
 
 	/**
-	 * 进行启动缓存初始化加载
+	 * 加载加载缓存配置
 	 * 
-	 * @throws Exception
+	 * @return
 	 */
-	public void init() throws Exception {
-		// 1. 加载配置
+	public CacheConfig loadConfig() {
 		List<CacheModule> cacheModules = getCacheModules();
 		if (cacheModules.size() <= 0) {
-			throw new Exception("非法的缓存配置，CacheModule列表为空");
+			throw new LoadConfigException("非法的缓存配置，CacheModule列表为空");
 		}
 
 		CacheConfig cacheConfig = new CacheConfig();
@@ -45,20 +47,7 @@ public class LocalConfigCacheManager extends AbstractCacheConfigService {
 					cacheModule.getCacheCleanBeans());
 		}
 
-		// 2. 自动填充默认的配置
-		ConfigUtil.autoFillCacheConfig(cacheConfig, applicationContext);
-
-		// 3. 缓存配置合法性校验
-		CacheConfigVerify cacheConfigVerify = new CacheConfigVerify(
-				applicationContext);
-		if (!cacheConfigVerify.checkCacheConfig(cacheConfig)) {
-			throw new Exception("缓存加载配置时，配置校验失败");
-		}
-		this.cacheConfig = cacheConfig;
-		this.isInit = true;
-
-		// 初始化cache
-		super.initCache();
+		return cacheConfig;
 	}
 
 	/**
@@ -67,7 +56,7 @@ public class LocalConfigCacheManager extends AbstractCacheConfigService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<CacheModule> getCacheModules() throws Exception {
+	public List<CacheModule> getCacheModules() {
 		if (configFilePaths == null || configFilePaths.size() <= 0) {
 			throw new IllegalArgumentException("非法配置文件路径的参数，配置文件列表不能为空");
 		}
@@ -90,24 +79,13 @@ public class LocalConfigCacheManager extends AbstractCacheConfigService {
 			return cacheModuleList;
 		} finally {
 			if (input != null) {
-				input.close();
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
 
-	/**
-	 * 加载加载缓存配置
-	 * 
-	 * @return
-	 */
-	public CacheConfig loadConfig() {
-		if (this.isInit) {
-			return cacheConfig;
-		}
-		throw new RuntimeException("缓存初始化未完成，isInit=false");
-	}
-
-	public void setConfigFilePaths(List<String> configFilePaths) {
-		this.configFilePaths = configFilePaths;
-	}
 }

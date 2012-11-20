@@ -4,13 +4,20 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.unitils.UnitilsJUnit4;
+import org.unitils.spring.annotation.SpringApplicationContext;
+import org.unitils.spring.annotation.SpringBeanByName;
 
+import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheCleanBean;
 import com.taobao.pamirs.cache.framework.config.CacheCleanMethod;
+import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.CacheModule;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 
@@ -19,29 +26,74 @@ import com.taobao.pamirs.cache.framework.config.MethodConfig;
  * 
  * @author xiaocheng 2012-11-19
  */
-public class ConfigUtilTest {
+@SpringApplicationContext({ "/load/cache-spring.xml" })
+public class ConfigUtilTest extends UnitilsJUnit4 {
+
+	@SpringBeanByName
+	private CacheManager cacheManager;
+
+	CacheModule cacheModule;
+	CacheConfig cacheConfig;
+
+	@Before
+	public void init() {
+		InputStream configStream = ConfigUtilTest.class.getClassLoader()
+				.getResourceAsStream("load/cache-config.xml");
+		cacheModule = ConfigUtil.getCacheConfigModule(configStream);
+
+		cacheConfig = new CacheConfig();
+		cacheConfig.getCacheBeans().addAll(cacheModule.getCacheBeans());
+		cacheConfig.getCacheCleanBeans().addAll(
+				cacheModule.getCacheCleanBeans());
+	}
 
 	@Test
 	public void testIsBeanHaveCache() {
-		fail("Not yet implemented");
+		assertThat(ConfigUtil.isBeanHaveCache(cacheConfig, "aService"),
+				is(true));
+		assertThat(ConfigUtil.isBeanHaveCache(cacheConfig, "bService"),
+				is(true));
+		assertThat(ConfigUtil.isBeanHaveCache(cacheConfig, "cService"),
+				is(false));
 	}
 
 	@Test
 	public void testGetCacheMethod() {
-		fail("Not yet implemented");
+		String beanName = "aService";
+		String methodName = "firstHaveValue";
+		List<Class<?>> parameterTypes = new ArrayList<Class<?>>();
+		parameterTypes.add(String.class);
+
+		MethodConfig method = ConfigUtil.getCacheMethod(cacheConfig, beanName,
+				methodName, parameterTypes);
+		assertThat(method, notNullValue());
+		assertThat(method.getMethodName(), equalTo(methodName));
 	}
 
 	@Test
 	public void testGetCacheCleanMethods() {
-		fail("Not yet implemented");
+		String beanName = "aService";
+		String methodName = "md5Name";
+		List<Class<?>> parameterTypes = new ArrayList<Class<?>>();
+		parameterTypes.add(String.class);
+		ConfigUtil.getCacheCleanMethods(cacheConfig, beanName, methodName,
+				parameterTypes);
 	}
 
 	@Test
 	public void testGetCacheConfigModule() throws Exception {
-		InputStream configStream = ConfigUtilTest.class.getClassLoader()
-				.getResourceAsStream("load/cache/cache-config.xml");
-		CacheModule cacheModule = ConfigUtil.getCacheConfigModule(configStream);
+		assertConfig(cacheModule, false);
+	}
 
+	@Test
+	public void testAutoFillCacheConfig() {
+		ConfigUtil.autoFillCacheConfig(cacheConfig,
+				cacheManager.getApplicationContext());
+
+		assertConfig(cacheConfig, true);
+	}
+
+	private void assertConfig(CacheModule cacheModule, boolean isFilled) {
 		assertThat(cacheModule.getCacheBeans().size(), equalTo(2));
 		assertThat(cacheModule.getCacheCleanBeans().size(), equalTo(1));
 
@@ -79,8 +131,15 @@ public class ConfigUtilTest {
 
 					if (methodConfig.getMethodName().equals("noRewirteMethod")) {
 						assertThat(methodConfig.getExpiredTime(), nullValue());
-						assertThat(methodConfig.getParameterTypes(),
-								nullValue());
+						if (!isFilled) {
+							assertThat(methodConfig.getParameterTypes(),
+									nullValue());
+						} else {
+							assertThat(methodConfig.getParameterTypes().size(),
+									equalTo(1));
+							assertThat(methodConfig.getParameterTypes().get(0)
+									.getSimpleName(), equalTo("String"));
+						}
 					}
 
 				}
@@ -153,7 +212,15 @@ public class ConfigUtilTest {
 		MethodConfig clear = cacheCleanMethod.getCleanMethods().get(0);
 		assertThat(clear.getMethodName(), equalTo("clearNames"));
 		assertThat(clear.getExpiredTime(), nullValue());
-		assertThat(clear.getParameterTypes(), nullValue());
+		if (!isFilled) {
+			assertThat(clear.getParameterTypes(), nullValue());
+		} else {
+			assertThat(clear.getParameterTypes().size(), equalTo(2));
+			assertThat(clear.getParameterTypes().get(0).getSimpleName(),
+					equalTo("String"));
+			assertThat(clear.getParameterTypes().get(0).getSimpleName(),
+					equalTo("String"));
+		}
 	}
 
 }

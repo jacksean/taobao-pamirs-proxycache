@@ -23,7 +23,7 @@ public class CacheCodeUtil {
 	 * key中方法参数的分隔符<br>
 	 * 格式：{String,Long}
 	 */
-	public static final String KEY_PARAMS_SPLITE_SIGN = ",";
+	public static final String KEY_PARAMS_SPLITE_SIGN = "|";
 
 	/**
 	 * 取得最终的缓存Code中参数值分隔符<br>

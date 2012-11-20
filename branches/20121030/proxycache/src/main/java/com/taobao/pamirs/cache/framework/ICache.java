@@ -6,7 +6,6 @@ package com.taobao.pamirs.cache.framework;
 import java.io.Serializable;
 
 /**
- * 
  * 缓存支持接口
  * 
  * @author xuanyu

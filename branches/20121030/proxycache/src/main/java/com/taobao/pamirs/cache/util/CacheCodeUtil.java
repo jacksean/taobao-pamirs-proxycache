@@ -37,7 +37,7 @@ public class CacheCodeUtil {
 
 	/**
 	 * 取得最终的缓存Code<br>
-	 * 格式：regionbeanName#methodName#{String,Long}abc@@123
+	 * 格式：regionbeanName#methodName#{String|Long}abc@@123
 	 * 
 	 * @param region
 	 * @param beanName
@@ -73,7 +73,7 @@ public class CacheCodeUtil {
 
 	/**
 	 * 缓存适配器的key<br>
-	 * 格式：regionbeanName#methodName#{String,Long}
+	 * 格式：regionbeanName#methodName#{String|Long}
 	 * 
 	 * @param region
 	 * @param beanName
@@ -95,6 +95,21 @@ public class CacheCodeUtil {
 		String methodName = methodConfig.getMethodName();
 		List<Class<?>> parameterTypes = methodConfig.getParameterTypes();
 
+		key.append(beanName).append(KEY_SPLITE_SIGN);
+		key.append(methodName).append(KEY_SPLITE_SIGN);
+		key.append(parameterTypesToString(parameterTypes));
+
+		return key.toString();
+
+	}
+
+	/**
+	 * 参数toString，格式{String|int}
+	 * 
+	 * @param parameterTypes
+	 * @return
+	 */
+	public static String parameterTypesToString(List<Class<?>> parameterTypes) {
 		StringBuilder parameter = new StringBuilder("{");
 		if (parameterTypes != null) {
 			for (Class<?> clazz : parameterTypes) {
@@ -106,13 +121,7 @@ public class CacheCodeUtil {
 			}
 		}
 		parameter.append("}");
-
-		key.append(beanName).append(KEY_SPLITE_SIGN);
-		key.append(methodName).append(KEY_SPLITE_SIGN);
-		key.append(parameter.toString());
-
-		return key.toString();
-
+		return parameter.toString();
 	}
 
 }

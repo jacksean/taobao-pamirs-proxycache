@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
@@ -18,7 +19,11 @@ public class XrayLogListenerTest {
 
 	@Test
 	public void testOprate() throws Exception {
-		XrayLogListener xray = new XrayLogListener("bean123", "name456");
+		ArrayList<Class<?>> params = new ArrayList<Class<?>>();
+		params.add(String.class);
+		params.add(int.class);
+
+		XrayLogListener xray = new XrayLogListener("bean123", "name456", params);
 
 		Method getXrayLog = XrayLogListener.class.getDeclaredMethod(
 				"getXrayLog", CacheOprator.class, boolean.class, long.class);
@@ -27,7 +32,8 @@ public class XrayLogListenerTest {
 
 		Object result = getXrayLog.invoke(xray, CacheOprator.GET, true, 100L);
 
-		assertThat(result.toString(), equalTo(",bean123,name456,GET,true,100"));
+		assertThat(result.toString(),
+				equalTo(",bean123,name456,{String|int},GET,true,100"));
 	}
 
 }

@@ -70,7 +70,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 				String adapterKey = CacheCodeUtil.getCacheAdapterKey(
 						storeRegion, beanName, cacheMethod);
 				CacheProxy<Serializable, Serializable> cacheAdapter = cacheManager
-						.getCacheProxys(adapterKey);
+						.getCacheProxy(adapterKey);
 
 				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
 						beanName, cacheMethod, invocation);
@@ -154,7 +154,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			String adapterKey = CacheCodeUtil.getCacheAdapterKey(storeRegion,
 					beanName, methodConfig);
 			CacheProxy<Serializable, Serializable> cacheAdapter = cacheManager
-					.getCacheProxys(adapterKey);
+					.getCacheProxy(adapterKey);
 
 			if (cacheAdapter != null) {
 				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,

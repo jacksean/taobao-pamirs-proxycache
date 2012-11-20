@@ -130,7 +130,8 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 					cacheMethod.getExpiredTime());
 			
 			// 4. ×¢²áXray log
-			cacheProxy.addListener(new XrayLogListener(beanName, cacheMethod.getMethodName()));
+			cacheProxy.addListener(new XrayLogListener(beanName, cacheMethod
+					.getMethodName(), cacheMethod.getParameterTypes()));
 		}
 	}
 
@@ -156,7 +157,7 @@ public abstract class CacheManager implements ApplicationContextAware, ICacheCon
 		}
 	}
 	
-	public CacheProxy<Serializable, Serializable> getCacheProxys(String key) {
+	public CacheProxy<Serializable, Serializable> getCacheProxy(String key) {
 		if (key == null || cacheProxys == null)
 			return null;
 

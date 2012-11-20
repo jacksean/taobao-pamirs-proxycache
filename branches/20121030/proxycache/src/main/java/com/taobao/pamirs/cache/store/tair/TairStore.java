@@ -46,7 +46,14 @@ public class TairStore<K extends Serializable, V extends Serializable>
 			if (tairData == null)
 				return null;
 
-			return (V) tairData.getValue();// 第二个getValue返回真正的value
+			try {
+				return (V) tairData.getValue();// 第二个getValue返回真正的value
+			} catch (ClassCastException e) {
+				// 转换出错，主要用于兼容老的包装
+				this.remove(key);
+				throw new CacheException(1024,
+						"TairStore-ClassCastException(缓存对象不兼容性错误)");
+			}
 		}
 
 		// 失败（包括已经expireTime到期）

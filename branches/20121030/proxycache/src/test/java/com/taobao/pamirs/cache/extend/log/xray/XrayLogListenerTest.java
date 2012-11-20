@@ -33,7 +33,7 @@ public class XrayLogListenerTest {
 		Object result = getXrayLog.invoke(xray, CacheOprator.GET, true, 100L);
 
 		assertThat(result.toString(),
-				equalTo(",bean123,name456,{String|int},GET,true,100"));
+				equalTo(",PAMIRS_XRAY,bean123,name456,{String|int},GET,true,100"));
 	}
 
 }

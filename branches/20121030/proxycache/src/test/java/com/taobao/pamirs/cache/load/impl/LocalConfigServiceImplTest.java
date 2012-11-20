@@ -20,7 +20,7 @@ import com.taobao.pamirs.cache.util.CacheCodeUtil;
 public class LocalConfigServiceImplTest extends UnitilsJUnit4 {
 
 	@SpringBeanByName
-	private LocalConfigServiceImpl cacheManager;
+	private LocalConfigCacheManager cacheManager;
 
 	@Test
 	public void testGetCacheProxy() {

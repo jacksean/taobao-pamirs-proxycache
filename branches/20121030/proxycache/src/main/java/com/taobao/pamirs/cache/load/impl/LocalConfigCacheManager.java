@@ -15,9 +15,8 @@ import com.taobao.pamirs.cache.util.ConfigUtil;
  * 
  * @author poxiao.gj
  * @date 2012-11-13
- * 
  */
-public class LocalConfigServiceImpl extends AbstractCacheConfigService {
+public class LocalConfigCacheManager extends AbstractCacheConfigService {
 
 	private List<String> configFilePaths;
 	private boolean isInit = false;
@@ -77,7 +76,7 @@ public class LocalConfigServiceImpl extends AbstractCacheConfigService {
 		try {
 			ClassLoader classLoader = Thread.class.getClassLoader();
 			if (classLoader == null) {
-				classLoader = LocalConfigServiceImpl.class.getClassLoader();
+				classLoader = LocalConfigCacheManager.class.getClassLoader();
 			}
 			List<CacheModule> cacheModuleList = new ArrayList<CacheModule>();
 			for (String configFilePath : configFilePaths) {

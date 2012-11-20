@@ -8,7 +8,7 @@ import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByName;
 
-import com.taobao.pamirs.cache.load.impl.LocalConfigServiceImpl;
+import com.taobao.pamirs.cache.load.impl.LocalConfigCacheManager;
 
 /**
  * —È÷§JMX
@@ -20,7 +20,7 @@ import com.taobao.pamirs.cache.load.impl.LocalConfigServiceImpl;
 public class JmxTest extends UnitilsJUnit4 {
 
 	@SpringBeanByName
-	private LocalConfigServiceImpl cacheManager;
+	private LocalConfigCacheManager cacheManager;
 
 	@Test
 	public void testJMX() throws InterruptedException {

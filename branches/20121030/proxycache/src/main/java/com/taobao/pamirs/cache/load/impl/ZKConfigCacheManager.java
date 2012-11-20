@@ -3,7 +3,7 @@ package com.taobao.pamirs.cache.load.impl;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.load.AbstractCacheConfigService;
 
-public class ZKConfigServiceImpl extends AbstractCacheConfigService {
+public class ZKConfigCacheManager extends AbstractCacheConfigService {
 
 	public void init() {
 		// ....

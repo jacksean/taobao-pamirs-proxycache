@@ -16,15 +16,14 @@ import com.taobao.pamirs.cache.framework.CacheProxy;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 
-@SpringApplicationContext({ "/store/tair-store.xml", "/load/cache-spring.xml",
-		"/load/jmx-spring.xml" })
+@SpringApplicationContext({ "/store/tair-store.xml", "/load/cache-spring.xml" })
 public class LocalConfigServiceImplTest extends UnitilsJUnit4 {
 
 	@SpringBeanByName
 	private LocalConfigServiceImpl cacheManager;
 
 	@Test
-	public void testgetCacheProxy() {
+	public void testGetCacheProxy() {
 		MethodConfig methodConfig = new MethodConfig();
 		methodConfig.setMethodName("firstHaveValue");
 

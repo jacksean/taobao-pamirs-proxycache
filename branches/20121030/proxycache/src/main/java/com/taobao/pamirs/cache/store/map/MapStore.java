@@ -24,7 +24,15 @@ import com.taobao.pamirs.cache.util.lru.ConcurrentLRUCacheMap;
 public class MapStore<K extends Serializable, V extends Serializable>
 		implements ICache<K, V> {
 
-	private final ConcurrentLRUCacheMap<K, ObjectBoxing<V>> datas = new ConcurrentLRUCacheMap<K, ObjectBoxing<V>>();
+	private final ConcurrentLRUCacheMap<K, ObjectBoxing<V>> datas;
+
+	public MapStore() {
+		datas = new ConcurrentLRUCacheMap<K, ObjectBoxing<V>>();
+	}
+
+	public MapStore(int size, int segmentSize) {
+		datas = new ConcurrentLRUCacheMap<K, ObjectBoxing<V>>(size, segmentSize);
+	}
 
 	@Override
 	public V get(K key) {

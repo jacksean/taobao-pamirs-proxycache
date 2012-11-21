@@ -1,6 +1,7 @@
 package com.taobao.pamirs.cache.load;
 
 import com.taobao.pamirs.cache.CacheManager;
+import com.taobao.pamirs.cache.store.StoreType;
 
 /**
  * 缓存抽象公共
@@ -12,16 +13,22 @@ public abstract class AbstractCacheConfigService extends CacheManager {
 
 	/**
 	 * 缓存存储类型
+	 * 
+	 * @see StoreType
 	 */
 	private String storeType;
 
 	/**
 	 * tair储存空间【default为-1】
+	 * 
+	 * @see StoreType.TAIR
 	 */
 	private int tairNameSpace = -1;
 
 	/**
 	 * 本地缓存清理时间
+	 * 
+	 * @see StoreType.MAP
 	 */
 	private String mapCleanTime;
 

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -33,6 +32,7 @@ import com.taobao.pamirs.cache.store.map.MapStore;
 import com.taobao.pamirs.cache.store.tair.TairStore;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 import com.taobao.pamirs.cache.util.ConfigUtil;
+import com.taobao.pamirs.cache.util.lru.ConcurrentLRUCacheMap;
 import com.taobao.tair.TairManager;
 
 /**
@@ -61,7 +61,20 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	private boolean useCache = true;
 
-	public CountDownLatch countDownLatch = new CountDownLatch(1);
+	/**
+	 * 指定本地缓存时LruMap的大小，默认是1024
+	 * 
+	 * @see StoreType.MAP
+	 * @see ConcurrentLRUCacheMap
+	 */
+	private int localMapSize = ConcurrentLRUCacheMap.DEFAULT_INITIAL_CAPACITY;
+	/**
+	 * 指定本地缓存分段的大小，默认是16
+	 * 
+	 * @see StoreType.MAP
+	 * @see ConcurrentLRUCacheMap
+	 */
+	private int localMapSegmentSize = ConcurrentLRUCacheMap.DEFAULT_CONCURRENCY_LEVEL;;
 
 	public void init() throws Exception {
 		// 1. 加载/校验config
@@ -143,7 +156,8 @@ public abstract class CacheManager implements ApplicationContextAware,
 			cache = new TairStore<Serializable, Serializable>(tairManager,
 					cacheConfig.getStoreTairNameSpace());
 		} else if (StoreType.MAP == storeType) {
-			cache = new MapStore<Serializable, Serializable>();
+			cache = new MapStore<Serializable, Serializable>(localMapSize,
+					localMapSegmentSize);
 		}
 
 		if (cache != null) {
@@ -226,6 +240,14 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	public ApplicationContext getApplicationContext() {
 		return applicationContext;
+	}
+
+	public void setLocalMapSize(int localMapSize) {
+		this.localMapSize = localMapSize;
+	}
+
+	public void setLocalMapSegmentSize(int localMapSegmentSize) {
+		this.localMapSegmentSize = localMapSegmentSize;
 	}
 
 }

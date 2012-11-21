@@ -22,10 +22,10 @@ public class ConcurrentLRUCacheMap<K, V> implements Serializable {
 	private static final long serialVersionUID = -6742744299745956041L;
 
 	/** 默认大小 */
-	static final int DEFAULT_INITIAL_CAPACITY = 1 << 10;
+	public static final int DEFAULT_INITIAL_CAPACITY = 1 << 10;
 
 	/** 默认的分区数量 */
-	static final int DEFAULT_CONCURRENCY_LEVEL = 1 << 4;
+	public static final int DEFAULT_CONCURRENCY_LEVEL = 1 << 4;
 
 	/** 最大容量 */
 	static final int MAXIMUM_CAPACITY = 1 << 30;
@@ -53,46 +53,49 @@ public class ConcurrentLRUCacheMap<K, V> implements Serializable {
 		this(DEFAULT_INITIAL_CAPACITY, DEFAULT_CONCURRENCY_LEVEL);
 	}
 
+	public ConcurrentLRUCacheMap(int size) {
+		this(size, DEFAULT_CONCURRENCY_LEVEL);
+	}
+
 	/**
 	 * 推荐构造函数 <br>
 	 * 如果key hash碰巧热点到部分segment中，会有LRU的整个size未满时，也可能被remove
 	 * 
-	 * @param initialCapacity
-	 *            必须能被concurrencyLevel整除
-	 * @param concurrencyLevel
+	 * @param size
+	 *            必须能被segmentSize整除
+	 * @param segmentSize
 	 *            必须2的倍数
 	 */
 	@SuppressWarnings("unchecked")
-	public ConcurrentLRUCacheMap(int initialCapacity, int concurrencyLevel) {
-		if (initialCapacity < 0 || concurrencyLevel <= 0)
+	public ConcurrentLRUCacheMap(int size, int segmentSize) {
+		if (size < 0 || segmentSize <= 0)
 			throw new IllegalArgumentException();
 
-		if (concurrencyLevel > MAX_SEGMENTS)
-			concurrencyLevel = MAX_SEGMENTS;
+		if (segmentSize > MAX_SEGMENTS)
+			segmentSize = MAX_SEGMENTS;
 
 		// Find power-of-two sizes best matching arguments
 		int sshift = 0;
 		int ssize = 1;// 分区大小：2的倍数
-		while (ssize < concurrencyLevel) {
+		while (ssize < segmentSize) {
 			++sshift;
 			ssize <<= 1;
 		}
 
-		if (ssize != concurrencyLevel)
-			throw new IllegalArgumentException(
-					"concurrencyLevel must be power-of-two!");
+		if (ssize != segmentSize)
+			throw new IllegalArgumentException("size must be power-of-two!");
 
 		segmentShift = 32 - sshift;
 		segmentMask = ssize - 1;
 		this.segments = new LRUMapLocked[ssize];
 
-		if (initialCapacity > MAXIMUM_CAPACITY)
-			initialCapacity = MAXIMUM_CAPACITY;
-		int c = initialCapacity / ssize;
-		if (c * ssize != initialCapacity)
+		if (size > MAXIMUM_CAPACITY)
+			size = MAXIMUM_CAPACITY;
+		int c = size / ssize;
+		if (c * ssize != size)
 			throw new IllegalArgumentException(
-					"initialCapacity must divide exactly for concurrencyLevel!");
-		if (c * ssize < initialCapacity)
+					"size must divide exactly for segmentSize!");
+		if (c * ssize < size)
 			++c;
 		int cap = 1;// 平摊到每个分区Map的size
 		while (cap < c)

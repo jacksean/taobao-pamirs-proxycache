@@ -38,7 +38,7 @@ public class CacheManagerHandle extends AbstractAutoProxyCreator {
 		
 		if (ConfigUtil.isBeanHaveCache(cacheManager.getCacheConfig(), beanName)) {
 
-			log.info("CacheManager start... ProxyBean:" + beanName);
+			log.warn("CacheManager start... ProxyBean:" + beanName);
 
 			return new CacheManagerAdvisor[] { new CacheManagerAdvisor(
 					cacheManager, beanName) };

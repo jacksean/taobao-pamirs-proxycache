@@ -67,9 +67,6 @@ public abstract class CacheManager implements ApplicationContextAware,
 		// 1. 加载/校验config
 		cacheConfig = loadConfig();
 
-		// 2. 初始化缓存
-		initCache();
-
 		// 后面两个，见onApplicationEvent方法
 	}
 
@@ -77,11 +74,15 @@ public abstract class CacheManager implements ApplicationContextAware,
 	public void onApplicationEvent(ApplicationEvent event) {
 		// 放在onApplicationEvent里，原因是解决CacheManagerHandle里先执行代理，再applicationContext.getBean，否则代理不了
 
-		// 3. 自动填充默认的配置
+		// 2. 自动填充默认的配置
 		autoFillCacheConfig(cacheConfig);
 
-		// 4. 缓存配置合法性校验
-//		verifyCacheConfig(cacheConfig);
+		// 3. 缓存配置合法性校验
+		// verifyCacheConfig(cacheConfig);
+
+		// 4. 初始化缓存
+		initCache();
+
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 		CacheConfigVerify cacheConfigVerify = new CacheConfigVerify(
 				applicationContext);
 		if (!cacheConfigVerify.checkCacheConfig(cacheConfig)) {
-			throw new LoadConfigException("缓存加载配置时，配置校验失败");
+			throw new LoadConfigException("缓存配置校验失败");
 		}
 	}
 

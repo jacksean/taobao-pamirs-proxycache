@@ -29,7 +29,7 @@ import com.taobao.pamirs.cache.framework.config.MethodConfig;
  * 
  * @author xiaocheng 2012-11-19
  */
-@SpringApplicationContext({ "/load/cache-spring.xml" })
+@SpringApplicationContext({ "/store/tair-store.xml", "/load/cache-spring.xml" })
 public class ConfigUtilTest extends UnitilsJUnit4 {
 
 	@SpringBeanByName

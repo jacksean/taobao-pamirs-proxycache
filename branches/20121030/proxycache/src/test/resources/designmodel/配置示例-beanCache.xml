@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="GBK"?>
-<cacheConfig>
-	<storeType>tair/map</storeType>
-	<storeTairNameSpace>318</storeTairNameSpace>				<!-- just for tair store -->
-	<storeMapCleanTime>0 * * * * ? *</storeMapCleanTime>		<!-- just for map store，可选 -->
-	<storeRegion>${store.tair.region}</storeRegion>				<!-- 环境分区，可选 -->
-	<localMapSize>1024</localMapSize>							<!-- just for map store，可选，默认1024 -->
-	<localMapSegmentSize>6</localMapSegmentSize>				<!-- just for map store，可选，默认16 -->
-
+<cacheModule>
 	<!-- 缓存Bean配置 -->
 	<cacheBeans>
 		<cacheBean>
@@ -51,4 +44,4 @@
 		</cacheCleanBean>
 		<cacheCleanBean>...</cacheCleanBean>
 	</cacheCleanBeans>
-</cacheConfig>
+</cacheModule>

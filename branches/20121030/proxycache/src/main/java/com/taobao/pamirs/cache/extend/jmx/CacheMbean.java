@@ -21,6 +21,7 @@ import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
+import com.taobao.pamirs.cache.util.IpUtil;
 
 /**
  * 缓存bean的Mbean
@@ -114,7 +115,7 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 
 	public String remove(K key) {
 		try {
-			cache.remove(key);
+			cache.remove(key, IpUtil.getLocalIp());
 		} catch (Exception e) {
 			return "Cache Remove Failure Key:" + key;
 		}
@@ -123,9 +124,9 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 	}
 
 	public V get(K key) {
-		return cache.get(key);
+		return cache.get(key, IpUtil.getLocalIp());
 	}
-
+	
 	/**
 	 * 这个方法通过 Cache 获取真实值.
 	 * 
@@ -212,7 +213,7 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 
 	public String put(K key, V value) {
 		try {
-			this.cache.put(key, value);
+			this.cache.put(key, value, IpUtil.getLocalIp());
 		} catch (Exception e) {
 			return "Cache Put Failure Key:" + key + " Value:" + value;
 		}

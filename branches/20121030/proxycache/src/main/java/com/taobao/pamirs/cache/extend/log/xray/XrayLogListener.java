@@ -35,7 +35,7 @@ public class XrayLogListener implements CacheOprateListener {
 	@Override
 	public void oprate(CacheOprator oprator, CacheOprateInfo cacheInfo) {
 		writer.write(getXrayLog(oprator, cacheInfo.isHitting(),
-				cacheInfo.getMethodTime()));
+				cacheInfo.getMethodTime(), cacheInfo.getIp()));
 	}
 
 	/**
@@ -46,9 +46,11 @@ public class XrayLogListener implements CacheOprateListener {
 	 * @param useTime
 	 * @param parameterTypes
 	 */
-	private String getXrayLog(CacheOprator type, boolean isHit, long useTime) {
+	private String getXrayLog(CacheOprator type, boolean isHit, long useTime,
+			String ip) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SEPARATOR).append(XRAY_KEYWORD);
+		sb.append(SEPARATOR).append(ip);
 		sb.append(SEPARATOR).append(beanName);
 		sb.append(SEPARATOR).append(methodName);
 		sb.append(SEPARATOR).append(

@@ -41,7 +41,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 		MethodConfig cacheMethod = null;
 		List<MethodConfig> cacheCleanMethods = null;
-		String storeRegion ="";
+		String storeRegion = "";
 
 		try {
 			CacheConfig cacheConfig = cacheManager.getCacheConfig();
@@ -57,11 +57,18 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			cacheCleanMethods = ConfigUtil.getCacheCleanMethods(cacheConfig,
 					beanName, methodName, parameterTypes);
 
-			
 		} catch (Exception e) {
 			log.error("CacheManager:切面解析配置出错:" + beanName + "#"
 					+ invocation.getMethod().getName(), e);
 			return invocation.proceed();
+		}
+
+		String fromHsfIp = "";// hsf consumer ip
+		try {
+			fromHsfIp = (String) invocation.getThis().getClass()
+					.getMethod("getCustomIp").invoke(invocation.getThis());
+		} catch (Exception e) {
+			// ignore
 		}
 
 		try {
@@ -76,7 +83,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 						beanName, cacheMethod, invocation);
 
 				return useCache(cacheAdapter, cacheCode,
-						cacheMethod.getExpiredTime(), invocation);
+						cacheMethod.getExpiredTime(), invocation, fromHsfIp);
 			}
 
 			// 2. cache clean
@@ -85,7 +92,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 					return invocation.proceed();
 				} finally {
 					cleanCache(beanName, cacheCleanMethods, invocation,
-							storeRegion);
+							storeRegion, fromHsfIp);
 				}
 			}
 
@@ -110,12 +117,12 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	 */
 	private Object useCache(
 			CacheProxy<Serializable, Serializable> cacheAdapter,
-			String cacheCode, Integer expireTime, MethodInvocation invocation)
-			throws Throwable {
+			String cacheCode, Integer expireTime, MethodInvocation invocation,
+			String ip) throws Throwable {
 		if (cacheAdapter == null)
 			return invocation.proceed();
 
-		Object response = cacheAdapter.get(cacheCode);
+		Object response = cacheAdapter.get(cacheCode, ip);
 
 		if (response == null) {
 			response = invocation.proceed();
@@ -124,10 +131,10 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 				return response;
 
 			if (expireTime == null) {
-				cacheAdapter.put(cacheCode, (Serializable) response);
+				cacheAdapter.put(cacheCode, (Serializable) response, ip);
 			} else {
-				cacheAdapter
-						.put(cacheCode, (Serializable) response, expireTime);
+				cacheAdapter.put(cacheCode, (Serializable) response,
+						expireTime, ip);
 			}
 		}
 
@@ -145,7 +152,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	 */
 	private void cleanCache(String beanName,
 			List<MethodConfig> cacheCleanMethods, MethodInvocation invocation,
-			String storeRegion) throws Throwable {
+			String storeRegion, String ip) throws Throwable {
 		if (cacheCleanMethods == null || cacheCleanMethods.isEmpty())
 			return;
 
@@ -159,7 +166,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			if (cacheAdapter != null) {
 				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
 						beanName, methodConfig, invocation);// 这里的invocation直接用主bean的，因为清理的bean的参数必须和主bean保持一致
-				cacheAdapter.remove(cacheCode);
+				cacheAdapter.remove(cacheCode, ip);
 			}
 		}
 	}

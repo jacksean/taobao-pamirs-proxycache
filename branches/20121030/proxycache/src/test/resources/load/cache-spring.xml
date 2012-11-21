@@ -22,6 +22,7 @@
 				<value>load/cache-config.xml</value>
 			</list>
 		</property>
+		<property name="tairManager" ref="tairManager" />
 	</bean>
 
 	<bean class="com.taobao.pamirs.cache.framework.aop.handle.CacheManagerHandle">

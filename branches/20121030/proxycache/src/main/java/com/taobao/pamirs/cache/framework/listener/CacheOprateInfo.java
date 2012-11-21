@@ -22,13 +22,17 @@ public class CacheOprateInfo extends MethodConfig implements Serializable {
 	/** 是否命中（for GET） */
 	private boolean isHitting;
 	private CacheException cacheException;
+	/** 调用来源：ip */
+	private String ip;
 
-	public CacheOprateInfo(Serializable key, long methodTime, boolean isHitting,
-			String beanName, MethodConfig methodConfig, CacheException exception) {
+	public CacheOprateInfo(Serializable key, long methodTime,
+			boolean isHitting, String beanName, MethodConfig methodConfig,
+			CacheException exception, String ip) {
 		this.key = key;
 		this.methodTime = methodTime;
 		this.isHitting = isHitting;
 		this.cacheException = exception;
+		this.ip = ip;
 
 		if (methodConfig != null) {
 			this.setBeanName(beanName);
@@ -76,6 +80,10 @@ public class CacheOprateInfo extends MethodConfig implements Serializable {
 
 	public CacheException getCacheException() {
 		return cacheException;
+	}
+
+	public String getIp() {
+		return ip;
 	}
 
 }

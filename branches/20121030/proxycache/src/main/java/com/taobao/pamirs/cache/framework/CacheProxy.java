@@ -18,7 +18,7 @@ import com.taobao.pamirs.cache.store.StoreType;
  * @author xiaocheng 2012-10-31
  */
 public class CacheProxy<K extends Serializable, V extends Serializable> extends
-		CacheObservable implements ICache<K, V> {
+		CacheObservable {
 
 	private StoreType storeType;
 	private String key;
@@ -38,8 +38,7 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		this.methodConfig = methodConfig;
 	}
 
-	@Override
-	public V get(K key) {
+	public V get(K key, String ip) {
 		if (!isUseCache)
 			return null;
 
@@ -59,13 +58,12 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 
 		// listener
 		notifyListeners(GET, new CacheOprateInfo(key, end - start, isHitting,
-				beanName, methodConfig, cacheException));
+				beanName, methodConfig, cacheException, ip));
 
 		return v;
 	}
 
-	@Override
-	public void put(K key, V value) {
+	public void put(K key, V value, String ip) {
 
 		CacheException cacheException = null;
 
@@ -79,12 +77,11 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		long end = System.currentTimeMillis();
 
 		// listener
-		notifyListeners(PUT, new CacheOprateInfo(key, end - start, true, beanName,
-				methodConfig, cacheException));
+		notifyListeners(PUT, new CacheOprateInfo(key, end - start, true,
+				beanName, methodConfig, cacheException, ip));
 	}
 
-	@Override
-	public void put(K key, V value, int expireTime) {
+	public void put(K key, V value, int expireTime, String ip) {
 		CacheException cacheException = null;
 
 		long start = System.currentTimeMillis();
@@ -97,11 +94,10 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 
 		// listener
 		notifyListeners(PUT_EXPIRE, new CacheOprateInfo(key, end - start, true,
-				beanName, methodConfig, cacheException));
+				beanName, methodConfig, cacheException, ip));
 	}
 
-	@Override
-	public void remove(K key) {
+	public void remove(K key, String ip) {
 		CacheException cacheException = null;
 
 		long start = System.currentTimeMillis();
@@ -113,16 +109,14 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		long end = System.currentTimeMillis();
 
 		// listener
-		notifyListeners(REMOVE, new CacheOprateInfo(key, end - start, true, beanName,
-				methodConfig, cacheException));
+		notifyListeners(REMOVE, new CacheOprateInfo(key, end - start, true,
+				beanName, methodConfig, cacheException, ip));
 	}
 
-	@Override
 	public void clear() {
 		cache.clear();
 	}
 
-	@Override
 	public int size() {
 		return cache.size();
 	}

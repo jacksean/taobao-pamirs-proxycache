@@ -67,8 +67,9 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 		try {
 			fromHsfIp = (String) invocation.getThis().getClass()
 					.getMethod("getCustomIp").invoke(invocation.getThis());
-		} catch (Exception e) {
-			// ignore
+		} catch (NoSuchMethodException e) {
+			log.warn("接口没有实现HSF的getCustomIp方法，取不到Consumer IP, beanName="
+					+ beanName);
 		}
 
 		try {
@@ -100,7 +101,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			return invocation.proceed();
 		} catch (Exception e) {
 			log.error("CacheManager:出错:" + beanName + "#"
-					+ invocation.getMethod().getName() + e.getMessage(), e);
+					+ invocation.getMethod().getName(), e);
 			throw e;
 		}
 	}

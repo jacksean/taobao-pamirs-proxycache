@@ -22,7 +22,7 @@ public class XrayLogListener implements CacheOprateListener {
 	private List<Class<?>> parameterTypes;
 
 	/** ¹Ø¼ü×Ö */
-	private static final String XRAY_KEYWORD = "PAMIRS_XRAY";
+	private static final String XRAY_KEYWORD = "PAMIRS_CACHE_XRAY";
 	private static final String SEPARATOR = ",";
 
 	public XrayLogListener(String beanName, String methodName,

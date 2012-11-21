@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import com.taobao.pamirs.cache.framework.listener.CacheOprator;
+import com.taobao.pamirs.cache.util.IpUtil;
 
 /**
  * xray∏Ò Ω
@@ -26,14 +27,17 @@ public class XrayLogListenerTest {
 		XrayLogListener xray = new XrayLogListener("bean123", "name456", params);
 
 		Method getXrayLog = XrayLogListener.class.getDeclaredMethod(
-				"getXrayLog", CacheOprator.class, boolean.class, long.class);
+				"getXrayLog", CacheOprator.class, boolean.class, long.class,
+				String.class);
 
 		getXrayLog.setAccessible(true);
 
-		Object result = getXrayLog.invoke(xray, CacheOprator.GET, true, 100L);
+		String ip = IpUtil.getLocalIp();
+		Object result = getXrayLog.invoke(xray, CacheOprator.GET, true, 100L,
+				ip);
 
-		assertThat(result.toString(),
-				equalTo(",PAMIRS_XRAY,bean123,name456,{String|int},GET,true,100"));
+		assertThat(result.toString(), equalTo(",PAMIRS_XRAY," + ip
+				+ ",bean123,name456,{String|int},GET,true,100"));
 	}
 
 }

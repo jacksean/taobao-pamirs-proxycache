@@ -36,7 +36,7 @@ public class XrayLogListenerTest {
 		Object result = getXrayLog.invoke(xray, CacheOprator.GET, true, 100L,
 				ip);
 
-		assertThat(result.toString(), equalTo(",PAMIRS_XRAY," + ip
+		assertThat(result.toString(), equalTo(",PAMIRS_CACHE_XRAY," + ip
 				+ ",bean123,name456,{String|int},GET,true,100"));
 	}
 

@@ -33,6 +33,9 @@ public class CacheManagerHandle extends AbstractAutoProxyCreator {
 	@SuppressWarnings("rawtypes")
 	protected Object[] getAdvicesAndAdvisorsForBean(Class beanClass,
 			String beanName, TargetSource targetSource) throws BeansException {
+		
+		log.debug("CacheManagerHandle in:" + beanName);
+		
 		if (ConfigUtil.isBeanHaveCache(cacheManager.getCacheConfig(), beanName)) {
 
 			log.info("CacheManager start... ProxyBean:" + beanName);

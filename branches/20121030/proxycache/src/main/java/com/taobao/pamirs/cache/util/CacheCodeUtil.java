@@ -2,7 +2,6 @@ package com.taobao.pamirs.cache.util;
 
 import java.util.List;
 
-import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.Assert;
 
@@ -42,13 +41,11 @@ public class CacheCodeUtil {
 	 * @param region
 	 * @param beanName
 	 * @param methodConfig
-	 * @param invocation
+	 * @param parameters
 	 * @return
 	 */
 	public static String getCacheCode(String region, String beanName,
-			MethodConfig methodConfig, MethodInvocation invocation) {
-		Assert.notNull(invocation);
-
+			MethodConfig methodConfig, Object[] parameters) {
 		// ×îÖÕµÄ»º´æcode
 		StringBuilder code = new StringBuilder();
 
@@ -57,16 +54,17 @@ public class CacheCodeUtil {
 		code.append(getCacheAdapterKey(region, beanName, methodConfig));
 
 		// 3. value
-		Object[] parameters = invocation.getArguments();
-		StringBuilder valus = new StringBuilder();
-		for (Object param : parameters) {
-			if (valus.length() != 0) {
-				valus.append(CODE_PARAM_VALUES_SPLITE_SIGN);
-			}
+		if (parameters != null) {
+			StringBuilder valus = new StringBuilder();
+			for (Object param : parameters) {
+				if (valus.length() != 0) {
+					valus.append(CODE_PARAM_VALUES_SPLITE_SIGN);
+				}
 
-			valus.append(param == null ? "null" : param.toString());
+				valus.append(param == null ? "null" : param.toString());
+			}
+			code.append(valus.toString());
 		}
-		code.append(valus.toString());
 
 		return code.toString();
 	}

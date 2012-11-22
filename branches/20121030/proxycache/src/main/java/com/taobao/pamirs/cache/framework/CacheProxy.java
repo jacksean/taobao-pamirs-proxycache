@@ -21,6 +21,7 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		CacheObservable {
 
 	private StoreType storeType;
+	private String storeRegion;
 	private String key;
 
 	/** 注入真正的cache实现 */
@@ -29,9 +30,10 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 	private String beanName;
 	private MethodConfig methodConfig;
 
-	public CacheProxy(StoreType storeType, String key, ICache<K, V> cache,
-			String beanName, MethodConfig methodConfig) {
+	public CacheProxy(StoreType storeType, String storeRegion, String key,
+			ICache<K, V> cache, String beanName, MethodConfig methodConfig) {
 		this.storeType = storeType;
+		this.storeRegion = storeRegion;
 		this.key = key;
 		this.cache = cache;
 		this.beanName = beanName;
@@ -138,6 +140,10 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 
 	public StoreType getStoreType() {
 		return storeType;
+	}
+
+	public String getStoreRegion() {
+		return storeRegion;
 	}
 
 	public String getKey() {

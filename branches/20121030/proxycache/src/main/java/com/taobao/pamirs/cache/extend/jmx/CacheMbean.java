@@ -2,8 +2,6 @@ package com.taobao.pamirs.cache.extend.jmx;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.management.MBeanAttributeInfo;
@@ -11,17 +9,19 @@ import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanParameterInfo;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.Assert;
 
 import com.taobao.pamirs.cache.extend.jmx.mbean.AbstractDynamicMBean;
 import com.taobao.pamirs.cache.framework.CacheProxy;
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
+import com.taobao.pamirs.cache.util.AopProxyUtil;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 import com.taobao.pamirs.cache.util.IpUtil;
+import com.taobao.pamirs.cache.util.ParameterSupportTypeUtil;
 
 /**
  * 缓存bean的Mbean
@@ -31,11 +31,10 @@ import com.taobao.pamirs.cache.util.IpUtil;
  */
 public class CacheMbean<K extends Serializable, V extends Serializable> extends
 		AbstractDynamicMBean {
-	private static final Log log = LogFactory.getLog(CacheMbean.class);
 
 	public static final String MBEAN_NAME = "Pamirs-Cache";
 
-	private CacheProxy<K, V> cache = null;
+	private CacheProxy<K, V> cacheProxy = null;
 	private CacheMbeanListener listener;
 	private ApplicationContext applicationContext;
 	/**
@@ -54,7 +53,7 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 	public CacheMbean(CacheProxy<K, V> cache, CacheMbeanListener listener,
 			ApplicationContext applicationContext, String storeMapCleanTime,
 			Integer expiredTime) {
-		this.cache = cache;
+		this.cacheProxy = cache;
 		this.listener = listener;
 		this.applicationContext = applicationContext;
 		this.storeMapCleanTime = storeMapCleanTime;
@@ -62,23 +61,23 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 	}
 
 	public String getCacheName() {
-		return cache.getKey();
+		return cacheProxy.getKey();
 	}
 
 	public String getStoreType() {
-		return cache.getStoreType().getName();
+		return cacheProxy.getStoreType().getName();
 	}
 
 	public String getStoreCount() {
 		try {
-			return cache.size() + "";
+			return cacheProxy.size() + "";
 		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}
 
 	public boolean getIsUseCache() {
-		return cache.isUseCache();
+		return cacheProxy.isUseCache();
 	}
 
 	public long getReadHits() {
@@ -113,20 +112,40 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 		return storeMapCleanTime;
 	}
 
+	@SuppressWarnings("unchecked")
+	public V get(K key) {
+		try {
+			return cacheProxy.get((K) keyToCacheCode((String) key),
+					IpUtil.getLocalIp());
+		} catch (Exception e) {
+			return (V) ("Cache Get Failure Key:" + key + " Exception:" + e
+					.getMessage());
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public String put(K key, V value) {
+		try {
+			cacheProxy.put((K) keyToCacheCode((String) key), value,
+					IpUtil.getLocalIp());
+			return "Cache Put Successfully Key:" + key + " Value:" + value;
+		} catch (Exception e) {
+			return "Cache Put Failure Key:" + key + " Value:" + value
+					+ " Exception:" + e.getMessage();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
 	public String remove(K key) {
 		try {
-			cache.remove(key, IpUtil.getLocalIp());
+			cacheProxy.remove((K) keyToCacheCode((String) key),
+					IpUtil.getLocalIp());
+			return "Cache Remove Successfully Key:" + key;
 		} catch (Exception e) {
 			return "Cache Remove Failure Key:" + key;
 		}
-
-		return "Cache Remove Successfully Key:" + key;
 	}
 
-	public V get(K key) {
-		return cache.get(key, IpUtil.getLocalIp());
-	}
-	
 	/**
 	 * 这个方法通过 Cache 获取真实值.
 	 * 
@@ -135,89 +154,99 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 	 */
 	@SuppressWarnings("unchecked")
 	public V getRealValue(K key) {
-
 		try {
-			MethodConfig methodConfig = cache.getMethodConfig();
-			Object bean = applicationContext.getBean(cache.getBeanName());
+			// 重用其中的非法校验
+			keyToCacheCode((String) key);
+
+			MethodConfig methodConfig = cacheProxy.getMethodConfig();
+			Object bean = AopProxyUtil
+					.getPrimitiveProxyTarget(applicationContext
+							.getBean(cacheProxy.getBeanName()));// 取得原生对象
 			List<Class<?>> parameterTypes = methodConfig.getParameterTypes();
 
-			Method method = null;
-
-			// 1. 无参方法
-			if (parameterTypes == null || parameterTypes.isEmpty()) {
-				method = bean.getClass()
-						.getMethod(methodConfig.getMethodName());
+			// 无参
+			if (parameterTypes == null) {
+				Method method = bean.getClass().getMethod(
+						methodConfig.getMethodName());
 				return (V) method.invoke(bean);
 			}
 
-			// 2. 有参方法
-			String[] keyItems = key.toString().split(
-					CacheCodeUtil.CODE_PARAM_VALUES_SPLITE_SIGN);
-
-			if (keyItems.length != parameterTypes.size()) {
-				String erroMsg = "jmx的参数数量和接口的参数数量不一致,请求：" + key.toString()
-						+ "接口参数:" + parameterTypes;
-				return (V) erroMsg;
-			}
-
-			Object[] parameterValues = new Object[parameterTypes.size()];
-
-			for (int i = 0; i < parameterTypes.size(); i++) {
-				Class<?> clz = parameterTypes.get(i);
-
-				if (clz.isAssignableFrom(boolean.class)
-						|| clz.isAssignableFrom(Boolean.class)) {
-					parameterValues[i] = Boolean.valueOf(keyItems[i]);
-				} else if (clz.isAssignableFrom(char.class)
-						|| clz.isAssignableFrom(Character.class)) {
-					parameterValues[i] = keyItems[i].toCharArray()[0];
-				} else if (clz.isAssignableFrom(byte.class)
-						|| clz.isAssignableFrom(Byte.class)) {
-					parameterValues[i] = Byte.valueOf(keyItems[i]);
-				} else if (clz.isAssignableFrom(short.class)
-						|| clz.isAssignableFrom(Short.class)) {
-					parameterValues[i] = Short.valueOf(keyItems[i]);
-				} else if (clz.isAssignableFrom(int.class)
-						|| clz.isAssignableFrom(Integer.class)) {
-					parameterValues[i] = Integer.valueOf(keyItems[i]);
-				} else if (clz.isAssignableFrom(long.class)
-						|| clz.isAssignableFrom(Long.class)) {
-					parameterValues[i] = Long.valueOf(keyItems[i]);
-				} else if (clz.isAssignableFrom(float.class)
-						|| clz.isAssignableFrom(Float.class)) {
-					parameterValues[i] = Float.valueOf(keyItems[i]);
-				} else if (clz.isAssignableFrom(double.class)
-						|| clz.isAssignableFrom(Double.class)) {
-					parameterValues[i] = Double.valueOf(keyItems[i]);
-				} else if (clz.isAssignableFrom(Date.class)) {
-					SimpleDateFormat format = new SimpleDateFormat(
-							"yyyy-MM-dd HH:mm:ss");
-					parameterValues[i] = format.parse(keyItems[i]);
-				} else if (clz.isAssignableFrom(String.class)) {
-					parameterValues[i] = keyItems[i];
-				}
-			}
-
+			// 有参
 			Class<?>[] parameterTypeArray = new Class<?>[parameterTypes.size()];
 			for (int i = 0; i < parameterTypeArray.length; i++) {
 				parameterTypeArray[i] = parameterTypes.get(i);
 			}
-			
-			method = bean.getClass().getMethod(methodConfig.getMethodName(), parameterTypeArray);
+			Method method = bean.getClass().getMethod(
+					methodConfig.getMethodName(), parameterTypeArray);
+
+			String[] keyItems = key.toString().split(
+					CacheCodeUtil.CODE_PARAM_VALUES_SPLITE_SIGN);
+			Object[] parameterValues = new Object[parameterTypes.size()];
+			for (int i = 0; i < parameterTypes.size(); i++) {
+				parameterValues[i] = ParameterSupportTypeUtil
+						.valueConvertToType(keyItems[i], parameterTypes.get(i));
+			}
 			return (V) method.invoke(bean, parameterValues);
 		} catch (Exception e) {
-			log.error("getRealValue Error :" + e.getMessage(), e);
-			return (V) e.getMessage();
+			return (V) ("getRealValue Failure Key:" + key + " Exception:" + e
+					.getMessage());
 		}
 	}
 
-	public String put(K key, V value) {
-		try {
-			this.cache.put(key, value, IpUtil.getLocalIp());
-		} catch (Exception e) {
-			return "Cache Put Failure Key:" + key + " Value:" + value;
+	public boolean getRealValueAndPut(K key) {
+		V realValue = this.getRealValue(key);
+		if (realValue != null) {
+			this.put(key, realValue);
+			return true;
 		}
-		return "Cache Put Successfully Key:" + key + " Value:" + value;
+
+		return false;
+	}
+
+	private String keyToCacheCode(String key) throws Exception {
+		Assert.notNull(key);
+
+		MethodConfig methodConfig = cacheProxy.getMethodConfig();
+		List<Class<?>> parameterTypes = methodConfig.getParameterTypes();
+
+		String[] keyItems = key.toString().split(
+				CacheCodeUtil.CODE_PARAM_VALUES_SPLITE_SIGN);
+
+		boolean illegal = false;
+
+		if (parameterTypes == null || parameterTypes.isEmpty()) {
+			// 1. 无参方法
+			if (StringUtils.isNotEmpty(key))
+				illegal = true;
+		} else {
+			// 2. 有参方法
+			if (keyItems.length != parameterTypes.size())
+				illegal = true;
+		}
+
+		if (illegal) {
+			String erroMsg = "jmx的参数数量和接口的参数数量不一致,请求：" + key.toString()
+					+ "接口参数:" + parameterTypes;
+			throw new RuntimeException(erroMsg);
+		}
+
+		// 无参
+		if (parameterTypes == null) {
+			return CacheCodeUtil.getCacheCode(cacheProxy.getStoreRegion(),
+					cacheProxy.getBeanName(), cacheProxy.getMethodConfig(),
+					null);
+		}
+
+		// 有参
+		Object[] parameterValues = new Object[parameterTypes.size()];
+		for (int i = 0; i < parameterTypes.size(); i++) {
+			parameterValues[i] = ParameterSupportTypeUtil.valueConvertToType(
+					keyItems[i], parameterTypes.get(i));
+		}
+
+		return CacheCodeUtil.getCacheCode(cacheProxy.getStoreRegion(),
+				cacheProxy.getBeanName(), cacheProxy.getMethodConfig(),
+				parameterValues);
 	}
 
 	protected void buildDynamicMBeanInfo() {
@@ -244,40 +273,41 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 						false, false),
 				new MBeanAttributeInfo("expireTime", "long", "缓存数据失效时间", true,
 						false, false),
-				new MBeanAttributeInfo("cleanTimeExpression", "String", "缓存清理时间", true,
-						false, false) };
+				new MBeanAttributeInfo("cleanTimeExpression", "String",
+						"缓存清理时间", true, false, false) };
+
+		String info = "多参数Key需用@@分隔";
 
 		MBeanOperationInfo[] dOperations = new MBeanOperationInfo[] {
-				new MBeanOperationInfo("remove", "缓存删除",
+				new MBeanOperationInfo("get", "读取缓存",
 						new MBeanParameterInfo[] { new MBeanParameterInfo(
-								"CacheRemove", "java.lang.String",
-								"输入String Key.多参数用@@分隔. 进行缓存的 remove 操作.") },
-						"String", MBeanOperationInfo.ACTION),
-				new MBeanOperationInfo(
-						"put",
-						"缓存数据写入",
-						new MBeanParameterInfo[] {
-								new MBeanParameterInfo("CachePut Key",
-										"java.lang.String",
-										"输入String Key.多参数用@@分隔."),
-								new MBeanParameterInfo("CachePut Value",
-										"java.lang.String", "输入String Value.") },
-						"String", MBeanOperationInfo.ACTION),
-				new MBeanOperationInfo(
-						"get",
-						"缓存数据读取",
+								"CacheGet", "java.lang.String", "输入缓存Key。"
+										+ info) }, "String",
+						MBeanOperationInfo.ACTION),
+				new MBeanOperationInfo("put", "写入缓存", new MBeanParameterInfo[] {
+						new MBeanParameterInfo("CachePut Key",
+								"java.lang.String", "输入缓存Key。" + info),
+						new MBeanParameterInfo("CachePut Value",
+								"java.lang.String", "输入缓存值Value.") }, "String",
+						MBeanOperationInfo.ACTION),
+				new MBeanOperationInfo("remove", "删除缓存",
 						new MBeanParameterInfo[] { new MBeanParameterInfo(
-								"CacheGet", "java.lang.String",
-								"输入String Key.多参数用@@分隔. 进行缓存的 get 操作.多参数用@@分隔.") },
-						"String", MBeanOperationInfo.ACTION),
-				new MBeanOperationInfo(
-						"getRealValue",
-						"运行期数据读取",
+								"CacheRemove", "java.lang.String", "输入缓存Key。"
+										+ info) }, "String",
+						MBeanOperationInfo.ACTION),
+				new MBeanOperationInfo("getRealValue", "读取原生方法结果数据",
 						new MBeanParameterInfo[] { new MBeanParameterInfo(
-								"DiskGet", "java.lang.String",
-								"输入String Key.多参数用@@分隔. 进行Disk的 get 操作.多参数用@@分隔.") },
-						"String", MBeanOperationInfo.ACTION) };
+								"DiskGet", "java.lang.String", "输入方法参数Key。"
+										+ info) }, "String",
+						MBeanOperationInfo.ACTION),
+				new MBeanOperationInfo("getRealValueAndPut",
+						"读取原生方法结果数据，并且直接Put到缓存中",
+						new MBeanParameterInfo[] { new MBeanParameterInfo(
+								"DiskGetAndPut", "java.lang.String",
+								"输入方法参数Key。" + info) }, "boolean",
+						MBeanOperationInfo.ACTION) };
 		dMBeanInfo = new MBeanInfo(this.getClass().getName(), MBEAN_NAME,
 				dAttributes, null, dOperations, null);
 	}
+
 }

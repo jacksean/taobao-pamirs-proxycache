@@ -34,6 +34,12 @@ public class MethodConfig implements Serializable {
 		this.methodName = methodName;
 	}
 
+	/**
+	 * null: 代表没有set,装载配置时需要重新赋值 <br>
+	 * 空: 代表无参方法
+	 * 
+	 * @return
+	 */
 	public List<Class<?>> getParameterTypes() {
 		return parameterTypes;
 	}

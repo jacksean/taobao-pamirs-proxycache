@@ -2,7 +2,6 @@ package com.taobao.pamirs.cache.store.threadcache;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +21,7 @@ import org.springframework.core.PriorityOrdered;
 
 import com.taobao.pamirs.cache.extend.jmx.annotation.JmxClass;
 import com.taobao.pamirs.cache.extend.jmx.annotation.JmxMethod;
+import com.taobao.pamirs.cache.util.ParameterSupportTypeUtil;
 
 /**
  * 线程缓存
@@ -221,7 +221,8 @@ class ThreadMethodRoundAdvice implements Advice, MethodInterceptor {
 
 		if (paramObjects != null) {
 			for (int i = 0; i < paramObjects.length; i++) {
-				if (!isPrimitive(paramTypes[i]))
+				if (!ParameterSupportTypeUtil
+						.isSupportParameterTypes(paramTypes[i]))
 					throw new IllegalArgumentException();
 
 				if (args.toString().length() != 0)
@@ -232,28 +233,6 @@ class ThreadMethodRoundAdvice implements Advice, MethodInterceptor {
 		}
 
 		return beanName + "$" + methodName + "$" + args.toString();
-	}
-
-	/**
-	 * 默认支持的原始类型
-	 * 
-	 * @param arg
-	 * @return
-	 */
-	private boolean isPrimitive(Class<?> type) {
-		if (type.isPrimitive() || Byte.class.isAssignableFrom(type)
-				|| Short.class.isAssignableFrom(type)
-				|| Integer.class.isAssignableFrom(type)
-				|| Long.class.isAssignableFrom(type)
-				|| Float.class.isAssignableFrom(type)
-				|| Double.class.isAssignableFrom(type)
-				|| Character.class.isAssignableFrom(type)
-				|| String.class.isAssignableFrom(type)
-				|| Date.class.isAssignableFrom(type)
-				|| Boolean.class.isAssignableFrom(type))
-			return true;
-
-		return false;
 	}
 
 	private void doPrintLog(String key, Object value) {

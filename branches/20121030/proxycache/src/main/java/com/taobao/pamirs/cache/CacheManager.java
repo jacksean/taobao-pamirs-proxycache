@@ -163,7 +163,8 @@ public abstract class CacheManager implements ApplicationContextAware,
 		if (cache != null) {
 			// 1. CacheProxy
 			CacheProxy<Serializable, Serializable> cacheProxy = new CacheProxy<Serializable, Serializable>(
-					storeType, key, cache, beanName, cacheMethod);
+					storeType, cacheConfig.getStoreRegion(), key, cache,
+					beanName, cacheMethod);
 
 			cacheProxys.put(key, cacheProxy);
 

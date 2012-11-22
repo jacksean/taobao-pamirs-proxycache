@@ -81,7 +81,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 						.getCacheProxy(adapterKey);
 
 				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
-						beanName, cacheMethod, invocation);
+						beanName, cacheMethod, invocation.getArguments());
 
 				return useCache(cacheAdapter, cacheCode,
 						cacheMethod.getExpiredTime(), invocation, fromHsfIp);
@@ -166,7 +166,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 			if (cacheAdapter != null) {
 				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
-						beanName, methodConfig, invocation);// 这里的invocation直接用主bean的，因为清理的bean的参数必须和主bean保持一致
+						beanName, methodConfig, invocation.getArguments());// 这里的invocation直接用主bean的，因为清理的bean的参数必须和主bean保持一致
 				cacheAdapter.remove(cacheCode, ip);
 			}
 		}

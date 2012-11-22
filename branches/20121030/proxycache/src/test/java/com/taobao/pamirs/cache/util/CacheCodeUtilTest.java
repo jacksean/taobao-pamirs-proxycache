@@ -1,8 +1,5 @@
 package com.taobao.pamirs.cache.util;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -10,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.aopalliance.intercept.MethodInvocation;
-import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -63,8 +58,6 @@ public class CacheCodeUtilTest {
 		// regionbeanName#methodName#{String,Long}abc@@123
 		Date now = new Date();
 
-		MethodInvocation invocation = EasyMock
-				.createMock(MethodInvocation.class);
 		Object[] parameters = new Object[18];
 		parameters[0] = true;
 		parameters[1] = Boolean.FALSE;
@@ -84,11 +77,9 @@ public class CacheCodeUtilTest {
 		parameters[15] = Double.valueOf(7.89D);
 		parameters[16] = now;
 		parameters[17] = "xyz";
-		expect(invocation.getArguments()).andReturn(parameters).times(1);
-		replay(invocation);
 
 		String cacheCode = CacheCodeUtil.getCacheCode(region, beanName,
-				methodConfig, invocation);
+				methodConfig, parameters);
 		StringBuilder result = new StringBuilder();
 		result.append(GetCacheAdapterKeyResult());
 
@@ -104,7 +95,6 @@ public class CacheCodeUtilTest {
 		result.append("@@xyz");
 
 		assertThat(cacheCode, is(result.toString()));
-		verify(invocation);
 	}
 
 	@Test

@@ -9,13 +9,19 @@ import com.taobao.pamirs.cache.framework.ICache;
 import com.taobao.pamirs.cache.util.lru.ConcurrentLRUCacheMap;
 
 /**
- * MapStore 使用本地 Map 作为 CacheManage 的缓存存储方案.
+ * MapStore 使用本地 ConcurrentLRUCacheMap 作为 CacheManage 的缓存存储方案.
  * <p>
  * 
  * <pre>
  * 通过 Key-Value 的形式将对象存入 本地内存中.
- * 可以采用 PUT , GET , REMOVE 这三种 Key 操作. 可以采用 CLEAR , CLEAN 这种范围清除操作.
- * 使用该 Store . 数据量较小. 0 ~ 1G 访问耗时极低. 适用于数据量小但变化较多的场合.例如基础型数据.
+ * 
+ * 可以采用 PUT , PUT_EXPIRETIME , GET , REMOVE 这三种 Key 操作. 
+ * 可以采用 CLEAR , CLEAN 这种范围清除操作.
+ * 
+ * 使用该 Store . 数据量较小. 0 ~ 1G 访问耗时极低. 
+ * 适用于数据量小但变化较多的场合.
+ * 
+ * 例如基础型数据.
  * </pre>
  * 
  * @author xuanyu

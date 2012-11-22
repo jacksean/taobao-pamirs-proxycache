@@ -195,12 +195,12 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 
 	public boolean getRealValueAndPut(K key) {
 		V realValue = this.getRealValue(key);
-		if (realValue != null) {
+		if (realValue != null)
 			this.put(key, realValue);
-			return true;
-		}
+		else
+			this.remove(key);
 
-		return false;
+		return true;
 	}
 
 	private String keyToCacheCode(String key) throws Exception {

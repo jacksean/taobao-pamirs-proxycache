@@ -1,11 +1,15 @@
 package com.taobao.pamirs.cache.store.threadcache;
 
+import static com.taobao.pamirs.cache.util.CacheCodeUtil.CODE_PARAM_VALUES_SPLITE_SIGN;
+import static com.taobao.pamirs.cache.util.CacheCodeUtil.KEY_SPLITE_SIGN;
+
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -22,6 +26,7 @@ import org.springframework.core.PriorityOrdered;
 import com.taobao.pamirs.cache.extend.jmx.annotation.JmxClass;
 import com.taobao.pamirs.cache.extend.jmx.annotation.JmxMethod;
 import com.taobao.pamirs.cache.util.ParameterSupportTypeUtil;
+import com.taobao.pamirs.cache.util.lru.ConcurrentLRUCacheMap;
 
 /**
  * 线程缓存
@@ -45,6 +50,9 @@ public class ThreadCacheHandle extends AbstractAutoProxyCreator implements
 
 	/** 打印详细日志，命中方法返回结果对象等 */
 	private boolean printLogDetail = false;
+	
+	/** 记录方法命中次数 */
+	private ConcurrentLRUCacheMap<String, AtomicLong> logDetailInfo;
 
 	/**
 	 * 白名单--注解的另一种选择方式
@@ -111,6 +119,13 @@ public class ThreadCacheHandle extends AbstractAutoProxyCreator implements
 	@JmxMethod
 	public void setPrintLogDetail(boolean printLogDetail) {
 		this.printLogDetail = printLogDetail;
+	}
+	
+	public ConcurrentLRUCacheMap<String, AtomicLong> getLogDetailInfo() {
+		if (logDetailInfo == null)
+			logDetailInfo = new ConcurrentLRUCacheMap<String, AtomicLong>();
+		
+		return logDetailInfo;
 	}
 
 	public Map<String, List<String>> getBeansMap() {
@@ -226,13 +241,18 @@ class ThreadMethodRoundAdvice implements Advice, MethodInterceptor {
 					throw new IllegalArgumentException();
 
 				if (args.toString().length() != 0)
-					args.append(":");
+					args.append(CODE_PARAM_VALUES_SPLITE_SIGN);
 
 				args.append(paramObjects[i]);
 			}
 		}
+		
+		StringBuilder key = new StringBuilder();
+		key.append(beanName).append(KEY_SPLITE_SIGN);
+		key.append(methodName).append("{..}");
+		key.append(args.toString());
 
-		return beanName + "$" + methodName + "$" + args.toString();
+		return key.toString();
 	}
 
 	private void doPrintLog(String key, Object value) {
@@ -240,10 +260,20 @@ class ThreadMethodRoundAdvice implements Advice, MethodInterceptor {
 			StringBuilder logInfo = new StringBuilder("线程缓存命中!");
 			logInfo.append("key=").append(key);
 
+			// for debug
 			if (handle.isPrintLogDetail()) {
 				logInfo.append("，value=").append(value);
+				
+				ConcurrentLRUCacheMap<String, AtomicLong> logDetailInfo = handle.getLogDetailInfo();
+				AtomicLong atomicLong = logDetailInfo.get(key);
+				if (atomicLong == null) {
+					atomicLong = new AtomicLong(0);
+				}
+				
+				atomicLong.incrementAndGet();
+				logDetailInfo.put(key, atomicLong);
 			}
-
+			
 			log.warn(logInfo.toString());
 		}
 	}

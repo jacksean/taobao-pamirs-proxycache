@@ -32,11 +32,20 @@ public class AsynWriter<T> implements IWriter<T> {
 	/**
 	 * ≈‰÷√
 	 */
-	private LogConfig config = new LogConfig();
+	private LogConfig config;
 
 	private List<WriterTask<T>> tasks = new ArrayList<WriterTask<T>>();
 
 	public AsynWriter() {
+		this(null);
+	}
+
+	public AsynWriter(LogConfig logConfig) {
+		if (logConfig == null)
+			config = new LogConfig();
+		else
+			config = logConfig;
+
 		logQueue = new LinkedBlockingQueue<T>();
 		asynWriterService = Executors.newFixedThreadPool(config
 				.getAsynWriterThreadSize());

@@ -1,8 +1,8 @@
-package com.taobao.pamirs.cache.extend.log.asynlog;
+package com.taobao.pamirs.cache.util.asynlog;
 
 import org.junit.Test;
 
-import com.taobao.pamirs.cache.extend.log.asynlog.AsynWriter;
+import com.taobao.pamirs.cache.util.asynlog.AsynWriter;
 
 /**
  * “Ï≤Ωlogµ•‘™≤‚ ‘

@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.extend.log.asynlog;
+package com.taobao.pamirs.cache.util.asynlog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class AsynWriter<T> implements IWriter<T> {
 	/**
 	 * ≈‰÷√
 	 */
-	private LogConfig config = LogConfig.getInstance();
+	private LogConfig config = new LogConfig();
 
 	private List<WriterTask<T>> tasks = new ArrayList<WriterTask<T>>();
 

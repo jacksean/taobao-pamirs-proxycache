@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.extend.log.asynlog;
+package com.taobao.pamirs.cache.util.asynlog;
 
 /**
  * Òì²½Log½Ó¿Ú

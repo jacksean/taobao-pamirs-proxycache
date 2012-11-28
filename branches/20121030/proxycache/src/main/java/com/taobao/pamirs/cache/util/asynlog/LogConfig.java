@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.extend.log.asynlog;
+package com.taobao.pamirs.cache.util.asynlog;
 
 import org.apache.commons.logging.Log;
 
@@ -8,8 +8,6 @@ import org.apache.commons.logging.Log;
  * @author xiaocheng 2012-11-9
  */
 public class LogConfig {
-
-	private static LogConfig config = new LogConfig();
 
 	/**
 	 * 异步日志线程池大小
@@ -30,13 +28,6 @@ public class LogConfig {
 	 * 日志LOG
 	 */
 	private Log log;
-
-	private LogConfig() {
-	}
-
-	public static LogConfig getInstance() {
-		return config;
-	}
 
 	public int getAsynWriterThreadSize() {
 		return asynWriterThreadSize;

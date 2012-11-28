@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.extend.log.asynlog;
+package com.taobao.pamirs.cache.util.asynlog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class WriterTask<T> implements Runnable {
 	private BlockingQueue<T> logQueue;
 
 	/**
-	 * 配置对象，应用唯一一份
+	 * 配置对象
 	 */
 	private LogConfig config;
 

@@ -2,11 +2,11 @@ package com.taobao.pamirs.cache.extend.log.xray;
 
 import java.util.List;
 
-import com.taobao.pamirs.cache.extend.log.asynlog.AsynWriter;
 import com.taobao.pamirs.cache.framework.listener.CacheOprateInfo;
 import com.taobao.pamirs.cache.framework.listener.CacheOprateListener;
 import com.taobao.pamirs.cache.framework.listener.CacheOprator;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
+import com.taobao.pamirs.cache.util.asynlog.AsynWriter;
 
 /**
  * 打印给xray统计

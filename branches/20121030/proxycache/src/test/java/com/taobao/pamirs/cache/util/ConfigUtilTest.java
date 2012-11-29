@@ -153,7 +153,7 @@ public class ConfigUtilTest extends UnitilsJUnit4 {
 				assertThat(methodConfig.getMethodName(),
 						equalTo("doVarietyArgs"));
 				assertThat(methodConfig.getExpiredTime(), nullValue());
-				assertThat(methodConfig.getParameterTypes().size(), equalTo(17));
+				assertThat(methodConfig.getParameterTypes().size(), equalTo(18));
 
 				List<Class<?>> parameterTypes = methodConfig
 						.getParameterTypes();
@@ -191,6 +191,8 @@ public class ConfigUtilTest extends UnitilsJUnit4 {
 						equalTo("Double"));
 				assertThat(parameterTypes.get(16).getSimpleName(),
 						equalTo("Date"));
+				assertThat(parameterTypes.get(17).getSimpleName(),
+						equalTo("String"));
 			}
 
 		}

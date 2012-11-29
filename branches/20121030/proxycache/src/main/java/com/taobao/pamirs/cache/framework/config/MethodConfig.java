@@ -3,6 +3,8 @@ package com.taobao.pamirs.cache.framework.config;
 import java.io.Serializable;
 import java.util.List;
 
+import com.taobao.pamirs.cache.load.verify.Verfication;
+
 /**
  * 基本bean配置
  * 
@@ -13,10 +15,12 @@ public class MethodConfig implements Serializable {
 	//
 	private static final long serialVersionUID = 1L;
 
+	@Verfication(name = "方法名称", notEmpty = true)
 	private String methodName;
 	/**
 	 * 参数类型
 	 */
+	@Verfication(name = "参数类型", notEmptyList = true)
 	private List<Class<?>> parameterTypes;
 
 	/**

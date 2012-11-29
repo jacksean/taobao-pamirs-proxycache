@@ -25,7 +25,6 @@ import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.framework.timer.CleanCacheTimerManager;
 import com.taobao.pamirs.cache.load.ICacheConfigService;
-import com.taobao.pamirs.cache.load.LoadConfigException;
 import com.taobao.pamirs.cache.load.verify.CacheConfigVerify;
 import com.taobao.pamirs.cache.store.StoreType;
 import com.taobao.pamirs.cache.store.map.MapStore;
@@ -91,7 +90,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 		autoFillCacheConfig(cacheConfig);
 
 		// 3. 缓存配置合法性校验
-		// verifyCacheConfig(cacheConfig);
+		verifyCacheConfig(cacheConfig);
 
 		// 4. 初始化缓存
 		initCache();
@@ -108,11 +107,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	@Override
 	public void verifyCacheConfig(CacheConfig cacheConfig) {
-		CacheConfigVerify cacheConfigVerify = new CacheConfigVerify(
-				applicationContext);
-		if (!cacheConfigVerify.checkCacheConfig(cacheConfig)) {
-			throw new LoadConfigException("缓存配置校验失败");
-		}
+		CacheConfigVerify.checkCacheConfig(cacheConfig, applicationContext);
 	}
 
 	/**

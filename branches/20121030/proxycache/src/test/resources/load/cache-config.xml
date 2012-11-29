@@ -52,6 +52,7 @@
 						<java-class>double</java-class>
 						<java-class>java.lang.Double</java-class>
 						<java-class>java.util.Date</java-class>
+						<java-class>java.lang.String</java-class>
 					</parameterTypes>
 				</methodConfig>
 			</cacheMethods>

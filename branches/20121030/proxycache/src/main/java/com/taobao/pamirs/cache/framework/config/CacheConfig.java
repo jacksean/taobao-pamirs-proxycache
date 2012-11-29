@@ -1,5 +1,6 @@
 package com.taobao.pamirs.cache.framework.config;
 
+import com.taobao.pamirs.cache.load.verify.Verfication;
 import com.taobao.pamirs.cache.store.StoreType;
 
 /**
@@ -17,10 +18,11 @@ public class CacheConfig extends CacheModule {
 	 * 
 	 * @see StoreType
 	 */
+	@Verfication(name = "缓存类型", notEmpty = true, isStoreType = true)
 	private String storeType;
 
 	/**
-	 * Map自动清理表达式（just for map）
+	 * Map自动清理表达式（可选）(just for map）
 	 * 
 	 * @see StoreType.MAP
 	 */
@@ -36,7 +38,8 @@ public class CacheConfig extends CacheModule {
 	 * 
 	 * @see StoreType.TAIR
 	 */
-	private int storeTairNameSpace;
+	@Verfication(name = "Tair命名空间", notNull = true, when = { StoreType.TAIR })
+	private Integer storeTairNameSpace;
 
 	public String getStoreType() {
 		return storeType;
@@ -62,11 +65,11 @@ public class CacheConfig extends CacheModule {
 		this.storeRegion = storeRegion;
 	}
 
-	public int getStoreTairNameSpace() {
+	public Integer getStoreTairNameSpace() {
 		return storeTairNameSpace;
 	}
 
-	public void setStoreTairNameSpace(int storeTairNameSpace) {
+	public void setStoreTairNameSpace(Integer storeTairNameSpace) {
 		this.storeTairNameSpace = storeTairNameSpace;
 	}
 

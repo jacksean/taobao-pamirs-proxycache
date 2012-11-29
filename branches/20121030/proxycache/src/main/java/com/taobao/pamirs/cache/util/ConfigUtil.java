@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheCleanBean;
@@ -163,42 +164,50 @@ public class ConfigUtil {
 	 */
 	public static void autoFillCacheConfig(CacheConfig cacheConfig,
 			ApplicationContext applicationContext) {
-		Assert.notNull(cacheConfig);
 		Assert.notNull(applicationContext);
-		Assert.notNull(cacheConfig.getCacheBeans());
-		Assert.notNull(cacheConfig.getCacheCleanBeans());
+		Assert.notNull(cacheConfig);
+		Assert.isTrue(!CollectionUtils.isEmpty(cacheConfig.getCacheBeans())
+				|| !CollectionUtils.isEmpty(cacheConfig.getCacheBeans()),
+				"配置中缓存和清理缓存不能同时为空！");
 
 		// 1. 对method定义，如果没有parameterTypes，则自动寻找配对（有重名方法报错）
 		// 1.1 包括：cacheBean.methodConfig
-		for (CacheBean cacheBean : cacheConfig.getCacheBeans()) {
-			for (MethodConfig methodConfig : cacheBean.getCacheMethods()) {
-				if (methodConfig.getParameterTypes() != null)
-					continue;
+		if (cacheConfig.getCacheBeans() != null) {
+			for (CacheBean cacheBean : cacheConfig.getCacheBeans()) {
+				for (MethodConfig methodConfig : cacheBean.getCacheMethods()) {
+					if (methodConfig.getParameterTypes() != null)
+						continue;
 
-				List<Class<?>> parameterTypes = fillParameterTypes(
-						cacheBean.getBeanName(), applicationContext,
-						methodConfig.getMethodName());
-				methodConfig.setParameterTypes(parameterTypes);
+					List<Class<?>> parameterTypes = fillParameterTypes(
+							cacheBean.getBeanName(), applicationContext,
+							methodConfig.getMethodName());
+					methodConfig.setParameterTypes(parameterTypes);
+				}
 			}
 		}
 		// 1.2 包括：cacheCleanBean.cacheCleanMethod
-		for (CacheCleanBean cleanBean : cacheConfig.getCacheCleanBeans()) {
-			for (CacheCleanMethod method : cleanBean.getMethods()) {
-				if (method.getParameterTypes() != null)
-					continue;
+		if (cacheConfig.getCacheCleanBeans() != null) {
+			for (CacheCleanBean cleanBean : cacheConfig.getCacheCleanBeans()) {
+				for (CacheCleanMethod method : cleanBean.getMethods()) {
+					if (method.getParameterTypes() != null)
+						continue;
 
-				List<Class<?>> parameterTypes = fillParameterTypes(
-						cleanBean.getBeanName(), applicationContext,
-						method.getMethodName());
-				method.setParameterTypes(parameterTypes);
+					List<Class<?>> parameterTypes = fillParameterTypes(
+							cleanBean.getBeanName(), applicationContext,
+							method.getMethodName());
+					method.setParameterTypes(parameterTypes);
+				}
 			}
 		}
 
 		// 2. 填充缓存清理关联的方法参数：cacheCleanBean.methods.cleanMethods.parameterTypes
-		for (CacheCleanBean cleanBean : cacheConfig.getCacheCleanBeans()) {
-			for (CacheCleanMethod method : cleanBean.getMethods()) {
-				for (MethodConfig clearMethod : method.getCleanMethods()) {
-					clearMethod.setParameterTypes(method.getParameterTypes());// 继承
+		if (cacheConfig.getCacheCleanBeans() != null) {
+			for (CacheCleanBean cleanBean : cacheConfig.getCacheCleanBeans()) {
+				for (CacheCleanMethod method : cleanBean.getMethods()) {
+					for (MethodConfig clearMethod : method.getCleanMethods()) {
+						clearMethod.setParameterTypes(method
+								.getParameterTypes());// 继承
+					}
 				}
 			}
 		}
@@ -209,6 +218,8 @@ public class ConfigUtil {
 			ApplicationContext applicationContext, String methodName) {
 		// fill
 		Object bean = applicationContext.getBean(beanName);
+		Assert.notNull(bean, "找不到Bean:" + beanName);
+		
 		Method[] methods = bean.getClass().getMethods();
 		int num = 0;
 		Method index = null;

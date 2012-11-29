@@ -56,7 +56,7 @@ public class LocalConfigCacheManager extends AbstractCacheConfigService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<CacheModule> getCacheModules() {
+	private List<CacheModule> getCacheModules() {
 		if (configFilePaths == null || configFilePaths.size() <= 0) {
 			throw new IllegalArgumentException("非法配置文件路径的参数，配置文件列表不能为空");
 		}

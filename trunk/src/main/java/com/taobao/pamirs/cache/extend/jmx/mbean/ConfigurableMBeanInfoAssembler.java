@@ -62,7 +62,7 @@ public class ConfigurableMBeanInfoAssembler extends
 	private void injectMbean(Object obj, String beanClass) {
 		try {
 			ModelMBean mbean = createAndConfigureMBean(obj, beanClass);
-			MBeanManagerFactory.registerMBean("fuwu:name=$" + beanClass + "$",
+			MBeanManagerFactory.registerMBean("Pamirs:name=$" + beanClass + "$",
 					mbean);
 		} catch (Exception e) {
 			throw new RuntimeException(e);

@@ -83,7 +83,7 @@ public class CacheOprateInfo extends MethodConfig implements Serializable {
 	}
 
 	public String getIp() {
-		return ip;
+		return ip == null ? "" : ip;
 	}
 
 }

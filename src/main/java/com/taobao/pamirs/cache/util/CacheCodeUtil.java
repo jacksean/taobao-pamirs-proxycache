@@ -42,6 +42,7 @@ public class CacheCodeUtil {
 	 * @param beanName
 	 * @param methodConfig
 	 * @param parameters
+	 *            数组长度会以methodConfig.getParameterTypes()优先，多余的会丢失
 	 * @return
 	 */
 	public static String getCacheCode(String region, String beanName,
@@ -54,14 +55,16 @@ public class CacheCodeUtil {
 		code.append(getCacheAdapterKey(region, beanName, methodConfig));
 
 		// 3. value
-		if (parameters != null) {
+		List<Class<?>> parameterTypes = methodConfig.getParameterTypes();
+		if (parameterTypes != null) {
 			StringBuilder valus = new StringBuilder();
-			for (Object param : parameters) {
+			for (int i = 0; i < parameterTypes.size(); i++) {
 				if (valus.length() != 0) {
 					valus.append(CODE_PARAM_VALUES_SPLITE_SIGN);
 				}
 
-				valus.append(param == null ? "null" : param.toString());
+				valus.append(parameters[i] == null ? "null" : parameters[i]
+						.toString());
 			}
 			code.append(valus.toString());
 		}

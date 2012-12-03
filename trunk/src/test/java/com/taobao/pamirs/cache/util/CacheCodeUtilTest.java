@@ -57,7 +57,52 @@ public class CacheCodeUtilTest {
 	public void testGetCacheCode() {
 		// regionbeanName#methodName#{String,Long}abc@@123
 		Date now = new Date();
+		Object[] parameters = getParameters(now);
+		assertCacheCode(now, parameters);
+	}
+	
+	/**
+	 * 生成的缓存Code支持关联的清理方法参数比原方法参数少<br>
+	 * 如：<br>
+	 * cleanCache(1,2,3)有三个参数，而被关联的方法参数少于三个的
+	 * 
+	 */
+	@Test
+	public void testGetCacheCodeSupportCleanMethod() {
+		Date now = new Date();
+		Object[] parameters = getParameters(now);
+		Object[] moreParamters = new Object[20];
+		for (int i = 0; i < parameters.length; i++) {
+			moreParamters[i] = parameters[i];
+		}
+		
+		moreParamters[18] = "123";
+		moreParamters[19] = "456";
+		
+		assertCacheCode(now, moreParamters);
+	}
 
+	private void assertCacheCode(Date now, Object[] parameters) {
+		String cacheCode = CacheCodeUtil.getCacheCode(region, beanName,
+				methodConfig, parameters);
+		StringBuilder result = new StringBuilder();
+		result.append(GetCacheAdapterKeyResult());
+
+		result.append("true@@false");
+		result.append("@@a@@B");
+		result.append("@@110@@111");
+		result.append("@@998@@999");
+		result.append("@@123@@456");
+		result.append("@@789@@1000");
+		result.append("@@1.23@@2.34");
+		result.append("@@6.78@@7.89");
+		result.append("@@").append(now.toString());
+		result.append("@@xyz");
+
+		assertThat(cacheCode, is(result.toString()));
+	}
+	
+	private Object[] getParameters(Date now) {
 		Object[] parameters = new Object[18];
 		parameters[0] = true;
 		parameters[1] = Boolean.FALSE;
@@ -77,24 +122,7 @@ public class CacheCodeUtilTest {
 		parameters[15] = Double.valueOf(7.89D);
 		parameters[16] = now;
 		parameters[17] = "xyz";
-
-		String cacheCode = CacheCodeUtil.getCacheCode(region, beanName,
-				methodConfig, parameters);
-		StringBuilder result = new StringBuilder();
-		result.append(GetCacheAdapterKeyResult());
-
-		result.append("true@@false");
-		result.append("@@a@@B");
-		result.append("@@110@@111");
-		result.append("@@998@@999");
-		result.append("@@123@@456");
-		result.append("@@789@@1000");
-		result.append("@@1.23@@2.34");
-		result.append("@@6.78@@7.89");
-		result.append("@@").append(now.toString());
-		result.append("@@xyz");
-
-		assertThat(cacheCode, is(result.toString()));
+		return parameters;
 	}
 
 	@Test

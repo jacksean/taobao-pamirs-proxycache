@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.management.InstanceAlreadyExistsException;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -200,8 +202,10 @@ public abstract class CacheManager implements ApplicationContextAware,
 					cacheProxy, listener, applicationContext,
 					storeMapCleanTime, expiredTime);
 			MBeanManagerFactory.registerMBean(mbeanName, cacheMbean);
+		} catch (InstanceAlreadyExistsException e) {
+			log.debug("ÖØ¸´×¢²áJMX", e);
 		} catch (Exception e) {
-			log.error("×¢²áJMXÊ§°Ü", e);
+			log.warn("×¢²áJMXÊ§°Ü", e);
 		}
 	}
 

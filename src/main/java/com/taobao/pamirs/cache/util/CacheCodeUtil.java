@@ -36,7 +36,7 @@ public class CacheCodeUtil {
 
 	/**
 	 * 取得最终的缓存Code<br>
-	 * 格式：regionbeanName#methodName#{String|Long}abc@@123
+	 * 格式：region@beanName#methodName#{String|Long}abc@@123
 	 * 
 	 * @param region
 	 * @param beanName
@@ -74,7 +74,7 @@ public class CacheCodeUtil {
 
 	/**
 	 * 缓存适配器的key<br>
-	 * 格式：regionbeanName#methodName#{String|Long}
+	 * 格式：region@beanName#methodName#{String|Long}
 	 * 
 	 * @param region
 	 * @param beanName

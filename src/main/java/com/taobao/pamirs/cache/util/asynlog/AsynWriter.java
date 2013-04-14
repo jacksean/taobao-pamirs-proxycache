@@ -37,7 +37,13 @@ public class AsynWriter<T> implements IWriter<T> {
 	private List<WriterTask<T>> tasks = new ArrayList<WriterTask<T>>();
 
 	public AsynWriter() {
-		this(null);
+		this(new LogConfig());
+	}
+
+	public AsynWriter(Log log) {
+		this(new LogConfig());
+
+		config.setLog(log);
 	}
 
 	public AsynWriter(LogConfig logConfig) {

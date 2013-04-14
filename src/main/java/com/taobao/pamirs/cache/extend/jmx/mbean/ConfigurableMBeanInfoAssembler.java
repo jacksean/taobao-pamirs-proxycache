@@ -86,7 +86,6 @@ public class ConfigurableMBeanInfoAssembler extends
 
 	/**
 	 * 去除未注解的方法
-	 * 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ModelMBeanOperationInfo[] getOperationInfo(Object managedBean,

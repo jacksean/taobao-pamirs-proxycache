@@ -20,7 +20,7 @@
 		<property name="tairNameSpace" value="318" />					<!-- just for tair store -->
 		<property name="storeMapCleanTime" value="0 * * * * ? *" />		<!-- just for map store，可选 -->
 		<property name="localMapSize" value="1024" />					<!-- just for map store，可选，默认1024 -->
-		<property name="localMapSegmentSize" value="6" />				<!-- just for map store，可选，默认16 -->
+		<property name="localMapSegmentSize" value="8" />				<!-- just for map store，可选，默认16 -->
 		<property name="storeRegion" value="${store.tair.region}" />	<!-- 环境分区，可选 -->
 		<property name="configFilePaths">
 			<list>

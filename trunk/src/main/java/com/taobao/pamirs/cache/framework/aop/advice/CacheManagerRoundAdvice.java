@@ -101,8 +101,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			// 3. do nothing
 			return invocation.proceed();
 		} catch (Exception e) {
-			log.error("CacheManager:³ö´í:" + beanName + "#"
-					+ invocation.getMethod().getName(), e);
+//			log.error("CacheManager:³ö´í:" + beanName + "#"
+//					+ invocation.getMethod().getName(), e);
 			throw e;
 		}
 	}

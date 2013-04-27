@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.taobao.pamirs.cache.extend.jmx.annotation.JmxClass;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.CacheModule;
 import com.taobao.pamirs.cache.load.AbstractCacheConfigService;
@@ -17,6 +18,7 @@ import com.taobao.pamirs.cache.util.ConfigUtil;
  * @author poxiao.gj
  * @date 2012-11-13
  */
+@JmxClass
 public class LocalConfigCacheManager extends AbstractCacheConfigService {
 
 	private List<String> configFilePaths;

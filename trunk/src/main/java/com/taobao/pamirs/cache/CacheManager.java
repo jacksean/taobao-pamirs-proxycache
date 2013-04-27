@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationListener;
 
 import com.taobao.pamirs.cache.extend.jmx.CacheMbean;
 import com.taobao.pamirs.cache.extend.jmx.CacheMbeanListener;
+import com.taobao.pamirs.cache.extend.jmx.annotation.JmxMethod;
 import com.taobao.pamirs.cache.extend.jmx.mbean.MBeanManagerFactory;
 import com.taobao.pamirs.cache.extend.log.xray.XrayLogListener;
 import com.taobao.pamirs.cache.framework.CacheProxy;
@@ -218,6 +219,11 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	public boolean isUseCache() {
 		return useCache;
+	}
+
+	@JmxMethod
+	public void setUseCache(boolean useCache) {
+		this.useCache = useCache;
 	}
 
 	public void setCacheConfig(CacheConfig cacheConfig) {

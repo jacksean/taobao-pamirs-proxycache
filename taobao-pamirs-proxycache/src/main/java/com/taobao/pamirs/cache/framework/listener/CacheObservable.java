@@ -17,35 +17,48 @@ public class CacheObservable {
 	private List<CacheOprateListener> listeners = new ArrayList<CacheOprateListener>();
 
 	public void addListener(CacheOprateListener listener) {
-		lock.lock();
-		try {
-			if (listener != null)
+		if (listener != null && listeners.size() > 0) {
+			lock.lock();
+			try {
 				listeners.add(listener);
-		} finally {
-			lock.unlock();
+			} finally {
+				lock.unlock();
+			}
+		}
+	}
+	/**
+	 * ÓÐ¼àÌýÕß
+	 * @return
+	 */
+	public boolean havListeners() {
+		if (listeners != null && listeners.size() > 0) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
 	public void deleteListener(CacheOprateListener listener) {
-		lock.lock();
-		try {
-			if (listener != null)
+		if (listener != null && listeners.size() > 0) {
+			lock.lock();
+			try {
 				listeners.remove(listener);
-		} finally {
-			lock.unlock();
+			} finally {
+				lock.unlock();
+			}
 		}
 	}
 
 	public void notifyListeners(CacheOprator oprator, CacheOprateInfo cacheInfo) {
-		lock.lock();
-		try {
-			if (listeners != null) {
+		if (listeners != null && listeners.size() > 0) {
+			lock.lock();
+			try {
 				for (CacheOprateListener obs : listeners) {
 					obs.oprate(oprator, cacheInfo);
 				}
+			} finally {
+				lock.unlock();
 			}
-		} finally {
-			lock.unlock();
 		}
 	}
 

@@ -7,7 +7,7 @@ package com.taobao.pamirs.cache.store;
  */
 public enum StoreType {
 
-	MAP("map"), TAIR("tair");
+	CONCURRENTMAP("cmap"),RULMAP("map"), TAIR("tair");
 
 	private String name;
 
@@ -20,12 +20,12 @@ public enum StoreType {
 	}
 
 	public static StoreType toEnum(String name) {
-		if (MAP.getName().equals(name))
-			return MAP;
-
+		if (RULMAP.getName().equals(name))
+			return RULMAP;
 		if (TAIR.getName().equals(name))
 			return TAIR;
-
+		if (CONCURRENTMAP.getName().equals(name))
+			return CONCURRENTMAP;
 		return null;
 	}
 

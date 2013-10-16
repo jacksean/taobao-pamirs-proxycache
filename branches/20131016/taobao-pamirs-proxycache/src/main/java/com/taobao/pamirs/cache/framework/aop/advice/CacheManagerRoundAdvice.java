@@ -17,6 +17,7 @@ import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 import com.taobao.pamirs.cache.util.ConfigUtil;
+import com.taobao.pamirs.cache.util.IpUtil;
 
 /**
  * 通知处理类
@@ -31,6 +32,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 	private CacheManager cacheManager;
 	private String beanName;
+
+	private String localIp = IpUtil.getLocalIp();
 
 	public CacheManagerRoundAdvice(CacheManager cacheManager, String beanName) {
 		this.cacheManager = cacheManager;
@@ -64,15 +67,6 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			return invocation.proceed();
 		}
 
-		String fromHsfIp = "";// hsf consumer ip
-		try {
-			fromHsfIp = (String) invocation.getThis().getClass()
-					.getMethod("getCustomIp").invoke(invocation.getThis());
-		} catch (NoSuchMethodException e) {
-			log.debug("接口没有实现HSF的getCustomIp方法，取不到Consumer IP, beanName="
-					+ beanName);
-		}
-
 		try {
 			// 1. cache
 			if (cacheManager.isUseCache() && cacheMethod != null) {
@@ -85,7 +79,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 						beanName, cacheMethod, invocation.getArguments());
 
 				return useCache(cacheAdapter, cacheCode,
-						cacheMethod.getExpiredTime(), invocation, fromHsfIp);
+						cacheMethod.getExpiredTime(), invocation);
 			}
 
 			// 2. cache clean
@@ -94,15 +88,13 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 					return invocation.proceed();
 				} finally {
 					cleanCache(beanName, cacheCleanMethods, invocation,
-							storeRegion, fromHsfIp);
+							storeRegion);
 				}
 			}
 
 			// 3. do nothing
 			return invocation.proceed();
 		} catch (Exception e) {
-//			log.error("CacheManager:出错:" + beanName + "#"
-//					+ invocation.getMethod().getName(), e);
 			throw e;
 		}
 	}
@@ -119,13 +111,13 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	 */
 	private Object useCache(
 			CacheProxy<Serializable, Serializable> cacheAdapter,
-			String cacheCode, Integer expireTime, MethodInvocation invocation,
-			String ip) throws Throwable {
+			String cacheCode, Integer expireTime, MethodInvocation invocation)
+			throws Throwable {
 		if (cacheAdapter == null)
 			return invocation.proceed();
+		String ip = getCalledIp(cacheAdapter, invocation);
 
 		Object response = cacheAdapter.get(cacheCode, ip);
-
 		if (response == null) {
 			response = invocation.proceed();
 
@@ -143,6 +135,23 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 		return response;
 	}
 
+	private String getCalledIp(
+			CacheProxy<Serializable, Serializable> cacheAdapter,
+			MethodInvocation invocation) throws Exception {
+		if (cacheAdapter.getMethodConfig().isBeRemoteCalled()) {
+			try {
+				return (String) invocation.getThis().getClass()
+						.getMethod("getCustomIp").invoke(invocation.getThis());
+			} catch (NoSuchMethodException e) {
+				log.debug("接口没有实现HSF的getCustomIp方法，取不到Consumer IP, beanName="
+						+ beanName);
+				return localIp;
+			}
+		} else {
+			return localIp;
+		}
+	}
+
 	/**
 	 * 清除缓存处理
 	 * 
@@ -154,7 +163,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	 */
 	private void cleanCache(String beanName,
 			List<MethodConfig> cacheCleanMethods, MethodInvocation invocation,
-			String storeRegion, String ip) throws Throwable {
+			String storeRegion) throws Throwable {
 		if (cacheCleanMethods == null || cacheCleanMethods.isEmpty())
 			return;
 
@@ -164,7 +173,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 					beanName, methodConfig);
 			CacheProxy<Serializable, Serializable> cacheAdapter = cacheManager
 					.getCacheProxy(adapterKey);
-
+			String ip = getCalledIp(cacheAdapter, invocation);
 			if (cacheAdapter != null) {
 				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
 						beanName, methodConfig, invocation.getArguments());// 这里的invocation直接用主bean的，因为清理的bean的参数必须和主bean保持一致

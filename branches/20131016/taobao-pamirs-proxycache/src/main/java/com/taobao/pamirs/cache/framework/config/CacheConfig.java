@@ -40,6 +40,11 @@ public class CacheConfig extends CacheModule {
 	 */
 	@Verfication(name = "Tair命名空间", notNull = true, when = { StoreType.TAIR })
 	private Integer storeTairNameSpace;
+	
+	/**
+	 * 是否统计数量
+	 */
+	private boolean statisCount =false;
 
 	public String getStoreType() {
 		return storeType;
@@ -71,6 +76,14 @@ public class CacheConfig extends CacheModule {
 
 	public void setStoreTairNameSpace(Integer storeTairNameSpace) {
 		this.storeTairNameSpace = storeTairNameSpace;
+	}
+
+	public boolean isStatisCount() {
+		return statisCount;
+	}
+
+	public void setStatisCount(boolean statisCount) {
+		this.statisCount = statisCount;
 	}
 
 }

@@ -29,6 +29,14 @@ public class MethodConfig implements Serializable {
 	 * 【可选项】
 	 */
 	private Integer expiredTime;
+	/**
+	 * 对于单个缓存的清理设置
+	 */
+	private String cleanTimeExp;
+	/**
+	 * 是否被外部调用
+	 */
+	private boolean beRemoteCalled = false;
 
 	public String getMethodName() {
 		return methodName;
@@ -83,6 +91,22 @@ public class MethodConfig implements Serializable {
 		}
 
 		return true;
+	}
+
+	public String getCleanTimeExp() {
+		return cleanTimeExp;
+	}
+
+	public void setCleanTimeExp(String cleanTimeExp) {
+		this.cleanTimeExp = cleanTimeExp;
+	}
+
+	public boolean isBeRemoteCalled() {
+		return beRemoteCalled;
+	}
+
+	public void setBeRemoteCalled(boolean beRemoteCalled) {
+		this.beRemoteCalled = beRemoteCalled;
 	}
 
 }

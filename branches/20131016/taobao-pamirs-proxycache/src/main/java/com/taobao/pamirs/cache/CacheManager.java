@@ -30,6 +30,7 @@ import com.taobao.pamirs.cache.framework.timer.CleanCacheTimerManager;
 import com.taobao.pamirs.cache.load.ICacheConfigService;
 import com.taobao.pamirs.cache.load.verify.CacheConfigVerify;
 import com.taobao.pamirs.cache.store.StoreType;
+import com.taobao.pamirs.cache.store.map.ConCurrentHashMapStore;
 import com.taobao.pamirs.cache.store.map.MapStore;
 import com.taobao.pamirs.cache.store.tair.TairStore;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
@@ -126,7 +127,8 @@ public abstract class CacheManager implements ApplicationContextAware,
 				for (MethodConfig method : cacheMethods) {
 					initCacheAdapters(cacheConfig.getStoreRegion(),
 							bean.getBeanName(), method,
-							cacheConfig.getStoreMapCleanTime());
+							cacheConfig.getStoreMapCleanTime(),
+							cacheConfig.isStatisCount());
 				}
 			}
 		}
@@ -144,7 +146,8 @@ public abstract class CacheManager implements ApplicationContextAware,
 	 * @param storeMapCleanTime
 	 */
 	private void initCacheAdapters(String region, String beanName,
-			MethodConfig cacheMethod, String storeMapCleanTime) {
+			MethodConfig cacheMethod, String storeMapCleanTime,
+			boolean statisCount) {
 		String key = CacheCodeUtil.getCacheAdapterKey(region, beanName,
 				cacheMethod);
 		StoreType storeType = StoreType.toEnum(cacheConfig.getStoreType());
@@ -153,9 +156,11 @@ public abstract class CacheManager implements ApplicationContextAware,
 		if (StoreType.TAIR == storeType) {
 			cache = new TairStore<Serializable, Serializable>(tairManager,
 					cacheConfig.getStoreTairNameSpace());
-		} else if (StoreType.MAP == storeType) {
+		} else if (StoreType.RULMAP == storeType) {
 			cache = new MapStore<Serializable, Serializable>(localMapSize,
 					localMapSegmentSize);
+		} else if (StoreType.CONCURRENTMAP == storeType) {
+			cache = new ConCurrentHashMapStore<Serializable, Serializable>();
 		}
 
 		if (cache != null) {
@@ -167,10 +172,18 @@ public abstract class CacheManager implements ApplicationContextAware,
 			cacheProxys.put(key, cacheProxy);
 
 			// 2. 定时清理任务：storeMapCleanTime
-			if (StoreType.MAP == storeType
+			if ((StoreType.RULMAP == storeType || StoreType.CONCURRENTMAP == storeType)
 					&& StringUtils.isNotBlank(storeMapCleanTime)) {
 				try {
-					timeTask.createCleanCacheTask(cacheProxy, storeMapCleanTime);
+					// 如果对于某个方法的缓存有特殊的时间要求时，进行特殊设置，没有时采用总的设置。
+					if (StringUtils.isNotBlank(cacheMethod.getCleanTimeExp())) {
+						timeTask.createCleanCacheTask(cacheProxy,
+								cacheMethod.getCleanTimeExp());
+					} else {
+						timeTask.createCleanCacheTask(cacheProxy,
+								storeMapCleanTime);
+					}
+
 				} catch (Exception e) {
 					log.error("[严重]设置Map定时清理任务失败!", e);
 				}
@@ -179,10 +192,13 @@ public abstract class CacheManager implements ApplicationContextAware,
 			// 3. 注册JMX
 			registerCacheMbean(key, cacheProxy, storeMapCleanTime,
 					cacheMethod.getExpiredTime());
-
-			// 4. 注册Xray log
-			cacheProxy.addListener(new XrayLogListener(beanName, cacheMethod
-					.getMethodName(), cacheMethod.getParameterTypes()));
+			// 只有开启统计的业务才进行处理，如果没有就不进行统计。默认不开启，存在性能的损耗。
+			if (statisCount) {
+				// 4. 注册Xray log
+				cacheProxy.addListener(new XrayLogListener(beanName,
+						cacheMethod.getMethodName(), cacheMethod
+								.getParameterTypes()));
+			}
 		}
 	}
 

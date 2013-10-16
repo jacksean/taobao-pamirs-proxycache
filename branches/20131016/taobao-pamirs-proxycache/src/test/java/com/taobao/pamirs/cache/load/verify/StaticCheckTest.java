@@ -67,7 +67,7 @@ public class StaticCheckTest {
 		// isStoreType
 		try {
 			A a = getLegalObject();
-			a.setStoreType(StoreType.MAP.getName());
+			a.setStoreType(StoreType.RULMAP.getName());
 			a.setStoreTairNameSpace(null);
 			StaticCheck.check(a);
 		} catch (Exception e) {

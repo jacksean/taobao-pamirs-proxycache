@@ -36,6 +36,22 @@ public abstract class AbstractCacheConfigService extends CacheManager {
 	 * 缓存环境隔离
 	 */
 	private String storeRegion;
+	/**
+	 * 统计累计
+	 */
+	private boolean statisCount;
+	/**
+	 * 加载使用缓存
+	 */
+	private boolean useCache = true;
+
+	public boolean isUseCache() {
+		return useCache;
+	}
+
+	public void setUseCache(boolean useCache) {
+		this.useCache = useCache;
+	}
 
 	public String getStoreType() {
 		return storeType;
@@ -67,6 +83,14 @@ public abstract class AbstractCacheConfigService extends CacheManager {
 
 	public void setStoreRegion(String storeRegion) {
 		this.storeRegion = storeRegion;
+	}
+
+	public boolean isStatisCount() {
+		return statisCount;
+	}
+
+	public void setStatisCount(boolean statisCount) {
+		this.statisCount = statisCount;
 	}
 
 }

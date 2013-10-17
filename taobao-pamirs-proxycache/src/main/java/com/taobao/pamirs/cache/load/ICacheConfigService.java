@@ -13,8 +13,9 @@ public interface ICacheConfigService {
 	 * 加载缓存配置
 	 * 
 	 * @return
+	 * @throws Exception 
 	 */
-	CacheConfig loadConfig();
+	CacheConfig loadConfig() throws Exception;
 
 	/**
 	 * 自动修正默认配置

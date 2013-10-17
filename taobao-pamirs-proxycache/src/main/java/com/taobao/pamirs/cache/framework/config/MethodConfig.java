@@ -20,7 +20,6 @@ public class MethodConfig implements Serializable {
 	/**
 	 * 参数类型
 	 */
-	@Verfication(name = "参数类型", notEmptyList = true)
 	private List<Class<?>> parameterTypes;
 
 	/**
@@ -37,6 +36,10 @@ public class MethodConfig implements Serializable {
 	 * 是否被外部调用
 	 */
 	private boolean beRemoteCalled = false;
+	/**
+	 * 存储类型，以方法的类型最优先
+	 */
+	private String storeType;
 
 	public String getMethodName() {
 		return methodName;
@@ -107,6 +110,14 @@ public class MethodConfig implements Serializable {
 
 	public void setBeRemoteCalled(boolean beRemoteCalled) {
 		this.beRemoteCalled = beRemoteCalled;
+	}
+
+	public String getStoreType() {
+		return storeType;
+	}
+
+	public void setStoreType(String storeType) {
+		this.storeType = storeType;
 	}
 
 }

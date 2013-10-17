@@ -3,7 +3,6 @@
  */
 package com.taobao.pamirs.cache.load.impl;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import com.taobao.pamirs.cache.framework.config.CacheBean;
@@ -30,7 +29,7 @@ public class SimpleLocalCacheManager extends AbstractCacheConfigService {
 	@Override
 	public CacheConfig loadConfig() throws Exception {
 		if ((getDoCacheConfig() == null || getDoCacheConfig().size() <= 0)
-				|| (getCleanConfig() == null || getCleanConfig().size() <= 0)) {
+				&& (getCleanConfig() == null || getCleanConfig().size() <= 0)) {
 			throw new LoadConfigException("非法的缓存配置，config列表为空");
 		}
 

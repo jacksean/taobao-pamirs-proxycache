@@ -102,7 +102,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 	}
 
 	@Override
-	public abstract CacheConfig loadConfig();
+	public abstract CacheConfig loadConfig() throws Exception;
 
 	@Override
 	public void autoFillCacheConfig(CacheConfig cacheConfig) {
@@ -150,7 +150,10 @@ public abstract class CacheManager implements ApplicationContextAware,
 			boolean statisCount) {
 		String key = CacheCodeUtil.getCacheAdapterKey(region, beanName,
 				cacheMethod);
-		StoreType storeType = StoreType.toEnum(cacheConfig.getStoreType());
+		StoreType storeType = StringUtils
+				.isNotBlank(cacheMethod.getStoreType()) ? StoreType
+				.toEnum(cacheMethod.getStoreType()) : StoreType
+				.toEnum(cacheConfig.getStoreType());
 		ICache<Serializable, Serializable> cache = null;
 
 		if (StoreType.TAIR == storeType) {

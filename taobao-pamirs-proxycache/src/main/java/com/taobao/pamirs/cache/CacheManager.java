@@ -61,7 +61,9 @@ public abstract class CacheManager implements ApplicationContextAware,
 	protected ApplicationContext applicationContext;
 
 	private CleanCacheTimerManager timeTask = new CleanCacheTimerManager();
-
+	/**
+	 * 是否启用缓存
+	 */
 	private boolean useCache = true;
 
 	/**
@@ -89,7 +91,9 @@ public abstract class CacheManager implements ApplicationContextAware,
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
 		// 放在onApplicationEvent里，原因是解决CacheManagerHandle里先执行代理，再applicationContext.getBean，否则代理不了
-
+		if(!useCache){
+			return ;
+		}
 		// 2. 自动填充默认的配置
 		autoFillCacheConfig(cacheConfig);
 

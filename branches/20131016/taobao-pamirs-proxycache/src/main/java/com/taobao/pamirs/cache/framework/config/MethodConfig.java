@@ -14,7 +14,9 @@ public class MethodConfig implements Serializable {
 
 	//
 	private static final long serialVersionUID = 1L;
-
+	//执行的bean的name
+	private String beanName;
+	
 	@Verfication(name = "方法名称", notEmpty = true)
 	private String methodName;
 	/**
@@ -118,6 +120,14 @@ public class MethodConfig implements Serializable {
 
 	public void setStoreType(String storeType) {
 		this.storeType = storeType;
+	}
+
+	public String getBeanName() {
+		return beanName;
+	}
+
+	public void setBeanName(String beanName) {
+		this.beanName = beanName;
 	}
 
 }

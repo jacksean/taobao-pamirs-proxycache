@@ -3,7 +3,9 @@
  */
 package com.taobao.pamirs.cache.load.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
@@ -32,31 +34,44 @@ public class SimpleLocalCacheManager extends AbstractCacheConfigService {
 				&& (getCleanConfig() == null || getCleanConfig().size() <= 0)) {
 			throw new LoadConfigException("非法的缓存配置，config列表为空");
 		}
-
+		//进行配置初始化
 		CacheConfig cacheConfigItem = new CacheConfig();
 		cacheConfigItem.setStoreType(getStoreType());
 		cacheConfigItem.setStoreMapCleanTime(getMapCleanTime());
 		cacheConfigItem.setStoreRegion(getStoreRegion());
 		cacheConfigItem.setStoreTairNameSpace(getTairNameSpace());
 		cacheConfigItem.setStatisCount(isStatisCount());
+		Map<String, CacheBean> tmp = new HashMap<String, CacheBean>();
+		//对于规则进行初始化  
+		//对于相同bean下的不同方法进行配置初始化
 		for (String confItem : getDoCacheConfig()) {
-			cacheConfigItem.getCacheBeans().add(generateCacheBean(confItem));
+			MethodConfig mc = generateCacheBean(confItem);
+			if (tmp.get(mc.getBeanName()) == null) {
+				CacheBean cb = new CacheBean();
+				cb.setBeanName(mc.getBeanName());
+				tmp.put(mc.getBeanName(), new CacheBean());
+			}
+			tmp.get(mc.getBeanName()).getCacheMethods().add(mc);
 		}
-
+		cacheConfigItem.getCacheBeans().addAll(tmp.values());
+		
 		return cacheConfigItem;
 	}
 
 	/**
 	 * beanName，methodName，storeType，cleanTimeExp，expTime，beRemoteCalled
 	 * 
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
-	private CacheBean generateCacheBean(String confItem) throws Exception {
+	private MethodConfig generateCacheBean(String confItem) throws Exception {
+//		beanName=appConfService;
+//		methodName=getAppConfByCodeAndType;
+//		expiredTime=3600;
+//		storeType=tair
 		String[] items = confItem.split(SPLITE_SGIN);
-		CacheBean cacheBean = new CacheBean();
 		MethodConfig mconf = new MethodConfig();
-		cacheBean.getCacheMethods().add(mconf);
 		for (String item : items) {
 			if (item.split("=").length != 2) {
 				throw new Exception("缓存设置存在问题，值为" + item);
@@ -64,7 +79,7 @@ public class SimpleLocalCacheManager extends AbstractCacheConfigService {
 			String key = item.split("=")[0].trim();
 			String value = item.split("=")[1].trim();
 			if ("beanName".equals(key)) {
-				cacheBean.setBeanName(value);
+				mconf.setBeanName(value);
 			} else if ("methodName".equals(key)) {
 				mconf.setMethodName(value);
 			} else if ("storeType".equals(key)) {
@@ -78,7 +93,7 @@ public class SimpleLocalCacheManager extends AbstractCacheConfigService {
 			}
 		}
 
-		return cacheBean;
+		return mconf;
 	}
 
 	public List<String> getDoCacheConfig() {

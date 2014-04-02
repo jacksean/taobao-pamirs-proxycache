@@ -20,7 +20,7 @@ public class CacheModule implements Serializable {
 	/**
 	 * ª∫¥Êbean≈‰÷√
 	 */
-	private List<CacheBean> cacheBeans;
+	private List<CacheBean> cacheBeans = new ArrayList<CacheBean>();
 
 	/**
 	 * «Â¿Ìª∫¥Êbean≈‰÷√

@@ -49,7 +49,7 @@ public class SimpleLocalCacheManager extends AbstractCacheConfigService {
 			if (tmp.get(mc.getBeanName()) == null) {
 				CacheBean cb = new CacheBean();
 				cb.setBeanName(mc.getBeanName());
-				tmp.put(mc.getBeanName(), new CacheBean());
+				tmp.put(mc.getBeanName(), cb);
 			}
 			tmp.get(mc.getBeanName()).getCacheMethods().add(mc);
 		}

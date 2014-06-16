@@ -121,7 +121,7 @@ public class ConfigurableMBeanInfoAssembler extends
 					} else {
 						desc.setField("role", "setter");
 					}
-					desc.setField("visibility", ATTRIBUTE_OPERATION_VISIBILITY);
+					desc.setField("visibility", Integer.valueOf(4));
 					if (isExposeClassDescriptor()) {
 						desc.setField("class",
 								getClassForDescriptor(managedBean).getName());

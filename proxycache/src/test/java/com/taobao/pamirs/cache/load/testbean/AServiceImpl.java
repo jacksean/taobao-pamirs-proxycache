@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 
 import com.taobao.pamirs.cache.extend.jmx.annotation.JmxClass;
 import com.taobao.pamirs.cache.extend.jmx.annotation.JmxMethod;
+import com.taobao.pamirs.cache.framework.config.SetCache;
 
 /**
  * 测试BeanA（测试重载方法、clear操作）
@@ -25,12 +26,13 @@ public class AServiceImpl implements ASerivce {
 	Set<String> names = new HashSet<String>();
 	List<String> firstHaveValueKeys = new ArrayList<String>();
 
+//	@SetCache(beanName="aService")
 	public String md5Name(String name) {
+		System.out.println("★★★inovke★★★");
 		if (name == null)
 			return null;
 
 		names.add(name);
-
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			return md.digest(name.getBytes()).toString();
@@ -53,6 +55,7 @@ public class AServiceImpl implements ASerivce {
 	}
 
 	@Override
+	@SetCache(beanName="aService")
 	public String firstHaveValue(String key) {
 		Assert.notNull(key);
 

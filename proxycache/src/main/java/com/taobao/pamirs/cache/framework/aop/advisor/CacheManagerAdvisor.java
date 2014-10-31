@@ -4,7 +4,9 @@ import org.aopalliance.aop.Advice;
 import org.springframework.aop.Advisor;
 
 import com.taobao.pamirs.cache.CacheManager;
+import com.taobao.pamirs.cache.framework.aop.advice.AnnotationCacheManagerRoundAdvice;
 import com.taobao.pamirs.cache.framework.aop.advice.CacheManagerRoundAdvice;
+import com.taobao.pamirs.cache.load.impl.AnnotationConfigCacheManager;
 
 /**
  * π€≤Ï’ﬂ
@@ -17,7 +19,11 @@ public class CacheManagerAdvisor implements Advisor {
 	private CacheManagerRoundAdvice advice;
 
 	public CacheManagerAdvisor(CacheManager cacheManager, String beanName) {
-		this.advice = new CacheManagerRoundAdvice(cacheManager, beanName);
+		if (cacheManager instanceof AnnotationConfigCacheManager) {
+			this.advice = new AnnotationCacheManagerRoundAdvice(cacheManager, beanName);
+		} else {			
+			this.advice = new CacheManagerRoundAdvice(cacheManager, beanName);
+		}
 	}
 
 	public Advice getAdvice() {

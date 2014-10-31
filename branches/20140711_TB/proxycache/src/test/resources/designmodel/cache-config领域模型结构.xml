@@ -18,6 +18,7 @@
 						<java-class>java.lang.String</java-class>
 					</parameterTypes>
 					<expiredTime></expiredTime>						<!-- 失效时间，单位：秒。 可以是相对时间，也可以是绝对时间(大于当前时间戳是绝对时间过期)。不传或0都是不过期，可选 -->
+					<useCache>false</useCache> 	<!-- 缓存是否开启，缺省true 开启 -->
 				</methodConfig>
 				<methodConfig>
 					...

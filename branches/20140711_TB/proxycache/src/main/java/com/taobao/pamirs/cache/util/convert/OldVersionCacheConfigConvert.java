@@ -48,7 +48,9 @@ public class OldVersionCacheConfigConvert {
 		}
 		System.out.println("Convert CacheConfig Total:" + cacheMethodCount);
 		System.out.println("Convert CacheCleanConfig Total:" + cacheCleanMethodCount);
-		String xml = "<?xml version=\"1.0\" encoding=\"GBK\"?>\r\n" + toXml(cm);
+		String xml = "<?xml version=\"1.0\" encoding=\"GBK\"?>\r\n";
+		xml += "<!DOCTYPE beans PUBLIC \"-//SPRING//DTD BEAN//EN\" \"http://www.springframework.org/dtd/spring-beans.dtd\">";
+		xml += toXml(cm);
 		File f2 = new File(path.substring(0, path.indexOf(".xml")) + "-new.xml");
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f2)));
 		bw.write(xml);

@@ -1,6 +1,7 @@
 package com.taobao.pamirs.cache.framework.config;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.taobao.pamirs.cache.load.verify.Verfication;
@@ -33,6 +34,8 @@ public class CacheBean implements Serializable {
 	}
 
 	public List<MethodConfig> getCacheMethods() {
+		if (cacheMethods == null)
+			cacheMethods = new ArrayList<MethodConfig>();
 		return cacheMethods;
 	}
 

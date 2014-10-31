@@ -152,7 +152,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	 * @return
 	 * @throws Throwable
 	 */
-	private void cleanCache(String beanName,
+	protected void cleanCache(String beanName,
 			List<MethodConfig> cacheCleanMethods, MethodInvocation invocation,
 			String storeRegion, String ip) throws Throwable {
 		if (cacheCleanMethods == null || cacheCleanMethods.isEmpty())
@@ -173,4 +173,19 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 		}
 	}
 
+	public CacheManager getCacheManager() {
+		return cacheManager;
+	}
+
+	public void setCacheManager(CacheManager cacheManager) {
+		this.cacheManager = cacheManager;
+	}
+
+	public String getBeanName() {
+		return beanName;
+	}
+
+	public void setBeanName(String beanName) {
+		this.beanName = beanName;
+	}
 }

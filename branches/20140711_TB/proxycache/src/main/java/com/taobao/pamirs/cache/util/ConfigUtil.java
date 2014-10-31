@@ -2,9 +2,11 @@ package com.taobao.pamirs.cache.util;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -14,7 +16,9 @@ import com.taobao.pamirs.cache.framework.config.CacheCleanBean;
 import com.taobao.pamirs.cache.framework.config.CacheCleanMethod;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.CacheModule;
+import com.taobao.pamirs.cache.framework.config.CleanCache;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
+import com.taobao.pamirs.cache.framework.config.SetCache;
 import com.taobao.pamirs.cache.load.LoadConfigException;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -33,16 +37,14 @@ public class ConfigUtil {
 	 * @param beanName
 	 * @return
 	 */
-	public static boolean isBeanHaveCache(CacheConfig cacheConfig,
-			String beanName) {
+	public static boolean isBeanHaveCache(CacheConfig cacheConfig, String beanName) {
 		if (cacheConfig == null || beanName == null)
 			return false;
 
 		List<CacheBean> cacheBeans = cacheConfig.getCacheBeans();
 		List<CacheCleanBean> cacheCleanBeans = cacheConfig.getCacheCleanBeans();
 
-		if ((cacheBeans == null || cacheBeans.size() == 0)
-				&& (cacheCleanBeans == null || cacheCleanBeans.size() == 0))
+		if ((cacheBeans == null || cacheBeans.size() == 0) && (cacheCleanBeans == null || cacheCleanBeans.size() == 0))
 			return false;
 
 		for (CacheBean bean : cacheBeans) {
@@ -67,8 +69,8 @@ public class ConfigUtil {
 	 * @param parameterTypes
 	 * @return
 	 */
-	public static MethodConfig getCacheMethod(CacheConfig cacheConfig,
-			String beanName, String methodName, List<Class<?>> parameterTypes) {
+	public static MethodConfig getCacheMethod(CacheConfig cacheConfig, String beanName, String methodName,
+			List<Class<?>> parameterTypes) {
 
 		List<CacheBean> cacheBeans = cacheConfig.getCacheBeans();
 
@@ -78,15 +80,15 @@ public class ConfigUtil {
 
 			List<MethodConfig> cacheMethods = bean.getCacheMethods();
 
-			return (MethodConfig) getMethodConfig(cacheMethods, cacheConfig,
-					beanName, methodName, parameterTypes);
+			MethodConfig mc = (MethodConfig) getMethodConfig(cacheMethods, cacheConfig, beanName, methodName, parameterTypes);
+			if (mc != null)
+				return mc;
 		}
 
 		return null;
 	}
 
-	private static MethodConfig getMethodConfig(
-			List<? extends MethodConfig> list, CacheConfig cacheConfig,
+	private static MethodConfig getMethodConfig(List<? extends MethodConfig> list, CacheConfig cacheConfig,
 			String beanName, String methodName, List<Class<?>> parameterTypes) {
 
 		if (cacheConfig == null || beanName == null || methodName == null)
@@ -112,8 +114,7 @@ public class ConfigUtil {
 	 * @param parameterTypes
 	 * @return
 	 */
-	public static List<MethodConfig> getCacheCleanMethods(
-			CacheConfig cacheConfig, String beanName, String methodName,
+	public static List<MethodConfig> getCacheCleanMethods(CacheConfig cacheConfig, String beanName, String methodName,
 			List<Class<?>> parameterTypes) {
 
 		List<CacheCleanBean> cacheCleanBeans = cacheConfig.getCacheCleanBeans();
@@ -148,12 +149,80 @@ public class ConfigUtil {
 		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
 
 		if (inputStream != null) {
-			CacheModule cacheConfig = (CacheModule) xStream
-					.fromXML(inputStream);
+			CacheModule cacheConfig = (CacheModule) xStream.fromXML(inputStream);
 			return cacheConfig;
 		}
 
 		throw new LoadConfigException("输入的配置信息为Null");
+	}
+
+	/**
+	 * 
+	 * @param inputStream
+	 * @return
+	 * @throws Exception
+	 */
+	public static CacheCleanBean getCacheCleanBean(CleanCache cleanCache, Method method) {
+		CacheCleanBean cacheCleanBean = new CacheCleanBean();
+		cacheCleanBean.setBeanName(cleanCache.beanName());
+		if (StringUtils.isEmpty(cacheCleanBean.getBeanName())) {
+			String beanName = method.getDeclaringClass().getSimpleName();
+			beanName = String.valueOf(beanName.charAt(0)).toLowerCase() + new String(beanName.substring(1));
+			cacheCleanBean.setBeanName(beanName);
+		}
+
+		List<CacheCleanMethod> cacheMethods = new ArrayList<CacheCleanMethod>();
+		cacheCleanBean.setMethods(cacheMethods);
+		CacheCleanMethod ccm = new CacheCleanMethod();
+		cacheMethods.add(ccm);
+		ccm.setMethodName(method.getName());
+		return cacheCleanBean;
+	}
+
+
+	/**
+	 * 
+	 * @param inputStream
+	 * @return
+	 * @throws Exception
+	 */
+	public static CacheBean getCacheBean(SetCache setCache, Method method) {
+		if (setCache == null || method == null)
+			return null;
+		CacheBean cacheBean = new CacheBean();
+		cacheBean.setBeanName(setCache.beanName());
+		if (StringUtils.isEmpty(cacheBean.getBeanName())) {
+			String beanName = method.getDeclaringClass().getSimpleName();
+			beanName = String.valueOf(beanName.charAt(0)).toLowerCase() + new String(beanName.substring(1));
+			cacheBean.setBeanName(beanName);
+		}
+
+		List<MethodConfig> cacheMethods = new ArrayList<MethodConfig>();
+		cacheBean.setCacheMethods(cacheMethods);
+		MethodConfig mc = new MethodConfig();
+		cacheMethods.add(mc);
+		mc.setExpiredTime(setCache.expireTime());
+		mc.setMethodName(method.getName());
+		mc.setParameterTypes(Arrays.asList(method.getParameterTypes()));
+		return cacheBean;
+	}
+
+	/**
+	 * xml转换成CacheModule
+	 * 
+	 * @param inputStream
+	 * @return
+	 * @throws Exception
+	 */
+	public static String convertCacheConfigModuleToString(CacheModule cacheModule) {
+		XStream xStream = new XStream(new DomDriver());
+		xStream.alias("cacheModule", CacheModule.class);
+		xStream.alias("cacheBean", CacheBean.class);
+		xStream.alias("methodConfig", MethodConfig.class);
+		xStream.alias("cacheCleanBean", CacheCleanBean.class);
+		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
+
+		return xStream.toXML(cacheModule);
 	}
 
 	/**
@@ -162,13 +231,12 @@ public class ConfigUtil {
 	 * @param cacheConfig
 	 * @param applicationContext
 	 */
-	public static void autoFillCacheConfig(CacheConfig cacheConfig,
-			ApplicationContext applicationContext) {
+	public static void autoFillCacheConfig(CacheConfig cacheConfig, ApplicationContext applicationContext) {
 		Assert.notNull(applicationContext);
 		Assert.notNull(cacheConfig);
-		Assert.isTrue(!CollectionUtils.isEmpty(cacheConfig.getCacheBeans())
-				|| !CollectionUtils.isEmpty(cacheConfig.getCacheBeans()),
-				"配置中缓存和清理缓存不能同时为空！");
+		Assert.isTrue(
+				!CollectionUtils.isEmpty(cacheConfig.getCacheBeans())
+						|| !CollectionUtils.isEmpty(cacheConfig.getCacheBeans()), "配置中缓存和清理缓存不能同时为空！");
 
 		// 1. 对method定义，如果没有parameterTypes，则自动寻找配对（有重名方法报错）
 		// 1.1 包括：cacheBean.methodConfig
@@ -178,8 +246,7 @@ public class ConfigUtil {
 					if (methodConfig.getParameterTypes() != null)
 						continue;
 
-					List<Class<?>> parameterTypes = fillParameterTypes(
-							cacheBean.getBeanName(), applicationContext,
+					List<Class<?>> parameterTypes = fillParameterTypes(cacheBean.getBeanName(), applicationContext,
 							methodConfig.getMethodName());
 					methodConfig.setParameterTypes(parameterTypes);
 				}
@@ -192,8 +259,7 @@ public class ConfigUtil {
 					if (method.getParameterTypes() != null)
 						continue;
 
-					List<Class<?>> parameterTypes = fillParameterTypes(
-							cleanBean.getBeanName(), applicationContext,
+					List<Class<?>> parameterTypes = fillParameterTypes(cleanBean.getBeanName(), applicationContext,
 							method.getMethodName());
 					method.setParameterTypes(parameterTypes);
 				}
@@ -205,8 +271,7 @@ public class ConfigUtil {
 			for (CacheCleanBean cleanBean : cacheConfig.getCacheCleanBeans()) {
 				for (CacheCleanMethod method : cleanBean.getMethods()) {
 					for (MethodConfig clearMethod : method.getCleanMethods()) {
-						clearMethod.setParameterTypes(method
-								.getParameterTypes());// 继承
+						clearMethod.setParameterTypes(method.getParameterTypes());// 继承
 					}
 				}
 			}
@@ -214,12 +279,12 @@ public class ConfigUtil {
 
 	}
 
-	private static List<Class<?>> fillParameterTypes(String beanName,
-			ApplicationContext applicationContext, String methodName) {
+	private static List<Class<?>> fillParameterTypes(String beanName, ApplicationContext applicationContext,
+			String methodName) {
 		// fill
 		Object bean = applicationContext.getBean(beanName);
 		Assert.notNull(bean, "找不到Bean:" + beanName);
-		
+
 		Method[] methods = bean.getClass().getMethods();
 		int num = 0;
 		Method index = null;

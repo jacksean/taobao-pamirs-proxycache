@@ -29,6 +29,12 @@ public class MethodConfig implements Serializable {
 	 * 【可选项】
 	 */
 	private Integer expiredTime;
+	
+	/**
+	 * 改方法是否开启缓存，缺省开启
+	 */
+	private boolean useCache=true;
+	
 
 	public String getMethodName() {
 		return methodName;
@@ -83,6 +89,14 @@ public class MethodConfig implements Serializable {
 		}
 
 		return true;
+	}
+
+	public boolean isUseCache() {
+		return useCache;
+	}
+
+	public void setUseCache(boolean useCache) {
+		this.useCache = useCache;
 	}
 
 }

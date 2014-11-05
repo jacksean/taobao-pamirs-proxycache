@@ -53,6 +53,9 @@ public class CleanCacheTimerManager {
 
 		this.timer.schedule(task, nextTime);
 	}
+	
+	
+	
 
 	/**
 	 * 清理完成后通知

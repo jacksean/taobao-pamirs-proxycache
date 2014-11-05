@@ -57,5 +57,12 @@ public interface ICache<K extends Serializable, V extends Serializable> {
 	 * @return
 	 */
 	public int size();
+	
+	
+	/**
+	 * Òş²ØÊı¾İ
+	 * @param key
+	 */
+	public void hidden(K key);
 
 }

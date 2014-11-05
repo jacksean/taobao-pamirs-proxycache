@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.taobao.pamirs.cache.load.verify.Verfication;
+import com.taobao.pamirs.cache.store.RemoveMode;
 
 /**
  * 基本bean配置
@@ -31,9 +32,14 @@ public class MethodConfig implements Serializable {
 	private Integer expiredTime;
 	
 	/**
-	 * 改方法是否开启缓存，缺省开启
+	 * 该方法是否开启缓存，缺省开启
 	 */
 	private boolean useCache=true;
+	
+	/**
+	 * 该方法失效缓存使用hidden方式，默认invaild（tair）
+	 */
+	private String removeMode=RemoveMode.INVAILD.getName();
 	
 
 	public String getMethodName() {
@@ -98,5 +104,15 @@ public class MethodConfig implements Serializable {
 	public void setUseCache(boolean useCache) {
 		this.useCache = useCache;
 	}
+
+	public String getRemoveMode() {
+		return removeMode;
+	}
+
+	public void setRemoveMode(String removeMode) {
+		this.removeMode = removeMode;
+	}
+
+
 
 }

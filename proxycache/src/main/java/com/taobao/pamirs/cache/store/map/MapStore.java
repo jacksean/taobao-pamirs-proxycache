@@ -84,4 +84,9 @@ public class MapStore<K extends Serializable, V extends Serializable>
 		return datas.size();
 	}
 
+	@Override
+	public void hidden(K key) {
+		throw new RuntimeException("Map存储 不支持此方法");
+	}
+
 }

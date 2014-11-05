@@ -8,8 +8,9 @@ import static com.taobao.pamirs.cache.framework.listener.CacheOprator.REMOVE;
 import java.io.Serializable;
 
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
-import com.taobao.pamirs.cache.framework.listener.CacheOprateInfo;
 import com.taobao.pamirs.cache.framework.listener.CacheObservable;
+import com.taobao.pamirs.cache.framework.listener.CacheOprateInfo;
+import com.taobao.pamirs.cache.store.RemoveMode;
 import com.taobao.pamirs.cache.store.StoreType;
 
 /**
@@ -100,11 +101,20 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 	}
 
 	public void remove(K key, String ip) {
+		this.remove(RemoveMode.INVAILD, key, ip);
+	}
+	
+	
+	public void remove(RemoveMode mode,K key, String ip) {
 		CacheException cacheException = null;
 
 		long start = System.currentTimeMillis();
 		try {
-			cache.remove(key);
+			if(RemoveMode.HIDDEN.equals(mode)){
+				cache.hidden(key);
+			}else{
+				cache.remove(key);
+			}
 		} catch (CacheException e) {
 			cacheException = e;
 		}
@@ -114,6 +124,10 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		notifyListeners(REMOVE, new CacheOprateInfo(key, end - start, true,
 				beanName, methodConfig, cacheException, ip));
 	}
+	
+	
+	
+	
 
 	public void clear() {
 		cache.clear();

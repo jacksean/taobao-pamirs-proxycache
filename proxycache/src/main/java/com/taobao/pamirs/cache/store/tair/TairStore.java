@@ -66,28 +66,42 @@ public class TairStore<K extends Serializable, V extends Serializable>
 
 	@Override
 	public void put(K key, V value) {
-		// put前需要remove
-		remove(key);
-
-		ResultCode rc = tairManager.put(namespace, key, value);
-
-		// 失败
-		if (!rc.isSuccess()) {
-			throw new CacheException(rc.getCode(), rc.getMessage());
+		int version=Integer.MAX_VALUE;
+		Result<DataEntry> result = tairManager.get(namespace, key);
+		if (result.isSuccess()) {
+			DataEntry tairData = result.getValue();
+			if(tairData!=null){
+				version=tairData.getVersion();
+			}
+			ResultCode rc = tairManager.put(namespace, key, value, version);
+			// 失败
+			if (!rc.isSuccess()) {
+				remove(key);
+				throw new CacheException(rc.getCode(), rc.getMessage());
+			}
+			return;
 		}
+		remove(key);	
 	}
 
 	@Override
 	public void put(K key, V value, int expireTime) {
-		// put前需要remove
-		remove(key);
-
-		ResultCode rc = tairManager.put(namespace, key, value, 0, expireTime);
-
-		// 失败
-		if (!rc.isSuccess()) {
-			throw new CacheException(rc.getCode(), rc.getMessage());
+		int version=Integer.MAX_VALUE;
+		Result<DataEntry> result = tairManager.get(namespace, key);
+		if (result.isSuccess()) {
+			DataEntry tairData = result.getValue();
+			if(tairData!=null){
+				version=tairData.getVersion();
+			}
+			ResultCode rc = tairManager.put(namespace, key, value, version, expireTime);
+			// 失败
+			if (!rc.isSuccess()) {
+				remove(key);
+				throw new CacheException(rc.getCode(), rc.getMessage());
+			}
+			return;
 		}
+		remove(key);
 	}
 
 	@Override
@@ -111,6 +125,15 @@ public class TairStore<K extends Serializable, V extends Serializable>
 	@Override
 	public int size() {
 		throw new RuntimeException("Tair存储 不支持此方法");
+	}
+
+	@Override
+	public void hidden(K key) {
+		ResultCode rc =tairManager.hide(namespace, key);
+		// 失败
+		if (!rc.isSuccess()) {
+			throw new CacheException(rc.getCode(), rc.getMessage());
+		}
 	}
 
 }

@@ -37,7 +37,7 @@
 						</methodConfig>
 					</cleanMethods>
 				</cacheCleanMethod>
-				<cacheCleanMethod>
+				<cacheCleanMethod>3
 					...
 				</cacheCleanMethod>
 			</methods>

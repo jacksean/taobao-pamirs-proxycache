@@ -216,6 +216,73 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 		return cacheProxys.get(key);
 	}
+	
+	
+	public boolean runtimeReloadConfig(CacheConfig newConfig){
+		/*try{
+			autoFillCacheConfig(newConfig);
+			verifyCacheConfig(newConfig);
+			Map<String, CacheProxy<Serializable, Serializable>> newCacheProxys = new ConcurrentHashMap<String, CacheProxy<Serializable, Serializable>>();
+			CleanCacheTimerManager newTimeTask = new CleanCacheTimerManager();
+			List<CacheBean> cacheBeans = newConfig.getCacheBeans();
+			if (cacheBeans != null) {
+				for (CacheBean bean : cacheBeans) {
+					List<MethodConfig> cacheMethods = bean.getCacheMethods();
+					for (MethodConfig method : cacheMethods) {
+						String key = CacheCodeUtil.getCacheAdapterKey(newConfig.getStoreRegion(),bean.getBeanName(),method);
+						StoreType storeType = StoreType.toEnum(newConfig.getStoreType());
+						ICache<Serializable, Serializable> cache = null;
+						if (StoreType.TAIR == storeType) {
+							cache = new TairStore<Serializable, Serializable>(tairManager,
+									newConfig.getStoreTairNameSpace());
+						} else if (StoreType.MAP == storeType) {
+							cache = new MapStore<Serializable, Serializable>(localMapSize,
+									localMapSegmentSize);
+						}
+						if (cache != null) {
+							// 1. CacheProxy
+							CacheProxy<Serializable, Serializable> cacheProxy = new CacheProxy<Serializable, Serializable>(
+									storeType, newConfig.getStoreRegion(), key, cache,
+									bean.getBeanName(), method);
+
+							newCacheProxys.put(key, cacheProxy);
+
+							// 2. 定时清理任务：storeMapCleanTime
+							if (StoreType.MAP == storeType
+									&& StringUtils.isNotBlank(newConfig.getStoreMapCleanTime())) {
+								try {
+									newTimeTask.createCleanCacheTask(cacheProxy, newConfig.getStoreMapCleanTime());
+								} catch (Exception e) {
+									log.error("[严重]设置Map定时清理任务失败!", e);
+								}
+							}
+
+							// 3. 注册JMX
+							registerCacheMbean(key, cacheProxy, newConfig.getStoreMapCleanTime(),
+									method.getExpiredTime());
+
+							// 4. 注册Xray log
+							cacheProxy.addListener(new XrayLogListener(bean.getBeanName(), method
+									.getMethodName(), method.getParameterTypes()));
+						}
+					}
+				}
+				
+				
+				
+				
+				
+			}
+			
+			
+		}catch(Exception e){
+			
+		}*/
+		return false;
+		
+	}
+
+	
 
 	public boolean isUseCache() {
 		return useCache;

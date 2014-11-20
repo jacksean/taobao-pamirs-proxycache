@@ -71,7 +71,7 @@ public class WriterTask<T> implements Runnable {
 
 		for (T r : records) {
 			if (logWriter.isFatalEnabled()) {
-				logWriter.fatal(r);
+				logWriter.warn(r);
 			}
 		}
 

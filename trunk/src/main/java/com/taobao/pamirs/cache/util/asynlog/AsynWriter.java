@@ -63,7 +63,7 @@ public class AsynWriter<T> implements IWriter<T> {
 			asynWriterService.submit(task);
 		}
 
-		log.info("Asyn log init ok!");
+		log.warn("Asyn log init ok!");
 	}
 
 	@Override

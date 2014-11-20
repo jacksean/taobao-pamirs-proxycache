@@ -105,12 +105,12 @@ public class TairStore<K extends Serializable, V extends Serializable>
 
 	@Override
 	public void clear() {
-		throw new RuntimeException("Tair存储 不支持此方法");
+		throw new RuntimeException("NotSupport for TairCache");
 	}
 
 	@Override
 	public int size() {
-		throw new RuntimeException("Tair存储 不支持此方法");
+		throw new RuntimeException("NotSupport for TairCache");
 	}
 
 }

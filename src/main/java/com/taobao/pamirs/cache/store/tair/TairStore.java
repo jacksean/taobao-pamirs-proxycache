@@ -46,7 +46,7 @@ public class TairStore<K extends Serializable, V extends Serializable>
 		Result<DataEntry> result = tairManager.get(namespace, key);
 		if (result.isSuccess()) {
 			DataEntry tairData = result.getValue();// 第一个getValue返回DataEntry对象
-			if (tairData == null)
+			if (tairData == null)// （MC-Client不同，expireTime到期直接返回null了）
 				return null;
 
 			try {
@@ -59,7 +59,7 @@ public class TairStore<K extends Serializable, V extends Serializable>
 			}
 		}
 
-		// 失败（包括已经expireTime到期）
+		// 失败
 		throw new CacheException(result.getRc().getCode(), result.getRc()
 				.getMessage());
 	}

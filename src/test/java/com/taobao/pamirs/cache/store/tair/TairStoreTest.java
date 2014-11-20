@@ -1,8 +1,9 @@
 package com.taobao.pamirs.cache.store.tair;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +11,6 @@ import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByName;
 
-import com.taobao.pamirs.cache.framework.CacheException;
 import com.taobao.tair.TairManager;
 
 /**
@@ -54,14 +54,7 @@ public class TairStoreTest extends UnitilsJUnit4 {
 		assertThat(store.get(key), is(value));
 
 		Thread.sleep(5000);
-
-		boolean expire = false;
-		try {
-			store.get(key);
-		} catch (CacheException e) {
-			expire = true;
-		}
-		assertThat(expire, is(true));
+		assertThat(store.get(key), equalTo(null));
 
 		// 清理测试数据
 		store.remove(key);

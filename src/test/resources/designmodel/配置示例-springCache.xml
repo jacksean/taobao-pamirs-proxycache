@@ -2,15 +2,26 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="byName">
 
-	<bean id="tairManager" class="com.taobao.tair.impl.DefaultTairManager" init-method="init">
-		<property name="configServerList">
-			<list>
-				<value>${tair.config.server1}</value>
-				<value>${tair.config.server2}</value>
-			</list>
+<!-- 	<bean id="tairManager" class="com.taobao.tair.impl.DefaultTairManager" init-method="init"> -->
+<!-- 		<property name="configServerList"> -->
+<!-- 			<list> -->
+<!-- 				<value>${tair.config.server1}</value> -->
+<!-- 				<value>${tair.config.server2}</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 		<property name="groupName"> -->
+<!-- 			<value>${tair.group.name}</value> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	
+	<!-- Éý¼¶µ½mc-tair -->
+	<bean id="tairManager" class="com.taobao.tair.impl.mc.MultiClusterTairManager"
+		init-method="init">
+		<property name="configID">
+			<value>ldbcommon-daily</value>
 		</property>
-		<property name="groupName">
-			<value>${tair.group.name}</value>
+		<property name="dynamicConfig">
+			<value type="java.lang.Boolean">true</value>
 		</property>
 	</bean>
 

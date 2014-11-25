@@ -63,45 +63,69 @@ public class TairStore<K extends Serializable, V extends Serializable>
 		throw new CacheException(result.getRc().getCode(), result.getRc()
 				.getMessage());
 	}
-
+	
+	
+	
 	@Override
-	public void put(K key, V value) {
-		int version=Integer.MAX_VALUE;
-		Result<DataEntry> result = tairManager.get(namespace, key);
-		if (result.isSuccess()) {
-			DataEntry tairData = result.getValue();
-			if(tairData!=null){
-				version=tairData.getVersion();
-			}
-			ResultCode rc = tairManager.put(namespace, key, value, version);
+	public void put(K key, V value,boolean useVersion) {
+		if(!useVersion){
+			// put前需要remove
+			remove(key);
+			ResultCode rc = tairManager.put(namespace, key, value);
 			// 失败
 			if (!rc.isSuccess()) {
-				remove(key);
 				throw new CacheException(rc.getCode(), rc.getMessage());
 			}
-			return;
+		}else{
+			int version=Integer.MAX_VALUE;
+			Result<DataEntry> result = tairManager.get(namespace, key);
+			if (result.isSuccess()) {
+				DataEntry tairData = result.getValue();
+				if(tairData!=null){
+					version=tairData.getVersion();
+				}
+				ResultCode rc = tairManager.put(namespace, key, value, version);
+				// 失败
+				if (!rc.isSuccess()) {
+					remove(key);
+					throw new CacheException(rc.getCode(), rc.getMessage());
+				}
+				return;
+			}
+			remove(key);	
 		}
-		remove(key);	
 	}
 
 	@Override
-	public void put(K key, V value, int expireTime) {
-		int version=Integer.MAX_VALUE;
-		Result<DataEntry> result = tairManager.get(namespace, key);
-		if (result.isSuccess()) {
-			DataEntry tairData = result.getValue();
-			if(tairData!=null){
-				version=tairData.getVersion();
-			}
-			ResultCode rc = tairManager.put(namespace, key, value, version, expireTime);
+	public void put(K key, V value, int expireTime,boolean useVersion) {
+		if(!useVersion){
+			// put前需要remove
+			remove(key);
+
+			ResultCode rc = tairManager.put(namespace, key, value, 0, expireTime);
+
 			// 失败
 			if (!rc.isSuccess()) {
-				remove(key);
 				throw new CacheException(rc.getCode(), rc.getMessage());
 			}
-			return;
+		}else{
+			int version=Integer.MAX_VALUE;
+			Result<DataEntry> result = tairManager.get(namespace, key);
+			if (result.isSuccess()) {
+				DataEntry tairData = result.getValue();
+				if(tairData!=null){
+					version=tairData.getVersion();
+				}
+				ResultCode rc = tairManager.put(namespace, key, value, version, expireTime);
+				// 失败
+				if (!rc.isSuccess()) {
+					remove(key);
+					throw new CacheException(rc.getCode(), rc.getMessage());
+				}
+				return;
+			}
+			remove(key);
 		}
-		remove(key);
 	}
 
 	@Override

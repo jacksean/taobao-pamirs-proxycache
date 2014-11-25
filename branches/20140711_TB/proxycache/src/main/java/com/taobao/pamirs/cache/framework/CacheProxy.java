@@ -66,13 +66,13 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		return v;
 	}
 
-	public void put(K key, V value, String ip) {
+	public void put(K key, V value,boolean useVersion, String ip) {
 
 		CacheException cacheException = null;
 
 		long start = System.currentTimeMillis();
 		try {
-			cache.put(key, value);
+			cache.put(key, value, useVersion);
 		} catch (CacheException e) {
 			cacheException = e;
 		}
@@ -84,12 +84,12 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 				beanName, methodConfig, cacheException, ip));
 	}
 
-	public void put(K key, V value, int expireTime, String ip) {
+	public void put(K key, V value,boolean useVersion, int expireTime, String ip) {
 		CacheException cacheException = null;
 
 		long start = System.currentTimeMillis();
 		try {
-			cache.put(key, value, expireTime);
+			cache.put(key, value, expireTime, useVersion);
 		} catch (CacheException e) {
 			cacheException = e;
 		}
@@ -100,9 +100,6 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 				beanName, methodConfig, cacheException, ip));
 	}
 
-	public void remove(K key, String ip) {
-		this.remove(RemoveMode.INVAILD, key, ip);
-	}
 	
 	
 	public void remove(RemoveMode mode,K key, String ip) {
@@ -124,6 +121,8 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		notifyListeners(REMOVE, new CacheOprateInfo(key, end - start, true,
 				beanName, methodConfig, cacheException, ip));
 	}
+	
+	
 	
 	
 	

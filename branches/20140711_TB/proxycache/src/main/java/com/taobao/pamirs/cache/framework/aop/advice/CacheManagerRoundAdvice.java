@@ -76,7 +76,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
 		try {
 			// 1. cache
-			if (cacheManager.isUseCache() && cacheMethod != null&&cacheMethod.isUseCache()) {
+			if (cacheManager.isUseCache() 
+					&& cacheMethod != null&&!cacheMethod.isLocalHostNotCache()) {
 				String adapterKey = CacheCodeUtil.getCacheAdapterKey(
 						storeRegion, beanName, cacheMethod);
 				CacheProxy<Serializable, Serializable> cacheAdapter = cacheManager
@@ -86,7 +87,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 						beanName, cacheMethod, invocation.getArguments());
 
 				return useCache(cacheAdapter, cacheCode,
-						cacheMethod.getExpiredTime(), invocation, fromHsfIp);
+						cacheMethod.getExpiredTime(),cacheMethod.isUseVersion(), invocation, fromHsfIp);
 			}
 
 			// 2. cache clean
@@ -120,7 +121,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	 */
 	private Object useCache(
 			CacheProxy<Serializable, Serializable> cacheAdapter,
-			String cacheCode, Integer expireTime, MethodInvocation invocation,
+			String cacheCode, Integer expireTime,boolean useVersion, MethodInvocation invocation,
 			String ip) throws Throwable {
 		if (cacheAdapter == null)
 			return invocation.proceed();
@@ -134,10 +135,9 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 				return response;
 
 			if (expireTime == null) {
-				cacheAdapter.put(cacheCode, (Serializable) response, ip);
+				cacheAdapter.put(cacheCode, (Serializable) response, useVersion, ip);
 			} else {
-				cacheAdapter.put(cacheCode, (Serializable) response,
-						expireTime, ip);
+				cacheAdapter.put(cacheCode, (Serializable) response, useVersion, expireTime, ip);
 			}
 		}
 
@@ -189,4 +189,6 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	public void setBeanName(String beanName) {
 		this.beanName = beanName;
 	}
+	
+	
 }

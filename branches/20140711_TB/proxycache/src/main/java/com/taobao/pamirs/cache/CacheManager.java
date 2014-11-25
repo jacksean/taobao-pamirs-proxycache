@@ -219,7 +219,17 @@ public abstract class CacheManager implements ApplicationContextAware,
 	
 	
 	public boolean runtimeReloadConfig(CacheConfig newConfig){
-		/*try{
+		
+	/*	autoFillCacheConfig(newConfig);
+		
+		verifyCacheConfig(newConfig);
+
+		
+		
+		
+		
+		
+		try{
 			autoFillCacheConfig(newConfig);
 			verifyCacheConfig(newConfig);
 			Map<String, CacheProxy<Serializable, Serializable>> newCacheProxys = new ConcurrentHashMap<String, CacheProxy<Serializable, Serializable>>();

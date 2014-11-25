@@ -56,12 +56,12 @@ public class MapStore<K extends Serializable, V extends Serializable>
 	}
 
 	@Override
-	public void put(K key, V value) {
-		this.put(key, value, 0);
+	public void put(K key, V value,boolean userVersion) {
+		this.put(key, value, 0,false);
 	}
 
 	@Override
-	public void put(K key, V value, int expireTime) {
+	public void put(K key, V value, int expireTime,boolean userVersion) {
 		if (value == null)
 			return;
 

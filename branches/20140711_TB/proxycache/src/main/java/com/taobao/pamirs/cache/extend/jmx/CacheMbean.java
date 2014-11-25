@@ -18,6 +18,7 @@ import com.taobao.pamirs.cache.framework.CacheProxy;
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
+import com.taobao.pamirs.cache.store.RemoveMode;
 import com.taobao.pamirs.cache.util.AopProxyUtil;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 import com.taobao.pamirs.cache.util.IpUtil;
@@ -124,9 +125,9 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 	}
 
 	@SuppressWarnings("unchecked")
-	public String put(K key, V value) {
+	public String put(K key, V value,boolean useVersion) {
 		try {
-			cacheProxy.put((K) keyToCacheCode((String) key), value,
+			cacheProxy.put((K) keyToCacheCode((String) key), value,useVersion,
 					IpUtil.getLocalIp());
 			return "Cache Put Successfully Key:" + key + " Value:" + value;
 		} catch (Exception e) {
@@ -138,7 +139,7 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 	@SuppressWarnings("unchecked")
 	public String remove(K key) {
 		try {
-			cacheProxy.remove((K) keyToCacheCode((String) key),
+			cacheProxy.remove( RemoveMode.INVAILD, (K) keyToCacheCode((String) key),
 					IpUtil.getLocalIp());
 			return "Cache Remove Successfully Key:" + key;
 		} catch (Exception e) {
@@ -193,10 +194,10 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 		}
 	}
 
-	public boolean getRealValueAndPut(K key) {
+	public boolean getRealValueAndPut(K key,boolean useVersion) {
 		V realValue = this.getRealValue(key);
 		if (realValue != null)
-			this.put(key, realValue);
+			this.put(key, realValue,useVersion);
 		else
 			this.remove(key);
 

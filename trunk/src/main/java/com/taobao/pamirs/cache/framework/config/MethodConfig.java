@@ -20,7 +20,6 @@ public class MethodConfig implements Serializable {
 	/**
 	 * 参数类型
 	 */
-	@Verfication(name = "参数类型", notEmptyList = true)
 	private List<Class<?>> parameterTypes;
 
 	/**

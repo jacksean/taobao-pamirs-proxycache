@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -67,6 +68,22 @@ public class AServiceImpl implements ASerivce {
 	@Override
 	public String noRewirteMethod(String arg) {
 		return arg;
+	}
+
+	@Override
+	public String testInner(boolean aopInner) {
+		if (aopInner) {
+			// 取本class的proxy，解决inner调用不走AOP缓存问题
+			ASerivce selfAopProxy = (ASerivce) AopContext.currentProxy();
+			return selfAopProxy.inner();
+		} else
+			return inner();
+	}
+
+	@Override
+	public String inner() {
+		System.out.println("inner here");
+		return "i'm inner";
 	}
 
 }

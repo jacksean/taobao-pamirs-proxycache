@@ -47,7 +47,9 @@ public class XrayLogListener implements CacheOprateListener {
 	 * @param type
 	 * @param isHit
 	 * @param useTime
-	 * @param parameterTypes
+	 * @param ip
+	 * @param key
+	 * @return
 	 */
 	private String getXrayLog(CacheOprator type, boolean isHit, long useTime,
 			String ip, Serializable key) {

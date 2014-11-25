@@ -3,7 +3,7 @@ package com.taobao.pamirs.cache.load.testbean;
 /**
  * 测试BeanA（测试重载方法、clear操作、expire操作）
  * 
- * @author poxiao.gj
+ * @author xiaocheng
  */
 public interface ASerivce {
 
@@ -28,4 +28,11 @@ public interface ASerivce {
 	 * @return
 	 */
 	String noRewirteMethod(String arg);
+	
+	/**
+	 * 测试内部调用inner方法解决方案
+	 * @return
+	 */
+	String testInner(boolean aopInner);
+	String inner();
 }

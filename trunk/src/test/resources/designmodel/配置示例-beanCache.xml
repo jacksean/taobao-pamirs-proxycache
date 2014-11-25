@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="GBK"?>
 <cacheModule>
+	<!-- 提醒：spring bean 内部调用（inner method）会绕过AOP代理，从而绕过缓存 -->
+	<!-- 解决方案示例： -->
+	<!-- 1. ASerivce selfAopProxy = (ASerivce) AopContext.currentProxy(); -->
+	<!-- 2. selfAopProxy.innerMethod();// 替换this. -->
+
 	<!-- 缓存Bean配置 -->
 	<cacheBeans>
 		<cacheBean>

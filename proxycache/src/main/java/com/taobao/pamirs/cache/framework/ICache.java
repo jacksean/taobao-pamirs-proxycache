@@ -23,21 +23,22 @@ public interface ICache<K extends Serializable, V extends Serializable> {
 
 	/**
 	 * 设置数据，如果数据已经存在，则覆盖，如果不存在，则新增
-	 * 
 	 * @param key
 	 * @param value
+	 * @param useVersion 是否使用数据版本控制(tair支持， 会多访问一次get)
 	 */
-	public void put(K key, V value);
+	public void put(K key, V value,boolean useVersion);
 
 	/**
 	 * 设置数据，如果数据已经存在，则覆盖，如果不存在，则新增
 	 * 
 	 * @param key
 	 * @param value
-	 * @param expireTime
-	 *            数据的有效时间（绝对时间），单位毫秒
+	 * @param expireTime 数据的有效时间（绝对时间），单位毫秒
+	 * @param useVersion 是否使用数据版本控制(tair支持， 会多访问一次get)
+	 *            
 	 */
-	public void put(K key, V value, int expireTime);
+	public void put(K key, V value, int expireTime,boolean useVersion);
 
 	/**
 	 * 删除key对应的数据

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.taobao.pamirs.cache.load.verify.Verfication;
 import com.taobao.pamirs.cache.store.RemoveMode;
+import com.taobao.pamirs.cache.util.IpUtil;
 
 /**
  * 基本bean配置
@@ -31,10 +32,30 @@ public class MethodConfig implements Serializable {
 	 */
 	private Integer expiredTime;
 	
+	
 	/**
-	 * 该方法是否开启缓存，缺省开启
+	 * put是否使用版本控制（目前tair支持，会多读一次缓存）
 	 */
-	private boolean useCache=true;
+	private boolean useVersion=false;
+	
+	
+	/**
+	 * 该方法是否不走缓存
+	 */
+	private boolean isNotCache=false;
+	
+	/**
+	 * 读不使用缓存的ip
+	 */
+	private String notCacheIps;
+	
+	
+	/**
+	 * 本机读不使用缓存
+	 */
+	private boolean isLocalHostNotCache;
+	
+	
 	
 	/**
 	 * 该方法失效缓存使用hidden方式，默认invaild（tair）
@@ -97,13 +118,6 @@ public class MethodConfig implements Serializable {
 		return true;
 	}
 
-	public boolean isUseCache() {
-		return useCache;
-	}
-
-	public void setUseCache(boolean useCache) {
-		this.useCache = useCache;
-	}
 
 	public String getRemoveMode() {
 		return removeMode;
@@ -111,6 +125,48 @@ public class MethodConfig implements Serializable {
 
 	public void setRemoveMode(String removeMode) {
 		this.removeMode = removeMode;
+	}
+
+	public String getNotCacheIps() {
+		return notCacheIps;
+	}
+
+	public void setNotCacheIps(String notCacheIps) {
+		this.notCacheIps = notCacheIps;
+		if(notCacheIps!=null){
+			String[] ips=this.notCacheIps.split(",");
+			if(ips!=null&&ips.length>0){
+				String local=IpUtil.getLocalIp();
+				for(String ip:ips){
+					if(ip.trim().equals(local)){
+						this.isLocalHostNotCache=true;
+					}
+				}
+			}
+		}
+	}
+
+	public boolean isNotCache() {
+		return isNotCache;
+	}
+
+	public void setNotCache(boolean isNotCache) {
+		this.isNotCache = isNotCache;
+		if(isNotCache){
+			this.isLocalHostNotCache=true;
+		}
+	}
+
+	public boolean isLocalHostNotCache() {
+		return isLocalHostNotCache;
+	}
+
+	public boolean isUseVersion() {
+		return useVersion;
+	}
+
+	public void setUseVersion(boolean useVersion) {
+		this.useVersion = useVersion;
 	}
 
 

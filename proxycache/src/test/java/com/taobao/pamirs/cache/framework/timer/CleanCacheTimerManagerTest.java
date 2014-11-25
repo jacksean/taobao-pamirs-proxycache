@@ -29,7 +29,7 @@ public class CleanCacheTimerManagerTest {
 	@Test
 	public void testTimer() throws Exception {
 		for (int i = 0; i < 10; i++) {
-			mapStore.put("k-" + i, "v-" + i);
+			mapStore.put("k-" + i, "v-" + i,false);
 		}
 
 		// 每5秒执行一次

@@ -5,6 +5,8 @@ import static com.taobao.pamirs.cache.util.CacheCodeUtil.parameterTypesToString;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.logging.LogFactory;
+
 import com.taobao.pamirs.cache.framework.listener.CacheOprateInfo;
 import com.taobao.pamirs.cache.framework.listener.CacheOprateListener;
 import com.taobao.pamirs.cache.framework.listener.CacheOprator;
@@ -17,7 +19,8 @@ import com.taobao.pamirs.cache.util.asynlog.AsynWriter;
  */
 public class XrayLogListener implements CacheOprateListener {
 
-	private AsynWriter<String> writer = new AsynWriter<String>();
+	private AsynWriter<String> writer = new AsynWriter<String>(
+			LogFactory.getLog(XrayLogListener.class));
 
 	private String beanName;
 	private String methodName;

@@ -55,6 +55,10 @@ public class CleanCacheTimerManager {
 	}
 	
 	
+	public void cancel(){
+		this.timer.cancel();
+	}
+	
 	
 
 	/**

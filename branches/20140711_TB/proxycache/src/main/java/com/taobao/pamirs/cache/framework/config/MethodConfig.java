@@ -50,12 +50,6 @@ public class MethodConfig implements Serializable {
 	private String notCacheIps;
 	
 	
-	/**
-	 * 本机读不使用缓存
-	 */
-	private boolean isLocalHostNotCache;
-	
-	
 	
 	/**
 	 * 该方法失效缓存使用hidden方式，默认invaild（tair）
@@ -133,17 +127,6 @@ public class MethodConfig implements Serializable {
 
 	public void setNotCacheIps(String notCacheIps) {
 		this.notCacheIps = notCacheIps;
-		if(notCacheIps!=null){
-			String[] ips=this.notCacheIps.split(",");
-			if(ips!=null&&ips.length>0){
-				String local=IpUtil.getLocalIp();
-				for(String ip:ips){
-					if(ip.trim().equals(local)){
-						this.isLocalHostNotCache=true;
-					}
-				}
-			}
-		}
 	}
 
 	public boolean isNotCache() {
@@ -152,13 +135,24 @@ public class MethodConfig implements Serializable {
 
 	public void setNotCache(boolean isNotCache) {
 		this.isNotCache = isNotCache;
-		if(isNotCache){
-			this.isLocalHostNotCache=true;
-		}
 	}
 
 	public boolean isLocalHostNotCache() {
-		return isLocalHostNotCache;
+		if(isNotCache){
+			return true;
+		}
+		if(notCacheIps!=null){
+			String[] ips=this.notCacheIps.split(",");
+			if(ips!=null&&ips.length>0){
+				String local=IpUtil.getLocalIp();
+				for(String ip:ips){
+					if(ip.trim().equals(local)){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	public boolean isUseVersion() {
@@ -168,7 +162,6 @@ public class MethodConfig implements Serializable {
 	public void setUseVersion(boolean useVersion) {
 		this.useVersion = useVersion;
 	}
-
 
 
 }

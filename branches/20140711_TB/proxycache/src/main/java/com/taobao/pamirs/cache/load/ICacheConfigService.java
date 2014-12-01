@@ -22,7 +22,7 @@ public interface ICacheConfigService {
 	 *   可通过notCacheWhenReload参数执行替换瞬间不走缓存】
 	 * @return
 	 */
-	boolean runtimeReloadConfig(boolean notCacheWhenReload, CacheConfig newConfig);
+	boolean runtimeReloadConfig(CacheConfig newConfig);
 	
 
 	/**

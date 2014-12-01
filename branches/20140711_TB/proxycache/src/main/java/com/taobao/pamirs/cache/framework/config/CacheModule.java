@@ -11,6 +11,13 @@ import java.util.List;
  * @author xiaocheng 2012-11-19
  */
 public class CacheModule implements Serializable {
+	
+	
+	
+	/**
+	 * 动态重载缓存配置时不走缓存
+	 */
+	private boolean notCacheWhenReload=false; 
 
 	/**
 	 * serialVersionUID
@@ -48,5 +55,14 @@ public class CacheModule implements Serializable {
 	public void setCacheCleanBeans(List<CacheCleanBean> cacheCleanBeans) {
 		this.cacheCleanBeans = cacheCleanBeans;
 	}
+
+	public boolean isNotCacheWhenReload() {
+		return notCacheWhenReload;
+	}
+
+	public void setNotCacheWhenReload(boolean notCacheWhenReload) {
+		this.notCacheWhenReload = notCacheWhenReload;
+	}
+	
 
 }

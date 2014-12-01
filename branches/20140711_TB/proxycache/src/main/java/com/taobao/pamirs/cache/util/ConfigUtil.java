@@ -147,6 +147,7 @@ public class ConfigUtil {
 		xStream.alias("methodConfig", MethodConfig.class);
 		xStream.alias("cacheCleanBean", CacheCleanBean.class);
 		xStream.alias("cacheCleanMethod", CacheCleanMethod.class);
+		xStream.alias("notCacheWhenReload", Boolean.class);
 
 		if (inputStream != null) {
 			CacheModule cacheConfig = (CacheModule) xStream.fromXML(inputStream);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="GBK"?>
 <cacheModule>
+  <notCacheWhenReload>true</notCacheWhenReload>
   <cacheBeans>
     <cacheBean>
       <beanName>articleReadService</beanName>
@@ -9,70 +10,100 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getArticleByCode</methodName>
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getArticleByAppkey</methodName>
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getSaleConditions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getMarketSaleConditions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getDealTypeSaleConditions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPromotions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getDependArticles</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getMutexArticles</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPayServiceCodes</methodName>
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
     </cacheBean>
@@ -84,63 +115,90 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getActivityByCode</methodName>
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getSaleConditions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPromotions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getActivityItems</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getActivityArticles</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getRelEffectiveActivitysByItemId</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getRelEffectiveActivitysByArticleId</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getActivityObjs</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
     </cacheBean>
@@ -152,7 +210,10 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
     </cacheBean>
@@ -164,21 +225,30 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getRequirementByCode</methodName>
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>countRequirementByUser</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
     </cacheBean>
@@ -190,14 +260,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPromotionById</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
     </cacheBean>
@@ -209,28 +285,40 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPromotions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getByItemIdAndItemModuleCode</methodName>
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>listByItemId</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
     </cacheBean>
@@ -242,14 +330,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getAttrConstraintDTOs</methodName>
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
     </cacheBean>
@@ -261,49 +355,70 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getItemByCode</methodName>
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getSaleConditions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPromotions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getMutexItems</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getUpdateItems</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getItems</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
     </cacheBean>
@@ -315,77 +430,110 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPackGroups</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPackInsts</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPromotions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getSaleConditions</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getUpdatePacks</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getMutexPacks</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPackItemViews</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getSubAvailableCombinations</methodName>
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPackByCode</methodName>
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
           <methodName>getPacksByArticleCode</methodName>
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
     </cacheBean>
@@ -399,42 +547,60 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getArticleById</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getSaleConditions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getPromotions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getDependArticles</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getMutexArticles</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -443,14 +609,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getArticleByCode</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -459,14 +631,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getMarketSaleConditions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -475,14 +653,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getDealTypeSaleConditions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -491,14 +675,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getPayServiceCodes</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -512,49 +702,70 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getActivityById</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getSaleConditions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getPromotions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getActivityItems</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getActivityArticles</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getActivityObjs</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -563,14 +774,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getActivityByCode</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -579,14 +796,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getRelEffectiveActivitysByItemId</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -595,14 +818,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getRelEffectiveActivitysByArticleId</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -616,14 +845,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>listItemInstructionByItemId</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -637,14 +872,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getRequirementById</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -653,14 +894,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getRequirementByCode</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -669,14 +916,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>countRequirementByUser</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -690,14 +943,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getPromotionById</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -706,14 +965,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getPromotionByCode</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -727,21 +992,30 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getById</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getPromotions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -750,14 +1024,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getByItemIdAndItemModuleCode</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -766,14 +1046,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>listByItemId</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -787,14 +1073,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getAttrConstraintDTOs</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -803,14 +1095,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getFlatConstrainDTOs</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -824,42 +1122,60 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getItemById</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getSaleConditions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getPromotions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getMutexItems</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getUpdateItems</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -868,14 +1184,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getItemByCode</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -884,14 +1206,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getItems</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -905,63 +1233,90 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getPackById</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getPackGroups</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getPromotions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getSaleConditions</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getUpdatePacks</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getMutexPacks</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getPackItemViews</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
               <methodName>getPackInsts</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -970,14 +1325,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getPackByCode</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -986,14 +1347,20 @@
           <parameterTypes>
             <java-class>java.lang.Long</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getSubAvailableCombinations</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>
@@ -1002,14 +1369,20 @@
           <parameterTypes>
             <java-class>java.lang.String</java-class>
           </parameterTypes>
-          <useCache>true</useCache>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
               <methodName>getPacksByArticleCode</methodName>
               <parameterTypes>
                 <java-class>java.lang.String</java-class>
               </parameterTypes>
-              <useCache>true</useCache>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
         </cacheCleanMethod>

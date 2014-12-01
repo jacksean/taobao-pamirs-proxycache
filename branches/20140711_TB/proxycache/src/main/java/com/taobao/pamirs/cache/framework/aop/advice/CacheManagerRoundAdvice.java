@@ -77,7 +77,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 		try {
 			// 1. cache
 			if (cacheManager.isUseCache() 
-					&& cacheMethod != null&&!cacheMethod.isLocalHostNotCache()) {
+					&& cacheMethod != null&&!cacheMethod.isLocalHostNotCache()
+					&&!cacheManager.isNotCacheWhenReload()) {
 				String adapterKey = CacheCodeUtil.getCacheAdapterKey(
 						storeRegion, beanName, cacheMethod);
 				CacheProxy<Serializable, Serializable> cacheAdapter = cacheManager

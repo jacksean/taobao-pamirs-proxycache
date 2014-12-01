@@ -62,11 +62,6 @@ public abstract class CacheManager implements ApplicationContextAware,
 	private CleanCacheTimerManager timeTask = new CleanCacheTimerManager();
 
 	private boolean useCache = true;
-	
-	/**
-	 * 动态重载缓存配置时不走缓存
-	 */
-	private boolean notCacheWhenReload=false;
 
 	/**
 	 * 指定本地缓存时LruMap的大小，默认是1024
@@ -217,7 +212,8 @@ public abstract class CacheManager implements ApplicationContextAware,
 	
 	
 	
-	public synchronized  boolean runtimeReloadConfig(boolean notCacheWhenReload,CacheConfig newConfig){
+	public synchronized  boolean runtimeReloadConfig(CacheConfig newConfig){
+		boolean useCache=this.useCache;
 		try{
 			autoFillCacheConfig(newConfig);
 			verifyCacheConfig(newConfig);
@@ -225,7 +221,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 			Map<String, CacheProxy<Serializable, Serializable>> oldCacheProxys= this.cacheProxys;
 			Map<String, CacheProxy<Serializable, Serializable>> newCacheProxys = this.getCacheProxys(newConfig);
 			try{
-				this.notCacheWhenReload=notCacheWhenReload;
+				this.useCache=!newConfig.isNotCacheWhenReload();
 				this.cacheProxys=newCacheProxys;
 				this.cacheConfig=newConfig;
 			}catch(Exception e){
@@ -234,7 +230,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 				log.error("runtimeReloadConfig faild,rollback ", e);
 				return false;
 			}finally{
-				this.notCacheWhenReload=false;
+				this.useCache=useCache;
 			}
 			
 			List<CacheBean> cacheBeans = newConfig.getCacheBeans();
@@ -269,7 +265,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 			log.error("runtimeReloadConfig faild", e);
 			return false;
 		}finally{
-			this.notCacheWhenReload=false;
+			this.useCache=useCache;
 		}
 	}
 
@@ -372,14 +368,6 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	public void setLocalMapSegmentSize(int localMapSegmentSize) {
 		this.localMapSegmentSize = localMapSegmentSize;
-	}
-
-	public boolean isNotCacheWhenReload() {
-		return notCacheWhenReload;
-	}
-
-	public void setNotCacheWhenReload(boolean notCacheWhenReload) {
-		this.notCacheWhenReload = notCacheWhenReload;
 	}
 
 }

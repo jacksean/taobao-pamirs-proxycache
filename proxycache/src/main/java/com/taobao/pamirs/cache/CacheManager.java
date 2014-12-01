@@ -53,7 +53,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 	/**
 	 * 每一个method对应一个adapter实例
 	 */
-	private final Map<String, CacheProxy<Serializable, Serializable>> cacheProxys = new ConcurrentHashMap<String, CacheProxy<Serializable, Serializable>>();
+	private  Map<String, CacheProxy<Serializable, Serializable>> cacheProxys = new ConcurrentHashMap<String, CacheProxy<Serializable, Serializable>>();
 
 	private TairManager tairManager;
 
@@ -62,6 +62,11 @@ public abstract class CacheManager implements ApplicationContextAware,
 	private CleanCacheTimerManager timeTask = new CleanCacheTimerManager();
 
 	private boolean useCache = true;
+	
+	/**
+	 * 动态重载缓存配置时不走缓存
+	 */
+	private boolean notCacheWhenReload=false;
 
 	/**
 	 * 指定本地缓存时LruMap的大小，默认是1024
@@ -211,10 +216,116 @@ public abstract class CacheManager implements ApplicationContextAware,
 	}
 	
 	
-	public boolean runtimeReloadConfig(CacheConfig newConfig){
-		
-		return false;
+	
+	public synchronized  boolean runtimeReloadConfig(boolean notCacheWhenReload,CacheConfig newConfig){
+		try{
+			autoFillCacheConfig(newConfig);
+			verifyCacheConfig(newConfig);
+			CacheConfig oldCacheConfig=this.cacheConfig;
+			Map<String, CacheProxy<Serializable, Serializable>> oldCacheProxys= this.cacheProxys;
+			Map<String, CacheProxy<Serializable, Serializable>> newCacheProxys = this.getCacheProxys(newConfig);
+			try{
+				this.notCacheWhenReload=notCacheWhenReload;
+				this.cacheProxys=newCacheProxys;
+				this.cacheConfig=newConfig;
+			}catch(Exception e){
+				this.cacheProxys=oldCacheProxys;
+				this.cacheConfig=oldCacheConfig;
+				log.error("runtimeReloadConfig faild,rollback ", e);
+				return false;
+			}finally{
+				this.notCacheWhenReload=false;
+			}
+			
+			List<CacheBean> cacheBeans = newConfig.getCacheBeans();
+			CleanCacheTimerManager newTimer = new CleanCacheTimerManager();
+			if (cacheBeans != null) {
+				StoreType storeType = StoreType.toEnum(newConfig.getStoreType());
+				for (CacheBean bean : cacheBeans) {
+					List<MethodConfig> cacheMethods = bean.getCacheMethods();
+					for (MethodConfig method : cacheMethods) {
+						String key = CacheCodeUtil.getCacheAdapterKey(newConfig.getStoreRegion(),
+								bean.getBeanName(),	method);
+						reRegisterCacheMbean(key, newCacheProxys.get(key),
+								newConfig.getStoreMapCleanTime(),method.getExpiredTime());
+						newCacheProxys.get(key).addListener(new XrayLogListener(bean.getBeanName(), method
+								.getMethodName(), method.getParameterTypes()));
+						if (StoreType.MAP == storeType
+								&& StringUtils.isNotBlank(newConfig.getStoreMapCleanTime())) {
+							try {
+								newTimer.createCleanCacheTask(newCacheProxys.get(key), newConfig.getStoreMapCleanTime());
+							} catch (Exception e) {
+								log.error("[严重]设置Map定时清理任务失败!", e);
+							}
+						}
+						
+					}
+				}
+			}
+			this.timeTask.cancel();
+			this.timeTask=newTimer;
+			return true;
+		}catch(Exception e){
+			log.error("runtimeReloadConfig faild", e);
+			return false;
+		}finally{
+			this.notCacheWhenReload=false;
+		}
 	}
+
+
+
+	private void reRegisterCacheMbean(String key,
+			CacheProxy<Serializable, Serializable> cacheProxy,
+			String storeMapCleanTime, Integer expiredTime) {
+		try {
+			String mbeanName = CacheMbean.MBEAN_NAME + ":name=" + key;
+			CacheMbeanListener listener = new CacheMbeanListener();
+			cacheProxy.addListener(listener);
+			CacheMbean<Serializable, Serializable> cacheMbean = new CacheMbean<Serializable, Serializable>(
+					cacheProxy, listener, applicationContext,
+					storeMapCleanTime, expiredTime);
+			MBeanManagerFactory.unregisterMBean(mbeanName);
+			MBeanManagerFactory.registerMBean(mbeanName, cacheMbean);
+		} catch (InstanceAlreadyExistsException e) {
+			log.debug("重复注册JMX", e);
+		} catch (Exception e) {
+			log.warn("注册JMX失败", e);
+		}
+	} 
+	
+	
+	
+	private Map<String, CacheProxy<Serializable, Serializable>> getCacheProxys(CacheConfig config){
+		Map<String, CacheProxy<Serializable, Serializable>> ret = new ConcurrentHashMap<String, CacheProxy<Serializable, Serializable>>();
+		List<CacheBean> cacheBeans = config.getCacheBeans();
+		if (cacheBeans != null) {
+			for (CacheBean bean : cacheBeans) {
+				List<MethodConfig> cacheMethods = bean.getCacheMethods();
+				for (MethodConfig method : cacheMethods) {
+					String key = CacheCodeUtil.getCacheAdapterKey(config.getStoreRegion(),
+							bean.getBeanName(),	method);
+					StoreType storeType = StoreType.toEnum(config.getStoreType());
+					ICache<Serializable, Serializable> cache = null;
+					if (StoreType.TAIR == storeType) {
+						cache = new TairStore<Serializable, Serializable>(tairManager,
+								config.getStoreTairNameSpace());
+					} else if (StoreType.MAP == storeType) {
+						cache = new MapStore<Serializable, Serializable>(localMapSize,
+								localMapSegmentSize);
+					}
+					if (cache != null) {
+						CacheProxy<Serializable, Serializable> cacheProxy = new CacheProxy<Serializable, Serializable>(
+								storeType, config.getStoreRegion(), key, cache,
+								bean.getBeanName(),	method);
+						ret.put(key, cacheProxy);
+					}
+					
+				}
+			}
+		}
+		return ret;
+	}	
 	
 
 	public CacheProxy<Serializable, Serializable> getCacheProxy(String key) {
@@ -261,6 +372,14 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	public void setLocalMapSegmentSize(int localMapSegmentSize) {
 		this.localMapSegmentSize = localMapSegmentSize;
+	}
+
+	public boolean isNotCacheWhenReload() {
+		return notCacheWhenReload;
+	}
+
+	public void setNotCacheWhenReload(boolean notCacheWhenReload) {
+		this.notCacheWhenReload = notCacheWhenReload;
 	}
 
 }

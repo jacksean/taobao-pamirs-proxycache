@@ -86,7 +86,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 						beanName, cacheMethod, invocation.getArguments());
 
 				return useCache(cacheAdapter, cacheCode,
-						cacheMethod.getExpiredTime(),cacheMethod.isUseVersion(), invocation, fromHsfIp);
+						 invocation, fromHsfIp);
 			}
 
 			// 2. cache clean
@@ -113,14 +113,13 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 	 * 
 	 * @param cacheAdapter
 	 * @param cacheCode
-	 * @param expireTime
 	 * @param invocation
 	 * @return
 	 * @throws Throwable
 	 */
 	private Object useCache(
 			CacheProxy<Serializable, Serializable> cacheAdapter,
-			String cacheCode, Integer expireTime,boolean useVersion, MethodInvocation invocation,
+			String cacheCode,MethodInvocation invocation,
 			String ip) throws Throwable {
 		if (cacheAdapter == null)
 			return invocation.proceed();

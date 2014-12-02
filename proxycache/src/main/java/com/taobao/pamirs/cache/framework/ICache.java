@@ -21,24 +21,19 @@ public interface ICache<K extends Serializable, V extends Serializable> {
 	 */
 	public V get(K key);
 
+	
 	/**
-	 * 设置数据，如果数据已经存在，则覆盖，如果不存在，则新增
-	 * @param key
-	 * @param value
-	 * @param useVersion 是否使用数据版本控制(tair支持， 会多访问一次get)
-	 */
-	public void put(K key, V value,boolean useVersion);
-
-	/**
-	 * 设置数据，如果数据已经存在，则覆盖，如果不存在，则新增
+	 * 设置数据，如果数据已经存在且版本一致（不存在版本号肯定正确），则覆盖
 	 * 
 	 * @param key
 	 * @param value
 	 * @param expireTime 数据的有效时间（绝对时间），单位毫秒
-	 * @param useVersion 是否使用数据版本控制(tair支持， 会多访问一次get)
+	 * @param version 数据版本号 (tair支持)
 	 *            
 	 */
-	public void put(K key, V value, int expireTime,boolean useVersion);
+	public void put(K key, V value,int version,int expireTime) ;
+	
+	
 
 	/**
 	 * 删除key对应的数据
@@ -65,5 +60,14 @@ public interface ICache<K extends Serializable, V extends Serializable> {
 	 * @param key
 	 */
 	public void hidden(K key);
+	
+	
+	/**
+	 * 获取数据版本号
+	 * @param key
+	 * @param removeMode
+	 * @return
+	 */
+	public Integer getDataVersion(K key,String removeMode);
 
 }

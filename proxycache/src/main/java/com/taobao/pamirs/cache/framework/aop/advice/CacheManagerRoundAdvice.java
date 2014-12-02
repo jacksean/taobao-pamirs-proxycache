@@ -15,7 +15,6 @@ import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.CacheProxy;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
-import com.taobao.pamirs.cache.store.RemoveMode;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 import com.taobao.pamirs.cache.util.ConfigUtil;
 
@@ -134,11 +133,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			if (response == null)// 如果原生方法结果为null，不put到缓存了
 				return response;
 
-			if (expireTime == null) {
-				cacheAdapter.put(cacheCode, (Serializable) response, useVersion, ip);
-			} else {
-				cacheAdapter.put(cacheCode, (Serializable) response, useVersion, expireTime, ip);
-			}
+			cacheAdapter.put(cacheCode, (Serializable) response, ip);
 		}
 
 		return response;
@@ -169,7 +164,7 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			if (cacheAdapter != null) {
 				String cacheCode = CacheCodeUtil.getCacheCode(storeRegion,
 						beanName, methodConfig, invocation.getArguments());// 这里的invocation直接用主bean的，因为清理的bean的参数必须和主bean保持一致
-				cacheAdapter.remove(RemoveMode.toEnum(methodConfig.getRemoveMode()), cacheCode, ip);
+				cacheAdapter.remove(cacheCode, ip);
 			}
 		}
 	}

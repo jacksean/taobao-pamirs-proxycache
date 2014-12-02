@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="GBK"?>
 <cacheModule>
-  <notCacheWhenReload>true</notCacheWhenReload>
+  <notCacheWhenReload>false</notCacheWhenReload>
   <cacheBeans>
+    <cacheBean>
+      <beanName>servReadService</beanName>
+      <cacheMethods>
+        <methodConfig>
+          <methodName>selectServiceById</methodName>
+          <parameterTypes>
+            <java-class>java.lang.Long</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <removeMode>invaild</removeMode>
+        </methodConfig>
+        <methodConfig>
+          <methodName>getServId</methodName>
+          <parameterTypes>
+            <java-class>java.lang.String</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <removeMode>invaild</removeMode>
+        </methodConfig>
+        <methodConfig>
+          <methodName>selectServiceByCode</methodName>
+          <parameterTypes>
+            <java-class>java.lang.String</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <removeMode>invaild</removeMode>
+        </methodConfig>
+      </cacheMethods>
+    </cacheBean>
     <cacheBean>
       <beanName>articleReadService</beanName>
       <cacheMethods>
@@ -12,7 +44,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -22,7 +53,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -32,7 +62,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -42,7 +71,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -52,7 +80,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -62,7 +89,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -72,7 +98,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -82,7 +107,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -92,7 +116,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -102,7 +125,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
@@ -117,7 +139,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -127,7 +148,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -137,7 +157,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -147,7 +166,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -157,7 +175,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -167,7 +184,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -177,7 +193,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -187,7 +202,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -197,7 +211,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
@@ -212,7 +225,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
@@ -227,7 +239,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -237,7 +248,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -247,7 +257,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
@@ -262,7 +271,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -272,7 +280,15 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
+        </methodConfig>
+        <methodConfig>
+          <methodName>getSystemPromotionsByServId</methodName>
+          <parameterTypes>
+            <java-class>java.lang.Long</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
@@ -287,7 +303,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -297,7 +312,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -307,7 +321,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -317,7 +330,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
@@ -332,7 +344,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -342,7 +353,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
@@ -357,7 +367,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -367,7 +376,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -377,7 +385,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -387,7 +394,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -397,7 +403,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -407,7 +412,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -417,7 +421,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
@@ -432,7 +435,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -442,7 +444,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -452,7 +453,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -462,7 +462,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -472,7 +471,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -482,7 +480,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -492,7 +489,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -502,7 +498,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -512,7 +507,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -522,7 +516,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
         <methodConfig>
@@ -532,7 +525,29 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
+        </methodConfig>
+      </cacheMethods>
+    </cacheBean>
+    <cacheBean>
+      <beanName>switchConfigReadService</beanName>
+      <cacheMethods>
+        <methodConfig>
+          <methodName>selectByPrimaryKey</methodName>
+          <parameterTypes>
+            <java-class>java.lang.Long</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <removeMode>invaild</removeMode>
+        </methodConfig>
+        <methodConfig>
+          <methodName>selectByServId</methodName>
+          <parameterTypes>
+            <java-class>java.lang.Long</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
           <removeMode>invaild</removeMode>
         </methodConfig>
       </cacheMethods>
@@ -540,7 +555,7 @@
   </cacheBeans>
   <cacheCleanBeans>
     <cacheCleanBean>
-      <beanName>articleReadService</beanName>
+      <beanName>servReadService</beanName>
       <methods>
         <cacheCleanMethod>
           <methodName>cleanCacheById</methodName>
@@ -549,57 +564,15 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
-              <methodName>getArticleById</methodName>
+              <methodName>selectServiceById</methodName>
               <parameterTypes>
                 <java-class>java.lang.Long</java-class>
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
-              <removeMode>invaild</removeMode>
-            </methodConfig>
-            <methodConfig>
-              <methodName>getSaleConditions</methodName>
-              <parameterTypes>
-                <java-class>java.lang.Long</java-class>
-              </parameterTypes>
-              <useVersion>false</useVersion>
-              <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
-              <removeMode>invaild</removeMode>
-            </methodConfig>
-            <methodConfig>
-              <methodName>getPromotions</methodName>
-              <parameterTypes>
-                <java-class>java.lang.Long</java-class>
-              </parameterTypes>
-              <useVersion>false</useVersion>
-              <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
-              <removeMode>invaild</removeMode>
-            </methodConfig>
-            <methodConfig>
-              <methodName>getDependArticles</methodName>
-              <parameterTypes>
-                <java-class>java.lang.Long</java-class>
-              </parameterTypes>
-              <useVersion>false</useVersion>
-              <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
-              <removeMode>invaild</removeMode>
-            </methodConfig>
-            <methodConfig>
-              <methodName>getMutexArticles</methodName>
-              <parameterTypes>
-                <java-class>java.lang.Long</java-class>
-              </parameterTypes>
-              <useVersion>false</useVersion>
-              <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -611,7 +584,96 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
+          <removeMode>invaild</removeMode>
+          <cleanMethods>
+            <methodConfig>
+              <methodName>getServId</methodName>
+              <parameterTypes>
+                <java-class>java.lang.String</java-class>
+              </parameterTypes>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <removeMode>invaild</removeMode>
+            </methodConfig>
+            <methodConfig>
+              <methodName>selectServiceByCode</methodName>
+              <parameterTypes>
+                <java-class>java.lang.String</java-class>
+              </parameterTypes>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <removeMode>invaild</removeMode>
+            </methodConfig>
+          </cleanMethods>
+        </cacheCleanMethod>
+      </methods>
+    </cacheCleanBean>
+    <cacheCleanBean>
+      <beanName>articleReadService</beanName>
+      <methods>
+        <cacheCleanMethod>
+          <methodName>cleanCacheById</methodName>
+          <parameterTypes>
+            <java-class>java.lang.Long</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <removeMode>invaild</removeMode>
+          <cleanMethods>
+            <methodConfig>
+              <methodName>getArticleById</methodName>
+              <parameterTypes>
+                <java-class>java.lang.Long</java-class>
+              </parameterTypes>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <removeMode>invaild</removeMode>
+            </methodConfig>
+            <methodConfig>
+              <methodName>getSaleConditions</methodName>
+              <parameterTypes>
+                <java-class>java.lang.Long</java-class>
+              </parameterTypes>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <removeMode>invaild</removeMode>
+            </methodConfig>
+            <methodConfig>
+              <methodName>getPromotions</methodName>
+              <parameterTypes>
+                <java-class>java.lang.Long</java-class>
+              </parameterTypes>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <removeMode>invaild</removeMode>
+            </methodConfig>
+            <methodConfig>
+              <methodName>getDependArticles</methodName>
+              <parameterTypes>
+                <java-class>java.lang.Long</java-class>
+              </parameterTypes>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <removeMode>invaild</removeMode>
+            </methodConfig>
+            <methodConfig>
+              <methodName>getMutexArticles</methodName>
+              <parameterTypes>
+                <java-class>java.lang.Long</java-class>
+              </parameterTypes>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <removeMode>invaild</removeMode>
+            </methodConfig>
+          </cleanMethods>
+        </cacheCleanMethod>
+        <cacheCleanMethod>
+          <methodName>cleanCacheByCode</methodName>
+          <parameterTypes>
+            <java-class>java.lang.String</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -621,7 +683,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -633,7 +694,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -643,7 +703,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -655,7 +714,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -665,7 +723,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -677,7 +734,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -687,7 +743,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -704,7 +759,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -714,7 +768,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -724,7 +777,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -734,7 +786,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -744,7 +795,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -754,7 +804,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -764,7 +813,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -776,7 +824,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -786,7 +833,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -798,7 +844,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -808,7 +853,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -820,7 +864,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -830,7 +873,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -847,7 +889,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -857,7 +898,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -874,7 +914,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -884,7 +923,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -896,7 +934,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -906,7 +943,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -918,7 +954,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -928,7 +963,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -945,7 +979,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -955,7 +988,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -967,7 +999,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -977,7 +1008,26 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
+            </methodConfig>
+          </cleanMethods>
+        </cacheCleanMethod>
+        <cacheCleanMethod>
+          <methodName>cleanCacheByServId</methodName>
+          <parameterTypes>
+            <java-class>java.lang.Long</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <removeMode>invaild</removeMode>
+          <cleanMethods>
+            <methodConfig>
+              <methodName>getSystemPromotionsByServId</methodName>
+              <parameterTypes>
+                <java-class>java.lang.Long</java-class>
+              </parameterTypes>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -994,7 +1044,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1004,7 +1053,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1014,7 +1062,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1026,7 +1073,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1036,7 +1082,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1048,7 +1093,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1058,7 +1102,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1075,7 +1118,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1085,7 +1127,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1097,7 +1138,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1107,7 +1147,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1124,7 +1163,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1134,7 +1172,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1144,7 +1181,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1154,7 +1190,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1164,7 +1199,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1174,7 +1208,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1186,7 +1219,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1196,7 +1228,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1208,7 +1239,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1218,7 +1248,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1235,7 +1264,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1245,7 +1273,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1255,7 +1282,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1265,7 +1291,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1275,7 +1300,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1285,7 +1309,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1295,7 +1318,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1305,7 +1327,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
             <methodConfig>
@@ -1315,7 +1336,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1327,7 +1347,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1337,7 +1356,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1349,7 +1367,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1359,7 +1376,6 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>
@@ -1371,7 +1387,6 @@
           </parameterTypes>
           <useVersion>false</useVersion>
           <isNotCache>false</isNotCache>
-          <isLocalHostNotCache>false</isLocalHostNotCache>
           <removeMode>invaild</removeMode>
           <cleanMethods>
             <methodConfig>
@@ -1381,7 +1396,51 @@
               </parameterTypes>
               <useVersion>false</useVersion>
               <isNotCache>false</isNotCache>
-              <isLocalHostNotCache>false</isLocalHostNotCache>
+              <removeMode>invaild</removeMode>
+            </methodConfig>
+          </cleanMethods>
+        </cacheCleanMethod>
+      </methods>
+    </cacheCleanBean>
+    <cacheCleanBean>
+      <beanName>switchConfigReadService</beanName>
+      <methods>
+        <cacheCleanMethod>
+          <methodName>cleanCacheById</methodName>
+          <parameterTypes>
+            <java-class>java.lang.Long</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <removeMode>invaild</removeMode>
+          <cleanMethods>
+            <methodConfig>
+              <methodName>selectByPrimaryKey</methodName>
+              <parameterTypes>
+                <java-class>java.lang.Long</java-class>
+              </parameterTypes>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
+              <removeMode>invaild</removeMode>
+            </methodConfig>
+          </cleanMethods>
+        </cacheCleanMethod>
+        <cacheCleanMethod>
+          <methodName>cleanCacheByServId</methodName>
+          <parameterTypes>
+            <java-class>java.lang.Long</java-class>
+          </parameterTypes>
+          <useVersion>false</useVersion>
+          <isNotCache>false</isNotCache>
+          <removeMode>invaild</removeMode>
+          <cleanMethods>
+            <methodConfig>
+              <methodName>selectByServId</methodName>
+              <parameterTypes>
+                <java-class>java.lang.Long</java-class>
+              </parameterTypes>
+              <useVersion>false</useVersion>
+              <isNotCache>false</isNotCache>
               <removeMode>invaild</removeMode>
             </methodConfig>
           </cleanMethods>

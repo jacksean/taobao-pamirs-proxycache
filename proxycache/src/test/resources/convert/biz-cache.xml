@@ -416,6 +416,16 @@
             	       expireTimes=0,         	       
             	       groupName=优惠数据
             	 </value>
+            	 <value>
+            		   beanName=promotionReadService,
+            	       methodName=getSystemPromotionsByServId,
+            	       parameterTypes={Long},
+            	       returnType=serializable,
+            	       cacheName=promotionReadService.getSystemPromotionsByServId,
+            	       storeType=tair,
+            	       expireTimes=0,         	       
+            	       groupName=优惠数据
+            	 </value>
             	  <!-- ===================================================================== -->
 				 <!-- 营销活动加载缓存管理配置						   				   		   	   -->
 				 <!-- ===================================================================== -->
@@ -530,6 +540,58 @@
             	       storeType=tair,
             	       expireTimes=0,         	       
             	       groupName=策略指令
+            	 </value>
+            	  <!-- 服务数据 -->
+            	 <value>
+            		   beanName=servReadService,
+            	       methodName=selectServiceById,
+            	       parameterTypes={Long},
+            	       returnType=serializable,
+            	       cacheName=servReadService.selectServiceById,
+            	       storeType=tair,
+            	       expireTimes=0,         	       
+            	       groupName=服务数据
+            	 </value>
+            	 <value>
+            		   beanName=servReadService,
+            	       methodName=getServId,
+            	       parameterTypes={String},
+            	       returnType=serializable,
+            	       cacheName=servReadService.getServId,
+            	       storeType=tair,
+            	       expireTimes=0,         	       
+            	       groupName=服务数据
+            	 </value>
+            	 <value>
+            		   beanName=servReadService,
+            	       methodName=selectServiceByCode,
+            	       parameterTypes={String},
+            	       returnType=serializable,
+            	       cacheName=servReadService.selectServiceByCode,
+            	       storeType=tair,
+            	       expireTimes=0,         	       
+            	       groupName=服务数据
+            	 </value>
+            	 <!-- 服务开通数据 -->
+            	 <value>
+            		   beanName=switchConfigReadService,
+            	       methodName=selectByPrimaryKey,
+            	       parameterTypes={Long},
+            	       returnType=serializable,
+            	       cacheName=switchConfigReadService.selectByPrimaryKey,
+            	       storeType=tair,
+            	       expireTimes=0,         	       
+            	       groupName=服务开通数据
+            	 </value>
+            	 <value>
+            		   beanName=switchConfigReadService,
+            	       methodName=selectByServId,
+            	       parameterTypes={Long},
+            	       returnType=serializable,
+            	       cacheName=switchConfigReadService.selectByServId,
+            	       storeType=tair,
+            	       expireTimes=0,         	       
+            	       groupName=服务开通数据
             	 </value>
             </list>
         </property>
@@ -673,6 +735,12 @@
             		   parameterTypes={String},
             		   cacheCleanCodes=promotionReadService#getPromotionByCode#{String};
             	</value>
+            	<value>
+            		   beanName=promotionReadService,
+            		   methodName=cleanCacheByServId,
+            		   parameterTypes={Long},
+            		   cacheCleanCodes=promotionReadService#getSystemPromotionsByServId#{Long};
+            	</value>
             	<!-- ===================================================================== -->
 				<!-- 活动清理缓存管理配置						   				   		   	   -->
 				<!-- ===================================================================== -->
@@ -719,6 +787,32 @@
             		   methodName=cleanListItemInstructionByItemId,
             		   parameterTypes={Long},
             		   cacheCleanCodes=itemInstructionReadService#listItemInstructionByItemId#{Long};
+            	</value>
+            	<!-- 服务缓存清理 -->
+            	<value>
+            		   beanName=servReadService,
+            		   methodName=cleanCacheById,
+            		   parameterTypes={Long},
+            		   cacheCleanCodes=servReadService#selectServiceById#{Long};
+            	</value>
+            	<value>
+            		   beanName=servReadService,
+            		   methodName=cleanCacheByCode,
+            		   parameterTypes={String},
+            		   cacheCleanCodes=servReadService#getServId#{String};servReadService#selectServiceByCode#{String};
+            	</value>
+            	<!-- 服务开通插件缓存清理 -->
+            	<value>
+            		   beanName=switchConfigReadService,
+            		   methodName=cleanCacheById,
+            		   parameterTypes={Long},
+            		   cacheCleanCodes=switchConfigReadService#selectByPrimaryKey#{Long};
+            	</value>
+            	<value>
+            		   beanName=switchConfigReadService,
+            		   methodName=cleanCacheByServId,
+            		   parameterTypes={Long},
+            		   cacheCleanCodes=switchConfigReadService#selectByServId#{Long};
             	</value>
             </list>
         </property>

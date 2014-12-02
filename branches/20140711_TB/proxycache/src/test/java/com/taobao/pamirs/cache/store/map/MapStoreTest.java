@@ -24,7 +24,7 @@ public class MapStoreTest {
 
 		assertThat(store.get(key), nullValue());
 
-		store.put(key, value,false);
+		store.put(key, value,0,0);
 		assertThat(store.get(key), is(value));
 	}
 
@@ -33,7 +33,7 @@ public class MapStoreTest {
 		String key = "999";
 		String value = "expire jeck";
 
-		store.put(key, value, 3,false);
+		store.put(key, value, 3,0);
 		assertThat(store.get(key), is(value));
 
 		Thread.sleep(3000);
@@ -45,7 +45,7 @@ public class MapStoreTest {
 		String key = "remove";
 		String value = "remove jeck";
 
-		store.put(key, value,false);
+		store.put(key, value,0,0);
 		assertThat(store.get(key), is(value));
 
 		store.remove(key);
@@ -57,7 +57,7 @@ public class MapStoreTest {
 		String key = "clear";
 		String value = "clear jeck";
 
-		store.put(key, value,false);
+		store.put(key, value,0,0);
 		assertThat(store.get(key), is(value));
 		assertThat(store.size() > 0, is(true));
 

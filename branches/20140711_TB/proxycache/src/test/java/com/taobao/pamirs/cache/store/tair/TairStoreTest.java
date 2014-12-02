@@ -38,7 +38,7 @@ public class TairStoreTest extends UnitilsJUnit4 {
 
 		assertThat(store.get(key), nullValue());
 
-		store.put(key, value,false);
+		store.put(key,value,0,0);
 		assertThat(store.get(key), is(value));
 
 		// 清理测试数据
@@ -50,7 +50,7 @@ public class TairStoreTest extends UnitilsJUnit4 {
 		String key = "999";
 		String value = "expire jeck";
 
-		store.put(key, value, 3,false);
+		store.put(key, value, 3,0);
 		assertThat(store.get(key), is(value));
 
 		Thread.sleep(5000);
@@ -72,7 +72,7 @@ public class TairStoreTest extends UnitilsJUnit4 {
 		String key = "remove";
 		String value = "remove jeck";
 
-		store.put(key, value,false);
+		store.put(key, value,0,0);
 		assertThat(store.get(key), is(value));
 
 		store.remove(key);

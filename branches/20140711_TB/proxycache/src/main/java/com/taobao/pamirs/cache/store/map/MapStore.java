@@ -54,14 +54,8 @@ public class MapStore<K extends Serializable, V extends Serializable>
 
 		return v;
 	}
-
-	@Override
-	public void put(K key, V value,boolean userVersion) {
-		this.put(key, value, 0,false);
-	}
-
-	@Override
-	public void put(K key, V value, int expireTime,boolean userVersion) {
+	
+	public void put(K key, V value,int version,int expireTime) {
 		if (value == null)
 			return;
 
@@ -69,6 +63,8 @@ public class MapStore<K extends Serializable, V extends Serializable>
 		datas.put(key, storeObject);
 	}
 
+	
+	
 	@Override
 	public void remove(K key) {
 		datas.remove(key);
@@ -87,6 +83,12 @@ public class MapStore<K extends Serializable, V extends Serializable>
 	@Override
 	public void hidden(K key) {
 		throw new RuntimeException("Map存储 不支持此方法");
+	}
+
+	@Override
+	public Integer getDataVersion(K key, String removeMode) {
+		// 不支持版本号
+		return null;
 	}
 
 }

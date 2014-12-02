@@ -11,7 +11,6 @@ import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.CacheProxy;
 import com.taobao.pamirs.cache.framework.config.CacheBean;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
-import com.taobao.pamirs.cache.store.RemoveMode;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 
 /**
@@ -52,7 +51,7 @@ public class AnnotationCacheManagerRoundAdvice extends CacheManagerRoundAdvice {
 				List<MethodConfig> cacheCleanMethodConfigs = getCacheCleanMethodConfigs(methodConfig, invocation);
 				for (MethodConfig mc : cacheCleanMethodConfigs) {
 					String cacheCode = CacheCodeUtil.getCacheCode(storeRegion, beanName, mc, invocation.getArguments());// 这里的invocation直接用主bean的，因为清理的bean的参数必须和主bean保持一致
-					cacheAdapter.remove(RemoveMode.toEnum(methodConfig.getRemoveMode()), cacheCode, ip);
+					cacheAdapter.remove(cacheCode, ip);
 				}
 
 			}

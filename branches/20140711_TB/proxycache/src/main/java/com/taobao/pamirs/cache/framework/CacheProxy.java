@@ -2,7 +2,6 @@ package com.taobao.pamirs.cache.framework;
 
 import static com.taobao.pamirs.cache.framework.listener.CacheOprator.GET;
 import static com.taobao.pamirs.cache.framework.listener.CacheOprator.PUT;
-import static com.taobao.pamirs.cache.framework.listener.CacheOprator.PUT_EXPIRE;
 import static com.taobao.pamirs.cache.framework.listener.CacheOprator.REMOVE;
 
 import java.io.Serializable;
@@ -66,13 +65,21 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		return v;
 	}
 
-	public void put(K key, V value,boolean useVersion, String ip) {
+	public void put(K key, V value,String ip) {
 
 		CacheException cacheException = null;
 
 		long start = System.currentTimeMillis();
 		try {
-			cache.put(key, value, useVersion);
+			int version=0;
+			int expireTime=0;
+			if(methodConfig.isUseVersion()){
+				version=cache.getDataVersion(key, methodConfig.getRemoveMode());
+			}
+			if(methodConfig.getExpiredTime()!=null){
+				expireTime=methodConfig.getExpiredTime();
+			}
+			cache.put(key, value, version, expireTime);
 		} catch (CacheException e) {
 			cacheException = e;
 		}
@@ -83,31 +90,14 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		notifyListeners(PUT, new CacheOprateInfo(key, end - start, true,
 				beanName, methodConfig, cacheException, ip));
 	}
-
-	public void put(K key, V value,boolean useVersion, int expireTime, String ip) {
+	
+	
+	public void remove(K key, String ip) {
 		CacheException cacheException = null;
 
 		long start = System.currentTimeMillis();
 		try {
-			cache.put(key, value, expireTime, useVersion);
-		} catch (CacheException e) {
-			cacheException = e;
-		}
-		long end = System.currentTimeMillis();
-
-		// listener
-		notifyListeners(PUT_EXPIRE, new CacheOprateInfo(key, end - start, true,
-				beanName, methodConfig, cacheException, ip));
-	}
-
-	
-	
-	public void remove(RemoveMode mode,K key, String ip) {
-		CacheException cacheException = null;
-
-		long start = System.currentTimeMillis();
-		try {
-			if(RemoveMode.HIDDEN.equals(mode)){
+			if(RemoveMode.HIDDEN.getName().equals(methodConfig.getMethodName())){
 				cache.hidden(key);
 			}else{
 				cache.remove(key);
@@ -121,10 +111,6 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		notifyListeners(REMOVE, new CacheOprateInfo(key, end - start, true,
 				beanName, methodConfig, cacheException, ip));
 	}
-	
-	
-	
-	
 	
 	
 

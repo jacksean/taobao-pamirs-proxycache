@@ -24,7 +24,7 @@ public class OldCacheManager {
 	/**
 	 *  «∑ÒºÊ»›
 	 */
-	private boolean isCompatible;
+	private boolean compatible;
 
 	
 	private TairManager oldTairManager;
@@ -87,18 +87,26 @@ public class OldCacheManager {
 	}
 
 	public boolean isCompatible() {
-		return isCompatible;
+		return compatible;
 	}
 
 
-	public void setCompatible(boolean isCompatible) {
-		this.isCompatible = isCompatible;
+	public void setCompatible(boolean compatible) {
+		this.compatible = compatible;
 	}
 
 
 	public void setOldTairManager(TairManager oldTairManager) {
 		this.oldTairManager = oldTairManager;
 	}
+
+
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+	
+	
 	
 
 }

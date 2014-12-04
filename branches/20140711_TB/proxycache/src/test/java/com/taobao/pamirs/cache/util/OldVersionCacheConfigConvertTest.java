@@ -12,7 +12,7 @@ import com.taobao.pamirs.cache.util.convert.OldVersionCacheConfigConvert;
 public class OldVersionCacheConfigConvertTest {
 
 	public static void main(String[] args) throws Exception {
-		String path = "D:/ws/ws_tmall_dev/proxycache/src/test/resources/convert/biz-cache.xml";
+		String path = "D:/日常需求/cache升级/cachemanage/src/test/resources/convert/biz-cache.xml";
 		OldVersionCacheConfigConvert.convertToNewFile(path);
 	}
 }

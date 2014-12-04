@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
+import com.taobao.pamirs.cache.store.StoreObject;
 import com.taobao.tair.ResultCode;
 import com.taobao.tair.TairManager;
 
@@ -43,12 +44,15 @@ public class OldCacheManager {
 		
 		try{
 			String key=CacheUtils.getTairKey(region, invocation, beanName);
+			
+			StoreObject<String,Object> co = new StoreObject<String,Object>(value);		
+			
 			this.remove(key);
 			ResultCode rc = oldTairManager.put(namespace, key,
-					(Serializable) value, 0, 0);
+					(Serializable) co, 0, 0);
 			if (!ResultCode.SUCCESS.equals(rc)) {
 				ResultCode rc1 = oldTairManager.put(namespace, key,
-						(Serializable) value, 0, 0);
+						(Serializable) co, 0, 0);
 				if (!ResultCode.SUCCESS.equals(rc1)) {
 					logger.error("Tair Cache failed to invalid object [namespace="
 							+ namespace + ", key=" + key

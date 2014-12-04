@@ -29,6 +29,7 @@ import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.framework.timer.CleanCacheTimerManager;
 import com.taobao.pamirs.cache.load.ICacheConfigService;
 import com.taobao.pamirs.cache.load.verify.CacheConfigVerify;
+import com.taobao.pamirs.cache.old.OldCacheManager;
 import com.taobao.pamirs.cache.store.StoreType;
 import com.taobao.pamirs.cache.store.map.MapStore;
 import com.taobao.pamirs.cache.store.tair.TairStore;
@@ -47,6 +48,13 @@ public abstract class CacheManager implements ApplicationContextAware,
 		ApplicationListener, ICacheConfigService {
 
 	private static final Log log = LogFactory.getLog(CacheManager.class);
+	
+	/**
+	 * 写兼容老的，升级后删除 TODO
+	 */
+	private OldCacheManager oldCacheManager;
+	
+	
 
 	private CacheConfig cacheConfig;
 
@@ -368,6 +376,14 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	public void setLocalMapSegmentSize(int localMapSegmentSize) {
 		this.localMapSegmentSize = localMapSegmentSize;
+	}
+
+	public OldCacheManager getOldCacheManager() {
+		return oldCacheManager;
+	}
+
+	public void setOldCacheManager(OldCacheManager oldCacheManager) {
+		this.oldCacheManager = oldCacheManager;
 	}
 
 }

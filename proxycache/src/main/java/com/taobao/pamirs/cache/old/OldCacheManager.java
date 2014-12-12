@@ -36,7 +36,7 @@ public class OldCacheManager {
 	/**
 	 * 只作商品兼容
 	 */
-	private int namespace=318;
+	private int namespace;
 	
 	
 	
@@ -108,6 +108,18 @@ public class OldCacheManager {
 
 	public void setRegion(String region) {
 		this.region = region;
+	}
+
+
+
+	public int getNamespace() {
+		return namespace;
+	}
+
+
+
+	public void setNamespace(int namespace) {
+		this.namespace = namespace;
 	}
 	
 	

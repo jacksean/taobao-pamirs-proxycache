@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 
 import com.taobao.pamirs.cache.extend.jmx.CacheMbean;
 import com.taobao.pamirs.cache.extend.jmx.CacheMbeanListener;
@@ -63,6 +64,9 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	private boolean useCache = true;
 
+	/** 打印缓存命中日志 **/
+	private boolean openCacheLog = false;
+
 	/**
 	 * 指定本地缓存时LruMap的大小，默认是1024
 	 * 
@@ -89,15 +93,16 @@ public abstract class CacheManager implements ApplicationContextAware,
 	public void onApplicationEvent(ApplicationEvent event) {
 		// 放在onApplicationEvent里，原因是解决CacheManagerHandle里先执行代理，再applicationContext.getBean，否则代理不了
 
-		// 2. 自动填充默认的配置
-		autoFillCacheConfig(cacheConfig);
+		if (event instanceof ContextRefreshedEvent) {
+			// 2. 自动填充默认的配置
+			autoFillCacheConfig(cacheConfig);
 
-		// 3. 缓存配置合法性校验
-		verifyCacheConfig(cacheConfig);
+			// 3. 缓存配置合法性校验
+			verifyCacheConfig(cacheConfig);
 
-		// 4. 初始化缓存
-		initCache();
-
+			// 4. 初始化缓存
+			initCache();
+		}
 	}
 
 	@Override
@@ -181,8 +186,10 @@ public abstract class CacheManager implements ApplicationContextAware,
 					cacheMethod.getExpiredTime());
 
 			// 4. 注册Xray log
-			cacheProxy.addListener(new XrayLogListener(beanName, cacheMethod
-					.getMethodName(), cacheMethod.getParameterTypes()));
+			if (openCacheLog)
+				cacheProxy.addListener(new XrayLogListener(beanName,
+						cacheMethod.getMethodName(), cacheMethod
+								.getParameterTypes()));
 		}
 	}
 
@@ -254,6 +261,10 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	public void setLocalMapSegmentSize(int localMapSegmentSize) {
 		this.localMapSegmentSize = localMapSegmentSize;
+	}
+
+	public void setOpenCacheLog(boolean openCacheLog) {
+		this.openCacheLog = openCacheLog;
 	}
 
 }

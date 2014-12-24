@@ -55,7 +55,6 @@ public class TimeHandle extends AbstractAutoProxyCreator implements
 
 	public TimeHandle() {
 		super.setOrder(LOWEST_PRECEDENCE);
-		this.setExposeProxy(true);// do call another advised method on itself
 	}
 
 	@Override

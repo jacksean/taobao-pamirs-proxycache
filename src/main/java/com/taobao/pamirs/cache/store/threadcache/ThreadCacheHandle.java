@@ -61,6 +61,7 @@ public class ThreadCacheHandle extends AbstractAutoProxyCreator implements
 
 	public ThreadCacheHandle() {
 		super.setOrder(LOWEST_PRECEDENCE);
+		this.setExposeProxy(true);// do call another advised method on itself
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.taobao.pamirs.cache.framework.aop.advice;
 
+import static com.taobao.pamirs.cache.framework.listener.CacheOprator.GET;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -15,6 +17,7 @@ import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.CacheProxy;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
+import com.taobao.pamirs.cache.framework.listener.CacheOprateInfo;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 import com.taobao.pamirs.cache.util.ConfigUtil;
 
@@ -101,8 +104,8 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 			// 3. do nothing
 			return invocation.proceed();
 		} catch (Exception e) {
-//			log.error("CacheManager:出错:" + beanName + "#"
-//					+ invocation.getMethod().getName(), e);
+			// log.error("CacheManager:出错:" + beanName + "#"
+			// + invocation.getMethod().getName(), e);
 			throw e;
 		}
 	}
@@ -124,10 +127,17 @@ public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 		if (cacheAdapter == null)
 			return invocation.proceed();
 
+		long start = System.currentTimeMillis();
 		Object response = cacheAdapter.get(cacheCode, ip);
 
 		if (response == null) {
 			response = invocation.proceed();
+
+			long end = System.currentTimeMillis();
+			// 缓存未命中，走原生方法，通知listener
+			cacheAdapter.notifyListeners(GET, new CacheOprateInfo(cacheCode,
+					end - start, false, cacheAdapter.getBeanName(),
+					cacheAdapter.getMethodConfig(), null, ip));
 
 			if (response == null)// 如果原生方法结果为null，不put到缓存了
 				return response;

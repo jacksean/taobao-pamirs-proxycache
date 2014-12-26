@@ -56,11 +56,9 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 
 		long end = System.currentTimeMillis();
 
-		boolean isHitting = v != null;// 是否命中，null即未命中
-
-		// listener
-		notifyListeners(GET, new CacheOprateInfo(key, end - start, isHitting,
-				beanName, methodConfig, cacheException, ip));
+		if (v != null) // 命中，通知listener
+			notifyListeners(GET, new CacheOprateInfo(key, end - start, true,
+					beanName, methodConfig, cacheException, ip));
 
 		return v;
 	}

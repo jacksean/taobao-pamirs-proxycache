@@ -2,818 +2,116 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="byName">
 	<bean id="applicationContextUtil" class="com.taobao.pamirs.cache.ApplicationContextUtil"/> 
-	<!-- ===================================================================== -->
-	<!-- 商品中心缓存管理配置						   				   		   	   -->
-	<!-- ===================================================================== -->
- 	<bean id="goodsCenterCacheManager" class="com.taobao.pamirs.cache.manager.CacheManager" depends-on="tairManager,applicationContextUtil"> 
+	<bean id="uppCacheManager" class="com.taobao.pamirs.cache.manager.CacheManager" depends-on="tairManager,applicationContextUtil"> 
  		<property name="defaultCacheConfig">
              <value>
-                     storeTairRegion=${store.tair.region},
+                     storeTairRegion=${model.store.tair.region},
                      storeTairNameSpace=318,
                      cleanTime=0,10,20,30,40,50 * * * * ? *
              </value>
         </property>
  		<property name="cacheConfig">
 			<list>
-				<!-- ===================================================================== -->
-				<!-- 商品加载缓存管理配置						   				   		   	   -->
-				<!-- ===================================================================== -->
-            	<value>
-            		   beanName=articleReadService,
-            	       methodName=getArticleById,
+            	<value>beanName=productReadService,
+            	       methodName=getProductDTOById,
             	       parameterTypes={Long},
             	       returnType=serializable,
-            	       cacheName=articleReadService.getArticleById,
+            	       cacheName=productReadService.getProductDTOById,
             	       storeType=tair,
-            	       expireTimes=0,        	       
-            	       groupName=商品数据
-            	 </value>
-            	 <value>
-            		   beanName=articleReadService,
-            	       methodName=getArticleByCode,
+            	       expireTimes=6000000,         	       
+            	       groupName=配置数据
+            	 </value> 
+            	<value>beanName=productReadService,
+            	       methodName=getProdId,
             	       parameterTypes={String},
             	       returnType=serializable,
-            	       cacheName=articleReadService.getArticleByCode,
+            	       cacheName=productReadService.getProdId,
             	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=商品数据
-            	 </value>
-            	 <value>
-            		   beanName=articleReadService,
-            	       methodName=getArticleByAppkey,
+            	       expireTimes=6000000,         	       
+            	       groupName=配置数据
+            	 </value> 
+            	<value>beanName=activityInventoryReadService,
+            	       methodName=getActivityInventoryByActIdAndObj,
             	       parameterTypes={String},
             	       returnType=serializable,
-            	       cacheName=articleReadService.getArticleByAppkey,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=商品数据
-            	 </value>
-            	 <value>
-            		   beanName=articleReadService,
-            	       methodName=getSaleConditions,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=articleReadService.getSaleConditions,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=商品数据
-            	 </value>
-            	 <value>
-            		   beanName=articleReadService,
-            	       methodName=getMarketSaleConditions,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=articleReadService.getMarketSaleConditions,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=商品数据
-            	 </value>
-            	 <value>
-            		   beanName=articleReadService,
-            	       methodName=getDealTypeSaleConditions,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=articleReadService.getDealTypeSaleConditions,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=商品数据
-            	 </value>
-            	 <value>
-            		   beanName=articleReadService,
-            	       methodName=getPromotions,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=articleReadService.getPromotions,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=商品数据
-            	 </value>
-            	 <value>
-            		   beanName=articleReadService,
-            	       methodName=getDependArticles,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=articleReadService.getDependArticles,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=商品数据
-            	 </value>
-            	 <value>
-            		   beanName=articleReadService,
-            	       methodName=getMutexArticles,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=articleReadService.getMutexArticles,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=商品数据
-            	 </value>
-            	  <value>
-            		   beanName=articleReadService,
-            	       methodName=getPayServiceCodes,
-            	       parameterTypes={String},
-            	       returnType=serializable,
-            	       cacheName=articleReadService.getPayServiceCodes,
+            	       cacheName=activityInventoryReadService.getActivityInventoryByActIdAndObj,
             	       storeType=tair,
             	       expireTimes=0,
-            	       groupName=商品数据
+            	       groupName=库存数据
             	 </value>
-				<!-- ===================================================================== -->
-				<!-- 需求加载缓存管理配置						   				   		   	   -->
-				<!-- ===================================================================== -->
-				<value>
-            		   beanName=requirementReadService,
-            	       methodName=getRequirementById,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=requirementReadService.getRequirementById,
-            	       storeType=tair,
-            	       expireTimes=0,        	       
-            	       groupName=需求数据
-            	 </value>
-            	 <value>
-            		   beanName=requirementReadService,
-            	       methodName=getRequirementByCode,
+            	<value>beanName=activityInventoryReadService,
+            	       methodName=getInventoryByObj,
             	       parameterTypes={String},
             	       returnType=serializable,
-            	       cacheName=requirementReadService.getRequirementByCode,
+            	       cacheName=activityInventoryReadService.getInventoryByObj,
             	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=需求数据
+            	       expireTimes=0,
+            	       groupName=库存数据
             	 </value>
-				 <value>
-            		   beanName=requirementReadService,
-            	       methodName=countRequirementByUser,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=requirementReadService.countRequirementByUser,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=需求数据
-            	 </value>
-            	<!-- ===================================================================== -->
-				<!-- 规格加载缓存管理配置						   				   		   	   -->
-				<!-- ===================================================================== -->
-            	<value>
-            		   beanName=itemReadService,
-            	       methodName=getItemById,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=itemReadService.getItemById,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=规格数据
-            	 </value>
-            	 <value>
-            		   beanName=itemReadService,
-            	       methodName=getItemByCode,
+				 <value>beanName=activityInventoryReadService,
+            	       methodName=getPeriodicActInvtByActIdAndObj,
             	       parameterTypes={String},
             	       returnType=serializable,
-            	       cacheName=itemReadService.getItemByCode,
+            	       cacheName=activityInventoryReadService.getPeriodicActInvtByActIdAndObj,
             	       storeType=tair,
             	       expireTimes=0,         	       
-            	       groupName=规格数据
-            	 </value>
-            	 <value>
-            		   beanName=itemReadService,
-            	       methodName=getSaleConditions,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=itemReadService.getSaleConditions,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=规格数据
-            	 </value>
-            	 <value>
-            		   beanName=itemReadService,
-            	       methodName=getPromotions,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=itemReadService.getPromotions,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=规格数据
-            	 </value>
-            	 <value>
-            		   beanName=itemReadService,
-            	       methodName=getMutexItems,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=itemReadService.getMutexItems,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=规格数据
-            	 </value>
-            	 <value>
-            		   beanName=itemReadService,
-            	       methodName=getUpdateItems,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=itemReadService.getUpdateItems,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=规格数据
-            	 </value>
-            	 <value>
-            		   beanName=itemReadService,
-            	       methodName=getItems,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=itemReadService.getItems,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=规格数据
-            	 </value>
-                 <!-- ===================================================================== -->
-                 <!-- 规格模块加载缓存管理配置                                                    -->
-                 <!-- ===================================================================== -->
-                 <value>
-                       beanName=itemModuleReadService,
-                       methodName=getById,
-                       parameterTypes={Long},
-                       returnType=serializable,
-                       cacheName=itemModuleReadService.getById,
-                       storeType=tair,
-                       expireTimes=0,
-                       groupName=规格模块数据
-                 </value>
-                  <value>
-                       beanName=itemModuleReadService,
-                       methodName=getPromotions,
-                       parameterTypes={Long},
-                       returnType=serializable,
-                       cacheName=itemModuleReadService.getPromotions,
-                       storeType=tair,
-                       expireTimes=0,
-                       groupName=规格模块数据
-                 </value>
-                 <value>
-                       beanName=itemModuleReadService,
-                       methodName=getByItemIdAndItemModuleCode,
-                       parameterTypes={String},
-                       returnType=serializable,
-                       cacheName=itemModuleReadService.getByItemIdAndItemModuleCode,
-                       storeType=tair,
-                       expireTimes=0,
-                       groupName=规格模块数据
-                 </value>
-                 <value>
-                       beanName=itemModuleReadService,
-                       methodName=listByItemId,
-                       parameterTypes={Long},
-                       returnType=serializable,
-                       cacheName=itemModuleReadService.listByItemId,
-                       storeType=tair,
-                       expireTimes=0,
-                       groupName=规格模块数据
-                 </value>
-                 <!-- ===================================================================== -->
-                 <!-- 商品约束加载缓存管理配置                                                    -->
-                 <!-- ===================================================================== -->
-                 <value>
-                       beanName=attrConstraintReadService,
-                       methodName=getFlatConstrainDTOs,
-                       parameterTypes={String},
-                       returnType=serializable,
-                       cacheName=attrConstraintReadService.getFlatConstrainDTOs,
-                       storeType=tair,
-                       expireTimes=0,
-                       groupName=商品约束数据
-                 </value>
-            	 <!-- ===================================================================== -->
-				 <!-- 包装盒加载缓存管理配置						   				   		   	   -->
-				 <!-- ===================================================================== -->
-            	 <value>
-            		   beanName=packReadService,
-            	       methodName=getPackById,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=packReadService.getPackById,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-            	 <value>
-            		   beanName=packReadService,
-            	       methodName=getPackGroups,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=packReadService.getPackGroups,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-				 <value>
-            		   beanName=packReadService,
-            	       methodName=getPackInsts,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=packReadService.getPackInsts,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-            	 <value>
-            		   beanName=packReadService,
-            	       methodName=getPromotions,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=packReadService.getPromotions,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-            	 <value>
-            		   beanName=packReadService,
-            	       methodName=getSaleConditions,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=packReadService.getSaleConditions,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-            	 <value>
-            		   beanName=packReadService,
-            	       methodName=getUpdatePacks,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=packReadService.getUpdatePacks,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-            	 <value>
-            		   beanName=packReadService,
-            	       methodName=getMutexPacks,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=packReadService.getMutexPacks,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-            	 <value>
-            		   beanName=packReadService,
-            	       methodName=getPackItemViews,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=packReadService.getPackItemViews,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-            	 <value>
-            		   beanName=packReadService,
-            	       methodName=getSubAvailableCombinations,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=packReadService.getSubAvailableCombinations,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-            	 <value>
-            		   beanName=packReadService,
-            	       methodName=getPackByCode,
+            	       groupName=库存数据
+            	 </value> 
+            	 	<value>beanName=moduleInstanceReadService,
+            	       methodName=getModuleInstanceByUserIdAndId,
             	       parameterTypes={String},
             	       returnType=serializable,
-            	       cacheName=packReadService.getPackByCode,
+            	       cacheName=moduleInstanceReadService.getModuleInstanceByUserIdAndId,
             	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-            	 <value>
-            		   beanName=packReadService,
-            	       methodName=getPacksByArticleCode,
+            	       expireTimes=6000000,         	       
+            	       groupName=配置数据
+            	 </value> 
+            	 <value>beanName=moduleInstanceReadService,
+            	       methodName=getModuleInstancesByUserIdAndMasterIdAndTypeStr,
             	       parameterTypes={String},
             	       returnType=serializable,
-            	       cacheName=packReadService.getPacksByArticleCode,
+            	       cacheName=moduleInstanceReadService.getModuleInstancesByUserIdAndMasterIdAndTypeStr,
             	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=包装盒数据
-            	 </value>
-            	 <!-- ===================================================================== -->
-				 <!-- 优惠加载缓存管理配置						   				   		   	   -->
-				 <!-- ===================================================================== -->
-            	 <value>
-            		   beanName=promotionReadService,
-            	       methodName=getPromotionByCode,
-            	       parameterTypes={String},
-            	       returnType=serializable,
-            	       cacheName=promotionReadService.getPromotionByCode,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=优惠数据
-            	 </value>
-            	 <value>
-            		   beanName=promotionReadService,
-            	       methodName=getPromotionById,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=promotionReadService.getPromotionById,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=优惠数据
-            	 </value>
-            	 <value>
-            		   beanName=promotionReadService,
-            	       methodName=getSystemPromotionsByServId,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=promotionReadService.getSystemPromotionsByServId,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=优惠数据
-            	 </value>
-            	  <!-- ===================================================================== -->
-				 <!-- 营销活动加载缓存管理配置						   				   		   	   -->
-				 <!-- ===================================================================== -->
-            	<value>
-            		   beanName=activityReadService,
-            	       methodName=getActivityById,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=activityReadService.getActivityById,
-            	       storeType=tair,
-            	       expireTimes=0,        	       
-            	       groupName=活动数据
-            	 </value>
-            	 <value>
-            		   beanName=activityReadService,
-            	       methodName=getActivityByCode,
-            	       parameterTypes={String},
-            	       returnType=serializable,
-            	       cacheName=activityReadService.getActivityByCode,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=活动数据
-            	 </value>
-            	 <value>
-            		   beanName=activityReadService,
-            	       methodName=getSaleConditions,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=activityReadService.getSaleConditions,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=活动数据
-            	 </value>
-            	 <value>
-            		   beanName=activityReadService,
-            	       methodName=getPromotions,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=activityReadService.getPromotions,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=活动数据
-            	 </value>
-            	 <value>
-            		   beanName=activityReadService,
-            	       methodName=getActivityItems,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=activityReadService.getActivityItems,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=活动数据
-            	 </value>
-            	 <value>
-            		   beanName=activityReadService,
-            	       methodName=getActivityArticles,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=activityReadService.getActivityArticles,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=活动数据
-            	 </value>
-            	 <value>
-            		   beanName=activityReadService,
-            	       methodName=getRelEffectiveActivitysByItemId,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=activityReadService.getRelEffectiveActivitysByItemId,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=活动数据
-            	 </value>
-            	 <value>
-            		   beanName=activityReadService,
-            	       methodName=getRelEffectiveActivitysByArticleId,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=activityReadService.getRelEffectiveActivitysByArticleId,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=活动数据
-            	 </value>
-                  <value>
-            		   beanName=activityReadService,
-            	       methodName=getActivityObjs,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=activityReadService.getActivityObjs,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=活动数据
-            	 </value>
-            	 <!-- 属性约束数据 -->
-            	 <value>
-            		   beanName=attrConstraintReadService,
-            	       methodName=getAttrConstraintDTOs,
-            	       parameterTypes={String},
-            	       returnType=serializable,
-            	       cacheName=attrConstraintReadService.getAttrConstraintDTOs,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=属性约束数据
-            	 </value>
-            	 <!-- 策略指令 -->
-            	 <value>
-            		   beanName=itemInstructionReadService,
-            	       methodName=listItemInstructionByItemId,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=itemInstructionReadService.listItemInstructionByItemId,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=策略指令
-            	 </value>
-            	  <!-- 服务数据 -->
-            	 <value>
-            		   beanName=servReadService,
-            	       methodName=selectServiceById,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=servReadService.selectServiceById,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=服务数据
-            	 </value>
-            	 <value>
-            		   beanName=servReadService,
-            	       methodName=getServId,
-            	       parameterTypes={String},
-            	       returnType=serializable,
-            	       cacheName=servReadService.getServId,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=服务数据
-            	 </value>
-            	 <value>
-            		   beanName=servReadService,
-            	       methodName=selectServiceByCode,
-            	       parameterTypes={String},
-            	       returnType=serializable,
-            	       cacheName=servReadService.selectServiceByCode,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=服务数据
-            	 </value>
-            	 <!-- 服务开通数据 -->
-            	 <value>
-            		   beanName=switchConfigReadService,
-            	       methodName=selectByPrimaryKey,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=switchConfigReadService.selectByPrimaryKey,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=服务开通数据
-            	 </value>
-            	 <value>
-            		   beanName=switchConfigReadService,
-            	       methodName=selectByServId,
-            	       parameterTypes={Long},
-            	       returnType=serializable,
-            	       cacheName=switchConfigReadService.selectByServId,
-            	       storeType=tair,
-            	       expireTimes=0,         	       
-            	       groupName=服务开通数据
-            	 </value>
+            	       expireTimes=6000000,         	       
+            	       groupName=配置数据
+            	 </value> 
             </list>
         </property>
         <property name="cacheCleanConfig">
 			<list>
-				<!-- ===================================================================== -->
-				<!-- 商品清理缓存管理配置						   				   		   	   -->
-				<!-- ===================================================================== -->
-            	<value>
-            		   beanName=articleReadService,
+            	<value>beanName=productReadService,
             		   methodName=cleanCacheById,
             		   parameterTypes={Long},
-            		   cacheCleanCodes=articleReadService#getArticleById#{Long};articleReadService#getSaleConditions#{Long};articleReadService#getPromotions#{Long};articleReadService#getDependArticles#{Long};articleReadService#getMutexArticles#{Long};
+            		   cacheCleanCodes=productReadService#getProductDTOById#{Long}
             	</value>
-            	<value>
-            		   beanName=articleReadService,
+            	<value>beanName=productReadService,
             		   methodName=cleanCacheByCode,
             		   parameterTypes={String},
-            		   cacheCleanCodes=articleReadService#getArticleByCode#{String};
+            		   cacheCleanCodes=productReadService#getProdId#{String}
             	</value>
-            	<value>
-            		   beanName=articleReadService,
-            		   methodName=cleanCacheByMarkeType,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=articleReadService#getMarketSaleConditions#{Long};
-            	</value>
-            	<value>
-            		   beanName=articleReadService,
-            		   methodName=cleanCacheByDealType,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=articleReadService#getDealTypeSaleConditions#{Long};
-            	</value>
-            	<value>
-            		   beanName=articleReadService,
-            		   methodName=cleanCacheByPayService,
+            	
+            	<value>beanName=activityInventoryReadService,
+            		   methodName=cleanCacheByActIdObjIdAndObjTypeKey,
             		   parameterTypes={String},
-            		   cacheCleanCodes=articleReadService#getPayServiceCodes#{String};
+            		   cacheCleanCodes=activityInventoryReadService#getActivityInventoryByActIdAndObj#{String};activityInventoryReadService#getPeriodicActInvtByActIdAndObj#{String}
             	</value>
-				<!-- ===================================================================== -->
-				<!-- 需求清理缓存管理配置						   				   		   	   -->
-				<!-- ===================================================================== -->
-            	<value>
-            		   beanName=requirementReadService,
-            		   methodName=cleanCacheById,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=requirementReadService#getRequirementById#{Long};
-            	</value>
-            	<value>
-            		   beanName=requirementReadService,
-            		   methodName=cleanCacheByCode,
+				<value>beanName=activityInventoryReadService,
+            		   methodName=cleanCacheByObjIdAndObjTypeKey,
             		   parameterTypes={String},
-            		   cacheCleanCodes=requirementReadService#getRequirementByCode#{String};
+            		   cacheCleanCodes=activityInventoryReadService#getInventoryByObj#{String}
             	</value>
-				<value>
-            		   beanName=requirementReadService,
-            		   methodName=cleanCacheByUserId,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=requirementReadService#countRequirementByUser#{Long};
-            	</value>
-            	<!-- ===================================================================== -->
-				<!-- 规格清理缓存管理配置						   				   		   	   -->
-				<!-- ===================================================================== -->
-            	<value>
-            		   beanName=itemReadService,
-            		   methodName=cleanCacheById,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=itemReadService#getItemById#{Long};itemReadService#getSaleConditions#{Long};itemReadService#getPromotions#{Long};itemReadService#getMutexItems#{Long};itemReadService#getUpdateItems#{Long};
-            	</value>
-            	<value>
-            		   beanName=itemReadService,
-            		   methodName=cleanCacheByCode,
-            		   parameterTypes={String},
-            		   cacheCleanCodes=itemReadService#getItemByCode#{String};
-            	</value>
-            	<value>
-            		   beanName=itemReadService,
-            		   methodName=cleanCacheByArticleId,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=itemReadService#getItems#{Long};
-            	</value>
-                <!-- ===================================================================== -->
-                <!-- 规格模块清理缓存管理配置                                                -->
-                <!-- ===================================================================== -->
-                <value>
-                       beanName=itemModuleReadService,
-                       methodName=cleanCacheById,
-                       parameterTypes={Long},
-                       cacheCleanCodes=itemModuleReadService#getById#{Long};itemModuleReadService#getPromotions#{Long};
-                </value>
-                <value>
-                       beanName=itemModuleReadService,
-                       methodName=cleanCacheByItemIdAndItemModuleCode,
-                       parameterTypes={String},
-                       cacheCleanCodes=itemModuleReadService#getByItemIdAndItemModuleCode#{String};
-                </value>
-                <value>
-                       beanName=itemModuleReadService,
-                       methodName=cleanCacheByItemId,
-                       parameterTypes={Long},
-                       cacheCleanCodes=itemModuleReadService#listByItemId#{Long};
-                </value>
-            	<!-- ===================================================================== -->
-				<!-- 包装盒清理缓存管理配置						   				   		   	   -->
-				<!-- ===================================================================== -->
-            	<value>
-            		   beanName=packReadService,
-            		   methodName=cleanCacheById,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=packReadService#getPackById#{Long};packReadService#getPackGroups#{Long};packReadService#getPromotions#{Long};packReadService#getSaleConditions#{Long};packReadService#getUpdatePacks#{Long};packReadService#getMutexPacks#{Long};packReadService#getPackItemViews#{Long};packReadService#getPackInsts#{Long};
-            	</value>
-            	<value>
-            		   beanName=packReadService,
-            		   methodName=cleanCacheByCode,
-            		   parameterTypes={String},
-            		   cacheCleanCodes=packReadService#getPackByCode#{String};
-            	</value>
-            	<value>
-            		   beanName=packReadService,
-            		   methodName=cleanCacheByFlag,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=packReadService#getSubAvailableCombinations#{Long};
-            	</value>
-            	<value>
-            		   beanName=packReadService,
-            		   methodName=cleanCacheByArticleCode,
-            		   parameterTypes={String},
-            		   cacheCleanCodes=packReadService#getPacksByArticleCode#{String};
-            	</value>
-            	<!-- ===================================================================== -->
-				<!-- 优惠清理缓存管理配置						   				   		   	   -->
-				<!-- ===================================================================== -->
-            	<value>
-            		   beanName=promotionReadService,
-            		   methodName=cleanCacheById,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=promotionReadService#getPromotionById#{Long};
-            	</value>
-            	<value>
-            		   beanName=promotionReadService,
-            		   methodName=cleanCacheByCode,
-            		   parameterTypes={String},
-            		   cacheCleanCodes=promotionReadService#getPromotionByCode#{String};
-            	</value>
-            	<value>
-            		   beanName=promotionReadService,
-            		   methodName=cleanCacheByServId,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=promotionReadService#getSystemPromotionsByServId#{Long};
-            	</value>
-            	<!-- ===================================================================== -->
-				<!-- 活动清理缓存管理配置						   				   		   	   -->
-				<!-- ===================================================================== -->
-            	<value>
-            		   beanName=activityReadService,
-            		   methodName=cleanCacheById,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=activityReadService#getActivityById#{Long};activityReadService#getSaleConditions#{Long};activityReadService#getPromotions#{Long};activityReadService#getActivityItems#{Long};activityReadService#getActivityArticles#{Long};activityReadService#getActivityObjs#{Long};
-            	</value>
-            	<value>
-            		   beanName=activityReadService,
-            		   methodName=cleanCacheByCode,
-            		   parameterTypes={String},
-            		   cacheCleanCodes=activityReadService#getActivityByCode#{String};
-            	</value>
-            	<value>
-            		   beanName=activityReadService,
-            		   methodName=cleanRelEffectiveActivitysCacheByItemId,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=activityReadService#getRelEffectiveActivitysByItemId#{Long};
-            	</value>
-            	<value>
-            		   beanName=activityReadService,
-            		   methodName=cleanRelEffectiveActivitysCacheByArticleId,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=activityReadService#getRelEffectiveActivitysByArticleId#{Long};
-            	</value>
-            	<!-- 属性约束缓存清理 -->
-            	<value>
-            		   beanName=attrConstraintReadService,
-            		   methodName=cleanCacheByMasterIdAndType,
-            		   parameterTypes={String},
-            		   cacheCleanCodes=attrConstraintReadService#getAttrConstraintDTOs#{String};
-            	</value>
-            	<value>
-            		   beanName=attrConstraintReadService,
-            		   methodName=cleanCacheByMasterIdAndTypeAndBizType,
-            		   parameterTypes={String},
-            		   cacheCleanCodes=attrConstraintReadService#getFlatConstrainDTOs#{String};
-            	</value>
-            	<!-- 策略指令 -->
-            	<value>
-            		   beanName=itemInstructionReadService,
-            		   methodName=cleanListItemInstructionByItemId,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=itemInstructionReadService#listItemInstructionByItemId#{Long};
-            	</value>
-            	<!-- 服务缓存清理 -->
-            	<value>
-            		   beanName=servReadService,
-            		   methodName=cleanCacheById,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=servReadService#selectServiceById#{Long};
-            	</value>
-            	<value>
-            		   beanName=servReadService,
-            		   methodName=cleanCacheByCode,
-            		   parameterTypes={String},
-            		   cacheCleanCodes=servReadService#getServId#{String};servReadService#selectServiceByCode#{String};
-            	</value>
-            	<!-- 服务开通插件缓存清理 -->
-            	<value>
-            		   beanName=switchConfigReadService,
-            		   methodName=cleanCacheById,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=switchConfigReadService#selectByPrimaryKey#{Long};
-            	</value>
-            	<value>
-            		   beanName=switchConfigReadService,
-            		   methodName=cleanCacheByServId,
-            		   parameterTypes={Long},
-            		   cacheCleanCodes=switchConfigReadService#selectByServId#{Long};
-            	</value>
+            	 <value>
+            	 	   beanName=moduleInstanceReadService,
+            	       methodName=cleanCacheById,
+            	       parameterTypes={String},
+            	       cacheCleanCodes=moduleInstanceReadService#getModuleInstanceByUserIdAndId#{String}
+            	 </value> 
+            	 <value>
+            	  	   beanName=moduleInstanceReadService,
+            	       methodName=cleanCacheByUserIdAndMasterIdAndTypeStr,
+            	       parameterTypes={String},
+            	       cacheCleanCodes=moduleInstanceReadService#getModuleInstancesByUserIdAndMasterIdAndTypeStr#{String}
+            	 </value> 
             </list>
         </property>
  		<property name="cacheInitFlag">
@@ -823,7 +121,9 @@
  			<value>true</value>
  		</property> 		
  	</bean> 
- 	<bean id="goodsCenterCacheManagerHandle" class="com.taobao.pamirs.cache.aop.handle.CacheManagerHandle">
- 		<property name="cacheManager" ref="goodsCenterCacheManager"></property>
+ 	<bean id="cacheManagerHandle" class="com.taobao.pamirs.cache.aop.handle.CacheManagerHandle">
+ 		<property name="cacheManager" ref="uppCacheManager"></property>       
  	</bean>
+	
+	
 </beans>

@@ -13,7 +13,6 @@ import java.util.List;
 public class CacheModule implements Serializable {
 	
 	
-	
 	/**
 	 * 动态重载缓存配置时不走缓存
 	 */

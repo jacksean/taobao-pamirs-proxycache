@@ -71,6 +71,12 @@ public abstract class CacheManager implements ApplicationContextAware,
 	private CleanCacheTimerManager timeTask = new CleanCacheTimerManager();
 
 	private boolean useCache = true;
+	
+	/**
+	 * 是否强校验（检查错误,启动异常，反之警告跳过）
+	 */
+	private boolean strongVerify=true;
+	
 
 	/**
 	 * 指定本地缓存时LruMap的大小，默认是1024
@@ -124,7 +130,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	@Override
 	public void verifyCacheConfig(CacheConfig cacheConfig) {
-		CacheConfigVerify.checkCacheConfig(cacheConfig, applicationContext);
+		CacheConfigVerify.checkCacheConfig(this.isStrongVerify(),cacheConfig, applicationContext);
 	}
 
 	/**
@@ -229,8 +235,8 @@ public abstract class CacheManager implements ApplicationContextAware,
 	public synchronized  boolean runtimeReloadConfig(CacheConfig newConfig){
 		boolean useCache=this.useCache;
 		try{
-			/*autoFillCacheConfig(newConfig);
-			verifyCacheConfig(newConfig);*/
+			autoFillCacheConfig(newConfig);
+			verifyCacheConfig(newConfig);
 			CacheConfig oldCacheConfig=this.cacheConfig;
 			Map<String, CacheProxy<Serializable, Serializable>> oldCacheProxys= this.cacheProxys;
 			Map<String, CacheProxy<Serializable, Serializable>> newCacheProxys = this.getCacheProxys(newConfig);
@@ -390,6 +396,14 @@ public abstract class CacheManager implements ApplicationContextAware,
 
 	public void setOldCacheManager(OldCacheManager oldCacheManager) {
 		this.oldCacheManager = oldCacheManager;
+	}
+
+	public boolean isStrongVerify() {
+		return strongVerify;
+	}
+
+	public void setStrongVerify(boolean strongVerify) {
+		this.strongVerify = strongVerify;
 	}
 
 }

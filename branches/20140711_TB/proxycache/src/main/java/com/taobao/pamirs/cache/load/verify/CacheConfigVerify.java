@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -33,6 +35,9 @@ import com.taobao.pamirs.cache.util.CacheCodeUtil;
  * @author xiaocheng 2012-11-29
  */
 public class CacheConfigVerify {
+	
+	private static final Log log = LogFactory.getLog(CacheConfigVerify.class);
+
 
 	/**
 	 * 校验缓存配置
@@ -41,7 +46,7 @@ public class CacheConfigVerify {
 	 * @param cacheConfig
 	 * @throws LoadConfigException
 	 */
-	public static void checkCacheConfig(CacheConfig cacheConfig,
+	public static void checkCacheConfig(boolean strongVerify,CacheConfig cacheConfig,
 			ApplicationContext applicationContext) throws LoadConfigException {
 		Assert.notNull(applicationContext);
 		Assert.notNull(cacheConfig);
@@ -88,7 +93,7 @@ public class CacheConfigVerify {
 		if (cacheConfig.getCacheBeans() != null) {
 			for (CacheBean cacheBean : cacheConfig.getCacheBeans()) {
 				for (MethodConfig methodConfig : cacheBean.getCacheMethods()) {
-					doValidSpringMethod(applicationContext,
+					doValidSpringMethod(strongVerify,applicationContext,
 							cacheBean.getBeanName(),
 							methodConfig.getMethodName(),
 							methodConfig.getParameterTypes());
@@ -99,12 +104,12 @@ public class CacheConfigVerify {
 		if (cacheConfig.getCacheCleanBeans() != null) {
 			for (CacheCleanBean cleanBean : cacheConfig.getCacheCleanBeans()) {
 				for (CacheCleanMethod method : cleanBean.getMethods()) {
-					doValidSpringMethod(applicationContext,
+					doValidSpringMethod(strongVerify,applicationContext,
 							cleanBean.getBeanName(), method.getMethodName(),
 							method.getParameterTypes());
 
 					for (MethodConfig clearMethod : method.getCleanMethods()) {
-						doValidSpringMethod(applicationContext,
+						doValidSpringMethod(strongVerify,applicationContext,
 								cleanBean.getBeanName(),
 								clearMethod.getMethodName(),
 								clearMethod.getParameterTypes());
@@ -125,7 +130,7 @@ public class CacheConfigVerify {
 	 * @param methodName
 	 * @param parameterTypes
 	 */
-	private static void doValidSpringMethod(
+	private static void doValidSpringMethod(boolean strongVerify,
 			ApplicationContext applicationContext, String beanName,
 			String methodName, List<Class<?>> parameterTypes) {
 		Assert.notNull(applicationContext);
@@ -134,7 +139,13 @@ public class CacheConfigVerify {
 		Assert.notNull(parameterTypes);// autoFill时，参数都会填充，null会被填充为空List
 
 		Object bean = applicationContext.getBean(beanName);
-		Assert.notNull(bean, "找不到Bean:" + beanName);
+		
+		if(strongVerify){
+			Assert.notNull(bean, "找不到Bean:" + beanName);
+		}else{
+			log.warn("缓存配置找不到Bean:"+ beanName+",可能出现缓存不一致，请检查");
+			return;
+		}
 
 		Method[] methods = bean.getClass().getMethods();
 
@@ -163,10 +174,15 @@ public class CacheConfigVerify {
 				}
 			}
 		}
-
+		
 		if (!isOk) {
-			throw new LoadConfigException("找不到配置的方法,Bean=" + beanName
-					+ ",method=" + methodName + ",params=" + parameterTypes.toString());
+			if(strongVerify){
+				throw new LoadConfigException("找不到配置的方法,Bean=" + beanName
+						+ ",method=" + methodName + ",params=" + parameterTypes.toString());
+			}else{
+				log.warn("找不到配置的方法,Bean=" + beanName
+						+ ",method=" + methodName + ",params=" + parameterTypes.toString());
+			}
 		}
 	}
 

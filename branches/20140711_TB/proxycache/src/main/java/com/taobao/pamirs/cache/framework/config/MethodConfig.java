@@ -3,6 +3,8 @@ package com.taobao.pamirs.cache.framework.config;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.taobao.pamirs.cache.load.verify.Verfication;
 import com.taobao.pamirs.cache.store.RemoveMode;
 import com.taobao.pamirs.cache.util.IpUtil;
@@ -141,7 +143,7 @@ public class MethodConfig implements Serializable {
 		if(isNotCache){
 			return true;
 		}
-		if(notCacheIps!=null){
+		if(StringUtils.isNotBlank(notCacheIps)){
 			String[] ips=this.notCacheIps.split(",");
 			if(ips!=null&&ips.length>0){
 				String local=IpUtil.getLocalIp();

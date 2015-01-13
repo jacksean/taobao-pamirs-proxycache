@@ -97,7 +97,7 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 
 		long start = System.currentTimeMillis();
 		try {
-			if(RemoveMode.HIDDEN.getName().equals(methodConfig.getMethodName())){
+			if(RemoveMode.HIDDEN.getName().equals(methodConfig.getRemoveMode())){
 				cache.hidden(key);
 			}else{
 				cache.remove(key);

@@ -84,7 +84,10 @@ public class TairStore<K extends Serializable, V extends Serializable>
 
 		// 失败
 		if (!rc.isSuccess()) {
-			throw new CacheException(rc.getCode(), rc.getMessage());
+			ResultCode rc2 = tairManager.invalid(namespace, key);
+			if (!rc2.isSuccess()) {
+				throw new CacheException(rc2.getCode(), rc2.getMessage());
+			}
 		}
 	}
 
@@ -103,20 +106,30 @@ public class TairStore<K extends Serializable, V extends Serializable>
 		ResultCode rc =tairManager.hideByProxy(namespace, key);
 		// 失败
 		if (!rc.isSuccess()) {
-			throw new CacheException(rc.getCode(), rc.getMessage());
+			ResultCode rc2 = tairManager.hideByProxy(namespace, key);
+			if (!rc2.isSuccess()) {
+				throw new CacheException(rc2.getCode(), rc2.getMessage());
+			}
 		}
 	}
 
+	
+	/**
+	 * 获取版本号，用于解决并发场景多个put、remove到达顺序不确定导致的缓存不一致问题
+	 * 1、在cacheManager下使用缓存，只有当线程get为null时才会触发put操作，
+	 * 	     该key前一个操作为invalid或者hidden
+	 * 2、通过携带版本号put缓存时，当多个线程  同时put时（并发时，如果强制覆盖可能出现不一致而不知晓），只能有一个线程成功，
+	 *    其他它线程失败
+	 * 3、当出现版本号错误时，此时缓存可能已经不一致，此时通过日志监控人工解决（小概率事件）。不能线程清除失败后invalid，
+	 *    因为清除操作可能导致其他并发线程把不一致数据写进去了，sleep一个值在再invalid的方式也不是很好，
+	 *    cacheManager自己维护一个异步队列的方式代价又太大。当业务需要力保一致性时，可以自行通过写集中控制管理的架构来进行了，此时cacheManager已经不适用了
+	 * 4、该key前一个操作invalid时，返回一个版本常量即可，当前一个操作未hidden时，需要获取隐藏数据的版本号
+	 * @param key
+	 * @param removeMode
+	 * @return
+	 */
 	@Override
 	public Integer getDataVersion(K key, String removeMode) {
-		Result<DataEntry> result = tairManager.get(namespace, key);
-		if (!result.isSuccess()) {
-			throw new CacheException(result.getRc().getCode(), result.getRc().getMessage());
-		}
-		DataEntry tairData = result.getValue();
-		if(tairData!=null){
-			return tairData.getVersion();
-		}
 		if(RemoveMode.HIDDEN.getName().equals(removeMode)){
 			Result<DataEntry> resultH = tairManager.getHidden(namespace, key);
 			if (!resultH.isSuccess()) {
@@ -127,6 +140,6 @@ public class TairStore<K extends Serializable, V extends Serializable>
 				return tairDataH.getVersion();
 			}
 		}
-		return Integer.MAX_VALUE;
+		return Short.MAX_VALUE;
 	}
 }

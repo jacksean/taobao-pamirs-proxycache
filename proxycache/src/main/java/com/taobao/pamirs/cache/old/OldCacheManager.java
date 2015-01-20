@@ -80,9 +80,10 @@ public class OldCacheManager {
 	
 	private void remove(String key) {
 		ResultCode rc = oldTairManager.invalid(namespace, key);
-		if (!ResultCode.SUCCESS.equals(rc)) {
+		if (!ResultCode.SUCCESS.equals(rc)
+				&&!ResultCode.DATANOTEXSITS.equals(rc.getCode())) {
 			ResultCode rc1 = oldTairManager.invalid(namespace, key);
-			if (!ResultCode.SUCCESS.equals(rc)) {
+			if (!ResultCode.SUCCESS.equals(rc1)) {
 				logger.error("Old Tair Cache failed to invalid object [namespace="
 						+ namespace + ", key=" + key
 						+ "]. Error Message : " + rc1.getMessage());

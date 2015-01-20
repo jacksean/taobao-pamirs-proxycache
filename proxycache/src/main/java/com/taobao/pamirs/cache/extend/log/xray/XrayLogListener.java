@@ -2,6 +2,7 @@ package com.taobao.pamirs.cache.extend.log.xray;
 
 import java.util.List;
 
+import com.taobao.pamirs.cache.framework.CacheException;
 import com.taobao.pamirs.cache.framework.listener.CacheOprateInfo;
 import com.taobao.pamirs.cache.framework.listener.CacheOprateListener;
 import com.taobao.pamirs.cache.framework.listener.CacheOprator;
@@ -35,7 +36,7 @@ public class XrayLogListener implements CacheOprateListener {
 	@Override
 	public void oprate(CacheOprator oprator, CacheOprateInfo cacheInfo) {
 		writer.write(getXrayLog(oprator, cacheInfo.isHitting(),
-				cacheInfo.getMethodTime(), cacheInfo.getIp()));
+				cacheInfo.getMethodTime(), cacheInfo.getIp(),cacheInfo.getCacheException()));
 	}
 
 	/**
@@ -47,7 +48,7 @@ public class XrayLogListener implements CacheOprateListener {
 	 * @param parameterTypes
 	 */
 	private String getXrayLog(CacheOprator type, boolean isHit, long useTime,
-			String ip) {
+			String ip,CacheException cacheException) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SEPARATOR).append(XRAY_KEYWORD);
 		sb.append(SEPARATOR).append(ip);
@@ -58,6 +59,10 @@ public class XrayLogListener implements CacheOprateListener {
 		sb.append(SEPARATOR).append(type.name());
 		sb.append(SEPARATOR).append(isHit);
 		sb.append(SEPARATOR).append(useTime);
+		if(cacheException!=null){
+			sb.append(SEPARATOR).append(cacheException.getErrCode());
+			sb.append(SEPARATOR).append(cacheException.getErrMsg());
+		}
 
 		return sb.toString();
 	}

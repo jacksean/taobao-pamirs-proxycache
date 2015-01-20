@@ -18,6 +18,8 @@ import com.taobao.pamirs.cache.store.StoreType;
  * @author xiaocheng 2012-11-29
  */
 public class StaticCheck {
+	
+
 
 	/**
 	 * 校验对象FIELD中的Verfication

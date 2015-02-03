@@ -6,7 +6,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 
 /**
  * 日志写任务
@@ -15,7 +16,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class WriterTask<T> implements Runnable {
 
-	private static final Log log = LogFactory.getLog(AsynWriter.class);
+	private static final Log log =  CaCheProxyLog.LOGGER_DEFAULT;
 
 	/**
 	 * 日志队列

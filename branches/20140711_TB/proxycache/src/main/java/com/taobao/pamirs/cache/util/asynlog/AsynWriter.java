@@ -8,7 +8,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 
 /**
  * 异步日志主类
@@ -17,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class AsynWriter<T> implements IWriter<T> {
 
-	private static final Log log = LogFactory.getLog(AsynWriter.class);
+	private static final Log log =  CaCheProxyLog.LOGGER_DEFAULT;
 
 	/**
 	 * 日志队列

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import com.taobao.pamirs.cache.extend.jmx.annotation.JmxClass;
 import com.taobao.pamirs.cache.extend.jmx.annotation.JmxMethod;
 import com.taobao.pamirs.cache.extend.timelog.annotation.TimeLog;
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 
 /**
  * 方法时间日志打印处理类 auto proxy
@@ -33,7 +34,7 @@ import com.taobao.pamirs.cache.extend.timelog.annotation.TimeLog;
 public class TimeHandle extends AbstractAutoProxyCreator implements
 		BeanFactoryAware, PriorityOrdered {
 
-	private static final Log log = LogFactory.getLog(TimeHandle.class);
+	private static final Log log = CaCheProxyLog.LOGGER_DEFAULT;
 
 	/**  */
 	private static final long serialVersionUID = 1L;

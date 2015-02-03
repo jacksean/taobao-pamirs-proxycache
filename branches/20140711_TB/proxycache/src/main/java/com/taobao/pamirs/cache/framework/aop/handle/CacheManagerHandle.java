@@ -1,13 +1,13 @@
 package com.taobao.pamirs.cache.framework.aop.handle;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator;
 import org.springframework.beans.BeansException;
 
 import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.aop.advisor.CacheManagerAdvisor;
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 import com.taobao.pamirs.cache.util.ConfigUtil;
 
 /**
@@ -18,7 +18,7 @@ import com.taobao.pamirs.cache.util.ConfigUtil;
 @SuppressWarnings("serial")
 public class CacheManagerHandle extends AbstractAutoProxyCreator {
 
-	private static final Log log = LogFactory.getLog(CacheManagerHandle.class);
+	private static final Log log =  CaCheProxyLog.LOGGER_DEFAULT;
 
 	private CacheManager cacheManager;
 

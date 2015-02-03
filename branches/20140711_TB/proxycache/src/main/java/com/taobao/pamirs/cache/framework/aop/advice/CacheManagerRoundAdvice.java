@@ -9,12 +9,12 @@ import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.CacheProxy;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 import com.taobao.pamirs.cache.util.ConfigUtil;
 
@@ -26,8 +26,7 @@ import com.taobao.pamirs.cache.util.ConfigUtil;
  */
 public class CacheManagerRoundAdvice implements MethodInterceptor, Advice {
 
-	private static final Log log = LogFactory
-			.getLog(CacheManagerRoundAdvice.class);
+	private static final Log log = CaCheProxyLog.LOGGER_DEFAULT;
 
 	private CacheManager cacheManager;
 	private String beanName;

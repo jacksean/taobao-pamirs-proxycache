@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.store.StoreObject;
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 import com.taobao.tair.ResultCode;
 import com.taobao.tair.TairManager;
 
@@ -19,8 +19,7 @@ import com.taobao.tair.TairManager;
 public class OldCacheManager {
 	
 	
-	private static final Log logger = LogFactory
-	.getLog(OldCacheManager.class);
+	private static final Log logger = CaCheProxyLog.LOGGER_DEFAULT;
 	
 	/**
 	 *  «∑ÒºÊ»›

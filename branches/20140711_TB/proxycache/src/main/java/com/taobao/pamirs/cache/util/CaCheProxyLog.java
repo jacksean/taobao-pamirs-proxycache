@@ -57,9 +57,9 @@ public class CaCheProxyLog {
 	        }
 	        String bizLogDir = new File(bizFileAppender.getFile()).getParent();
 	        
+		    replaceAppender(LOGGER_NAME_DEFAULT,new File(bizLogDir, "cacheproxy_default.log").getAbsolutePath());
 		    replaceAppender(LOGGER_NAME_TIMELOG,new File(bizLogDir, "cacheproxy_timelog.log").getAbsolutePath());
 		    replaceAppender(LOGGER_NAME_XRAY,new File(bizLogDir, "cacheproxy_xray.log").getAbsolutePath());
-		    replaceAppender(LOGGER_NAME_DEFAULT,new File(bizLogDir, "cacheproxy_default.log").getAbsolutePath());
 
 	    }
 	    
@@ -73,7 +73,7 @@ public class CaCheProxyLog {
 		    asynAppender.addAppender(appender);
 		    loggerLog4jImpl.addAppender(asynAppender);
 		    loggerLog4jImpl.removeAppender(appender);
-		    log.warn("成功为"+logName+"添加Appender. 输出路径:" + filePath);
+		    LogFactory.getLog(logName).warn("成功为"+logName+"添加Appender. 输出路径:" + filePath);
 	    }
 	    
 

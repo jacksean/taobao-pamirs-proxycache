@@ -18,6 +18,8 @@ import org.apache.log4j.xml.DOMConfigurator;
  */
 public class CaCheProxyLog {
 	
+		private static final Log log = LogFactory.getLog(CaCheProxyLog.class);
+	
 	 	static private final String LOGGER_NAME_TIMELOG = "cache-proxy-timelog-log";
 	 	
 	 	static private final String LOGGER_NAME_XRAY = "cache-proxy-xray-log";
@@ -50,7 +52,7 @@ public class CaCheProxyLog {
 	         */
 	        FileAppender bizFileAppender = getFileAppender(Logger.getRootLogger());
 	        if (null == bizFileAppender) {
-	        	LOGGER_DEFAULT.warn("上层业务层没有在ROOT LOGGER上设置FileAppender!!!");
+	        	log.warn("上层业务层没有在ROOT LOGGER上设置FileAppender!!!");
 	            return;
 	        }
 	        String bizLogDir = new File(bizFileAppender.getFile()).getParent();
@@ -71,7 +73,7 @@ public class CaCheProxyLog {
 		    asynAppender.addAppender(appender);
 		    loggerLog4jImpl.addAppender(asynAppender);
 		    loggerLog4jImpl.removeAppender(appender);
-		    LOGGER_DEFAULT.warn("成功为"+logName+"添加Appender. 输出路径:" + filePath);
+		    log.warn("成功为"+logName+"添加Appender. 输出路径:" + filePath);
 	    }
 	    
 

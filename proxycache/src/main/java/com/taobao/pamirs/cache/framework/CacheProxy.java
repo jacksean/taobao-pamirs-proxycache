@@ -76,7 +76,7 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 			notifyListeners(GET, new CacheOprateInfo(key, end - start, isHitting,
 					beanName, methodConfig, cacheException, ip));
 		}
-		if(v==null&&log.isWarnEnabled()){
+		if(v==null){
 			log.warn("cache proxy get object return null,key="+key);
 		}
 

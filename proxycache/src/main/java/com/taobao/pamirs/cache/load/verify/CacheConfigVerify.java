@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -16,6 +15,7 @@ import com.taobao.pamirs.cache.framework.config.CacheCleanMethod;
 import com.taobao.pamirs.cache.framework.config.CacheConfig;
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.load.LoadConfigException;
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 
 /**
@@ -36,7 +36,7 @@ import com.taobao.pamirs.cache.util.CacheCodeUtil;
  */
 public class CacheConfigVerify {
 	
-	private static final Log log = LogFactory.getLog(CacheConfigVerify.class);
+	private static final Log log = CaCheProxyLog.LOGGER_DEFAULT;
 
 
 	/**

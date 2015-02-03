@@ -9,7 +9,6 @@ import javax.management.InstanceAlreadyExistsException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -34,6 +33,7 @@ import com.taobao.pamirs.cache.old.OldCacheManager;
 import com.taobao.pamirs.cache.store.StoreType;
 import com.taobao.pamirs.cache.store.map.MapStore;
 import com.taobao.pamirs.cache.store.tair.TairStore;
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 import com.taobao.pamirs.cache.util.ConfigUtil;
 import com.taobao.pamirs.cache.util.lru.ConcurrentLRUCacheMap;
@@ -48,7 +48,7 @@ import com.taobao.tair.TairManager;
 public abstract class CacheManager implements ApplicationContextAware,
 		ApplicationListener, ICacheConfigService {
 
-	private static final Log log = LogFactory.getLog(CacheManager.class);
+	private static final Log log = CaCheProxyLog.LOGGER_DEFAULT;
 	
 	/**
 	 * 写兼容老的，升级后删除 TODO
@@ -76,6 +76,11 @@ public abstract class CacheManager implements ApplicationContextAware,
 	 * 是否强校验（检查错误,启动异常，反之警告跳过）
 	 */
 	private boolean strongVerify=true;
+	
+	/**
+	 * 是否打印xray统计日志
+	 */
+	private boolean printStatLog=false;
 	
 
 	/**
@@ -182,7 +187,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 			// 1. CacheProxy
 			CacheProxy<Serializable, Serializable> cacheProxy = new CacheProxy<Serializable, Serializable>(
 					storeType, cacheConfig.getStoreRegion(), key, cache,
-					beanName, cacheMethod);
+					beanName, cacheMethod,printStatLog);
 
 			cacheProxys.put(key, cacheProxy);
 
@@ -199,10 +204,13 @@ public abstract class CacheManager implements ApplicationContextAware,
 			// 3. 注册JMX
 			registerCacheMbean(key, cacheProxy, storeMapCleanTime,
 					cacheMethod.getExpiredTime());
-
+			
 			// 4. 注册Xray log
-			cacheProxy.addListener(new XrayLogListener(beanName, cacheMethod
-					.getMethodName(), cacheMethod.getParameterTypes()));
+			if(printStatLog){
+				cacheProxy.addListener(new XrayLogListener(beanName, cacheMethod
+						.getMethodName(), cacheMethod.getParameterTypes()));
+			}
+			
 		}
 	}
 
@@ -264,8 +272,10 @@ public abstract class CacheManager implements ApplicationContextAware,
 								bean.getBeanName(),	method);
 						reRegisterCacheMbean(key, newCacheProxys.get(key),
 								newConfig.getStoreMapCleanTime(),method.getExpiredTime());
-						newCacheProxys.get(key).addListener(new XrayLogListener(bean.getBeanName(), method
-								.getMethodName(), method.getParameterTypes()));
+						if(printStatLog){
+							newCacheProxys.get(key).addListener(new XrayLogListener(bean.getBeanName(), method
+									.getMethodName(), method.getParameterTypes()));
+						}
 						if (StoreType.MAP == storeType
 								&& StringUtils.isNotBlank(newConfig.getStoreMapCleanTime())) {
 							try {
@@ -333,7 +343,7 @@ public abstract class CacheManager implements ApplicationContextAware,
 					if (cache != null) {
 						CacheProxy<Serializable, Serializable> cacheProxy = new CacheProxy<Serializable, Serializable>(
 								storeType, config.getStoreRegion(), key, cache,
-								bean.getBeanName(),	method);
+								bean.getBeanName(),	method,printStatLog);
 						ret.put(key, cacheProxy);
 					}
 					
@@ -405,5 +415,15 @@ public abstract class CacheManager implements ApplicationContextAware,
 	public void setStrongVerify(boolean strongVerify) {
 		this.strongVerify = strongVerify;
 	}
+
+	public boolean isPrintStatLog() {
+		return printStatLog;
+	}
+
+	public void setPrintStatLog(boolean printStatLog) {
+		this.printStatLog = printStatLog;
+	}
+	
+	
 
 }

@@ -13,8 +13,9 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.core.JdkVersion;
+
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 
 /**
  * Mbean工厂类
@@ -24,7 +25,7 @@ import org.springframework.core.JdkVersion;
  */
 public class MBeanManagerFactory {
 
-	private static final Log log = LogFactory.getLog(MBeanManagerFactory.class);
+	private static final Log log = CaCheProxyLog.LOGGER_DEFAULT;
 
 	/**
 	 * 获取所有的MBeanServer，因为JDK和JBOSS使用不同的MBeanServer 很奇怪的是

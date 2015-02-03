@@ -38,7 +38,7 @@ public class CleanCacheTimerManagerTest {
 		CleanCacheTimerManager timeTask = new CleanCacheTimerManager();
 		timeTask.createCleanCacheTask(
 				new CacheProxy<Serializable, Serializable>(StoreType.MAP, null,
-						null, mapStore, null, null), aCronTabExpress);
+						null, mapStore, null, null,true), aCronTabExpress);
 
 		// µ»5√Î
 		Thread.sleep(5000);

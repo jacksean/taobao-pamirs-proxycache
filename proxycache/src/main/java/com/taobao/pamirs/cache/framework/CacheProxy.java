@@ -6,11 +6,14 @@ import static com.taobao.pamirs.cache.framework.listener.CacheOprator.REMOVE;
 
 import java.io.Serializable;
 
+import org.apache.commons.logging.Log;
+
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
 import com.taobao.pamirs.cache.framework.listener.CacheObservable;
 import com.taobao.pamirs.cache.framework.listener.CacheOprateInfo;
 import com.taobao.pamirs.cache.store.RemoveMode;
 import com.taobao.pamirs.cache.store.StoreType;
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 
 /**
  * ª∫¥Ê¥¶¿Ì  ≈‰∆˜
@@ -19,6 +22,9 @@ import com.taobao.pamirs.cache.store.StoreType;
  */
 public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		CacheObservable {
+	
+	private static final Log log = CaCheProxyLog.LOGGER_DEFAULT;
+
 
 	private StoreType storeType;
 	private String storeRegion;
@@ -29,15 +35,20 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 
 	private String beanName;
 	private MethodConfig methodConfig;
+	
+	private boolean isNotifyListeners;
+
 
 	public CacheProxy(StoreType storeType, String storeRegion, String key,
-			ICache<K, V> cache, String beanName, MethodConfig methodConfig) {
+			ICache<K, V> cache, String beanName,
+			MethodConfig methodConfig,boolean isNotifyListeners) {
 		this.storeType = storeType;
 		this.storeRegion = storeRegion;
 		this.key = key;
 		this.cache = cache;
 		this.beanName = beanName;
 		this.methodConfig = methodConfig;
+		this.isNotifyListeners=isNotifyListeners;
 	}
 
 	public V get(K key, String ip) {
@@ -52,15 +63,22 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 			v = cache.get(key);
 		} catch (CacheException e) {
 			cacheException = e;
+			log.error("cache proxy get error,key="+key+",errCode="+e.getErrCode()+",errMsg="+e.getErrMsg(), e);
 		}
 
-		long end = System.currentTimeMillis();
-
-		boolean isHitting = v != null;//  «∑Ò√¸÷–£¨nullº¥Œ¥√¸÷–
-
 		// listener
-		notifyListeners(GET, new CacheOprateInfo(key, end - start, isHitting,
-				beanName, methodConfig, cacheException, ip));
+		if(isNotifyListeners){
+			
+			long end = System.currentTimeMillis();
+
+			boolean isHitting = v != null;//  «∑Ò√¸÷–£¨nullº¥Œ¥√¸÷–
+			
+			notifyListeners(GET, new CacheOprateInfo(key, end - start, isHitting,
+					beanName, methodConfig, cacheException, ip));
+		}
+		if(v==null&&log.isWarnEnabled()){
+			log.warn("cache proxy get object return null,key="+key);
+		}
 
 		return v;
 	}
@@ -82,13 +100,16 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 			cache.put(key, value, version, expireTime);
 		} catch (CacheException e) {
 			cacheException = e;
+			log.error("cache proxy put error,key="+key+",errCode="+e.getErrCode()+",errMsg="+e.getErrMsg(), e);
 		}
 
-		long end = System.currentTimeMillis();
-
 		// listener
-		notifyListeners(PUT, new CacheOprateInfo(key, end - start, true,
-				beanName, methodConfig, cacheException, ip));
+		if(isNotifyListeners){
+			long end = System.currentTimeMillis();
+			notifyListeners(PUT, new CacheOprateInfo(key, end - start, true,
+					beanName, methodConfig, cacheException, ip));
+		}
+		
 	}
 	
 	
@@ -104,12 +125,18 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 			}
 		} catch (CacheException e) {
 			cacheException = e;
+			log.error("cache proxy remove error,key="+key+",errCode="+e.getErrCode()+",errMsg="+e.getErrMsg(), e);
 		}
-		long end = System.currentTimeMillis();
 
 		// listener
-		notifyListeners(REMOVE, new CacheOprateInfo(key, end - start, true,
-				beanName, methodConfig, cacheException, ip));
+		if(isNotifyListeners){
+			
+			long end = System.currentTimeMillis();
+			
+			notifyListeners(REMOVE, new CacheOprateInfo(key, end - start, true,
+					beanName, methodConfig, cacheException, ip));
+		}
+	
 	}
 	
 	

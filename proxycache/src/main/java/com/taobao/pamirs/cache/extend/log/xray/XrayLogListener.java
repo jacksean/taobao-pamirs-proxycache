@@ -2,10 +2,10 @@ package com.taobao.pamirs.cache.extend.log.xray;
 
 import java.util.List;
 
-import com.taobao.pamirs.cache.framework.CacheException;
 import com.taobao.pamirs.cache.framework.listener.CacheOprateInfo;
 import com.taobao.pamirs.cache.framework.listener.CacheOprateListener;
 import com.taobao.pamirs.cache.framework.listener.CacheOprator;
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 import com.taobao.pamirs.cache.util.CacheCodeUtil;
 import com.taobao.pamirs.cache.util.asynlog.AsynWriter;
 
@@ -16,7 +16,7 @@ import com.taobao.pamirs.cache.util.asynlog.AsynWriter;
  */
 public class XrayLogListener implements CacheOprateListener {
 
-	private AsynWriter<String> writer = new AsynWriter<String>();
+	private AsynWriter<String> writer = new AsynWriter<String>(CaCheProxyLog.LOGGER_XRAY);
 
 	private String beanName;
 	private String methodName;
@@ -36,7 +36,7 @@ public class XrayLogListener implements CacheOprateListener {
 	@Override
 	public void oprate(CacheOprator oprator, CacheOprateInfo cacheInfo) {
 		writer.write(getXrayLog(oprator, cacheInfo.isHitting(),
-				cacheInfo.getMethodTime(), cacheInfo.getIp(),cacheInfo.getCacheException()));
+				cacheInfo.getMethodTime(), cacheInfo.getIp()));
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class XrayLogListener implements CacheOprateListener {
 	 * @param parameterTypes
 	 */
 	private String getXrayLog(CacheOprator type, boolean isHit, long useTime,
-			String ip,CacheException cacheException) {
+			String ip) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SEPARATOR).append(XRAY_KEYWORD);
 		sb.append(SEPARATOR).append(ip);
@@ -59,10 +59,6 @@ public class XrayLogListener implements CacheOprateListener {
 		sb.append(SEPARATOR).append(type.name());
 		sb.append(SEPARATOR).append(isHit);
 		sb.append(SEPARATOR).append(useTime);
-		if(cacheException!=null){
-			sb.append(SEPARATOR).append(cacheException.getErrCode());
-			sb.append(SEPARATOR).append(cacheException.getErrMsg());
-		}
 
 		return sb.toString();
 	}

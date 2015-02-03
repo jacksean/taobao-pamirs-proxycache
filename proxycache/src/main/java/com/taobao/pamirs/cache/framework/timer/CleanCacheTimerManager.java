@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.taobao.pamirs.cache.framework.CacheProxy;
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 
 /**
  * 缓存清理Timer任务
@@ -17,7 +18,7 @@ import com.taobao.pamirs.cache.framework.CacheProxy;
  */
 public class CleanCacheTimerManager {
 
-	private static final Log log = LogFactory.getLog(CleanCacheTimerManager.class);
+	private static final Log log =  CaCheProxyLog.LOGGER_DEFAULT;
 
 	private Timer timer;
 

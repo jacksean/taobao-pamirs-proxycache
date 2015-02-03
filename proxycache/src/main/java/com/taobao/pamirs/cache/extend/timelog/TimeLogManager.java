@@ -2,8 +2,7 @@ package com.taobao.pamirs.cache.extend.timelog;
 
 import java.util.LinkedList;
 
-import org.apache.commons.logging.LogFactory;
-
+import com.taobao.pamirs.cache.util.CaCheProxyLog;
 import com.taobao.pamirs.cache.util.asynlog.AsynWriter;
 
 /**
@@ -16,7 +15,7 @@ public class TimeLogManager {
 
 	// 采用异步log打印
 	private static final AsynWriter<String> log = new AsynWriter<String>(
-			LogFactory.getLog(TimeHandle.class));
+			CaCheProxyLog.LOGGER_TIMELOG);
 
 	private int count = 0;// 计数器
 

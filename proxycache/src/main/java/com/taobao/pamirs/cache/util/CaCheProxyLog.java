@@ -37,6 +37,7 @@ public class CaCheProxyLog {
 	        try { // 不能因为该类初始化失败导致其引用类初始化失败
 	        	initLogFromBizLog();
 	        } catch (Exception e) {
+	        	log.error("cache proxy CaCheProxyLog error", e);
 	            e.printStackTrace();
 	        }
 	    }

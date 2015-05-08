@@ -203,6 +203,11 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 		return true;
 	}
 
+	public boolean invalidBeforeCache() {
+		cacheProxy.invalidBefore();
+		return true;
+	}
+
 	private String keyToCacheCode(String key) throws Exception {
 		Assert.notNull(key);
 

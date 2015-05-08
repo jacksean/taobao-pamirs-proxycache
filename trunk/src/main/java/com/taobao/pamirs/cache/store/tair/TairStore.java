@@ -1,6 +1,12 @@
 package com.taobao.pamirs.cache.store.tair;
 
+import static com.taobao.tair.etc.TairUtil.formatDate;
+
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.taobao.pamirs.cache.framework.CacheException;
 import com.taobao.pamirs.cache.framework.ICache;
@@ -35,11 +41,13 @@ public class TairStore<K extends Serializable, V extends Serializable>
 
 	private int namespace;
 
+	private Date invalidBeforeDate = null;// 失效此时间之前的缓存数据
+
 	public TairStore(TairManager tairManager, int namespace) {
 		this.tairManager = tairManager;
 		this.namespace = namespace;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public V get(K key) {
@@ -48,6 +56,21 @@ public class TairStore<K extends Serializable, V extends Serializable>
 			DataEntry tairData = result.getValue();// 第一个getValue返回DataEntry对象
 			if (tairData == null)// （MC-Client不同，expireTime到期直接返回null了）
 				return null;
+
+			try {
+				if (invalidBeforeDate != null) {
+					DateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					Date mDate = f.parse(formatDate(tairData.getModifyDate()));
+					if (invalidBeforeDate.after(mDate)) {
+						this.remove(key);
+						return null;
+					}
+				}
+			} catch (ParseException e) {
+				this.remove(key);
+				throw new CacheException(1024,
+						"TairStore-ParseException(Tair最后修改时间格式错误)");
+			}
 
 			try {
 				return (V) tairData.getValue();// 第二个getValue返回真正的value
@@ -106,6 +129,11 @@ public class TairStore<K extends Serializable, V extends Serializable>
 	@Override
 	public void clear() {
 		throw new RuntimeException("NotSupport for TairCache");
+	}
+
+	@Override
+	public void invalidBefore() {
+		this.invalidBeforeDate = new Date();
 	}
 
 	@Override

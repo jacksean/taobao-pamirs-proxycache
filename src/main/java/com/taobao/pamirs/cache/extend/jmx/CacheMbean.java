@@ -305,6 +305,8 @@ public class CacheMbean<K extends Serializable, V extends Serializable> extends
 								"DiskGet", "java.lang.String", "输入方法参数Key。"
 										+ info) }, "String",
 						MBeanOperationInfo.ACTION),
+				new MBeanOperationInfo("invalidBeforeCache", "失效当前时间之前存储缓存",
+						null, "String", MBeanOperationInfo.ACTION),
 				new MBeanOperationInfo("getRealValueAndPut",
 						"读取原生方法结果数据，并且直接Put到缓存中",
 						new MBeanParameterInfo[] { new MBeanParameterInfo(

@@ -8,8 +8,8 @@ import static com.taobao.pamirs.cache.framework.listener.CacheOprator.REMOVE;
 import java.io.Serializable;
 
 import com.taobao.pamirs.cache.framework.config.MethodConfig;
-import com.taobao.pamirs.cache.framework.listener.CacheOprateInfo;
 import com.taobao.pamirs.cache.framework.listener.CacheObservable;
+import com.taobao.pamirs.cache.framework.listener.CacheOprateInfo;
 import com.taobao.pamirs.cache.store.StoreType;
 
 /**
@@ -121,12 +121,12 @@ public class CacheProxy<K extends Serializable, V extends Serializable> extends
 		return cache.size();
 	}
 
+	public void invalidBefore() {
+		cache.invalidBefore();
+	}
+
 	/** 单个方法的缓存开关 */
 	private boolean isUseCache = true;
-
-	public void setIsUseCache(boolean isUseCache) {
-		this.isUseCache = isUseCache;
-	}
 
 	public boolean isUseCache() {
 		return isUseCache;

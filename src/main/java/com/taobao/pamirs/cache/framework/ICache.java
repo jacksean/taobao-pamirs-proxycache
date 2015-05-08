@@ -45,11 +45,16 @@ public interface ICache<K extends Serializable, V extends Serializable> {
 	 * @param key
 	 */
 	public void remove(K key);
-
+	
 	/**
-	 * 清除所有的数据
+	 * 清除所有的数据【针对LocalMap】
 	 */
 	public void clear();
+	
+	/**
+	 * 失效之前存储缓存【针对Tair】
+	 */
+	public void invalidBefore();
 
 	/**
 	 * 获取缓存数据量
@@ -57,5 +62,4 @@ public interface ICache<K extends Serializable, V extends Serializable> {
 	 * @return
 	 */
 	public int size();
-
 }

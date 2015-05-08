@@ -80,6 +80,11 @@ public class MapStore<K extends Serializable, V extends Serializable>
 	}
 
 	@Override
+	public void invalidBefore() {
+		throw new RuntimeException("NotSupport for MapCache");
+	}
+
+	@Override
 	public int size() {
 		return datas.size();
 	}

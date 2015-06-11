@@ -83,9 +83,9 @@ public class TairStore<K extends Serializable, V extends Serializable>
 		ResultCode rc = tairManager.invalid(namespace, key);
 
 		// Ê§°Ü
-		if (!rc.isSuccess()) {
+		if (!rc.isSuccess()&&!ResultCode.DATANOTEXSITS.equals(rc.getCode())) {
 			ResultCode rc2 = tairManager.invalid(namespace, key);
-			if (!rc2.isSuccess()) {
+			if (!rc2.isSuccess()&&!ResultCode.DATANOTEXSITS.equals(rc2.getCode())) {
 				throw new CacheException(rc2.getCode(), rc2.getMessage());
 			}
 		}
@@ -102,6 +102,7 @@ public class TairStore<K extends Serializable, V extends Serializable>
 	}
 
 	@Override
+	@Deprecated
 	public void hidden(K key) {
 		ResultCode rc =tairManager.hideByProxy(namespace, key);
 		// Ê§°Ü
@@ -129,6 +130,7 @@ public class TairStore<K extends Serializable, V extends Serializable>
 	 * @return
 	 */
 	@Override
+	@Deprecated
 	public Integer getDataVersion(K key, String removeMode) {
 		if(RemoveMode.HIDDEN.getName().equals(removeMode)){
 			Result<DataEntry> resultH = tairManager.getHidden(namespace, key);
@@ -140,6 +142,6 @@ public class TairStore<K extends Serializable, V extends Serializable>
 				return tairDataH.getVersion();
 			}
 		}
-		return Short.MAX_VALUE;
+		return (int)Short.MAX_VALUE;
 	}
 }

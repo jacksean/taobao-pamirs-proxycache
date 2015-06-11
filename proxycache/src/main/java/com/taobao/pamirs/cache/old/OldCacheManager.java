@@ -53,7 +53,7 @@ public class OldCacheManager {
 				ResultCode rc1 = oldTairManager.put(namespace, key,
 						(Serializable) co, 0, 0);
 				if (!rc1.isSuccess())  {
-					logger.error("Old Tair Cache failed to invalid object [namespace="
+					logger.error("Old Tair Cache failed to put object [namespace="
 							+ namespace + ", key=" + key
 							+ "]. Error Message : " + rc1.getMessage());
 				}
@@ -79,9 +79,9 @@ public class OldCacheManager {
 	
 	private void remove(String key) {
 		ResultCode rc = oldTairManager.invalid(namespace, key);
-		if (!rc.isSuccess()) {
+		if (!rc.isSuccess()&&!ResultCode.DATANOTEXSITS.equals(rc.getCode())) {
 			ResultCode rc1 = oldTairManager.invalid(namespace, key);
-			if (!rc1.isSuccess()) {
+			if (!rc1.isSuccess()&&!ResultCode.DATANOTEXSITS.equals(rc1.getCode())) {
 				logger.error("Old Tair Cache failed to invalid object [namespace="
 						+ namespace + ", key=" + key
 						+ "]. Error Message : " + rc1.getMessage());

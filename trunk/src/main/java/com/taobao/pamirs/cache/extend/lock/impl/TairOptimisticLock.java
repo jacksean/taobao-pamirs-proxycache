@@ -29,7 +29,7 @@ public class TairOptimisticLock implements OptimisticLock {
 	private Integer namespace;
 	private String region;
 
-	private static int es = 600;// 默认过期时间
+	private static int es = 300;// 默认过期时间
 	private static String VALUE = "pamirs lock";
 	private static final String LOCK = "OPTIMISTIC_LOCK";
 	private static final String UNLOCK = "OPTIMISTIC_UNLOCK";

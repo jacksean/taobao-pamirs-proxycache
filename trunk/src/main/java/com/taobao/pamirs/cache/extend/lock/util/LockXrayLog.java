@@ -3,6 +3,7 @@ package com.taobao.pamirs.cache.extend.lock.util;
 import org.apache.commons.logging.LogFactory;
 
 import com.taobao.pamirs.cache.util.asynlog.AsynWriter;
+import com.taobao.tair.DataEntry;
 import com.taobao.tair.Result;
 import com.taobao.tair.ResultCode;
 
@@ -38,9 +39,13 @@ public class LockXrayLog {
 		sb.append(SEPARATOR).append(expireSeconds);
 
 		sb.append(SEPARATOR).append(
-				r == null ? null : (r.getRc() == null ? null : r.getRc()
-						.getCode()));
-		sb.append(SEPARATOR).append(r == null ? null : r.getValue());
+				(r != null && r.getRc() != null) ? r.getRc().getCode() : null);
+
+		sb.append(SEPARATOR)
+				.append((r != null && r.getValue() != null) ? ((r.getValue() instanceof DataEntry) ? ((DataEntry) r
+						.getValue()).getVersion() : r.getValue())
+						: null);
+
 		sb.append(SEPARATOR).append(rc == null ? null : rc.getCode());
 
 		System.out.println(sb.toString());

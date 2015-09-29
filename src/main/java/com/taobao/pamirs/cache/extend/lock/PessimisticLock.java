@@ -1,22 +1,22 @@
 package com.taobao.pamirs.cache.extend.lock;
 
 /**
- * 分布式锁（悲观锁，当前不支持‘重入’）
+ * 分布式悲观锁（不支持‘重入’）
  * 
  * <pre>
- * boolean lockSuccess = distributedLock.lock(1L, &quot;abc&quot;);
+ * boolean lockSuccess = pessimisticLock.lock(1L, &quot;abc&quot;);
  * if (lockSuccess) {
  * 	try {
  * 		// do something
  * 	} finally {
- * 		distributedLock.unlock(1L, &quot;abc&quot;);
+ * 		pessimisticLock.unlock(1L, &quot;abc&quot;);
  * 	}
  * }
  * </pre>
  * 
  * @author xiaocheng Aug 18, 2015
  */
-public interface DistributedLock {
+public interface PessimisticLock {
 
 	public static final int DEFAULT_EXPIRE_SECONDS = 10;// 默认锁过期时间
 

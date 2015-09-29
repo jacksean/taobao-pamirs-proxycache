@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 
 import com.taobao.pamirs.cache.extend.lock.OptimisticLock;
 import com.taobao.pamirs.cache.extend.lock.util.LockException;
+import com.taobao.pamirs.cache.extend.timelog.annotation.TimeLog;
 import com.taobao.tair.DataEntry;
 import com.taobao.tair.Result;
 import com.taobao.tair.ResultCode;
@@ -19,9 +20,10 @@ import com.taobao.tair.TairManager;
  * 
  * @author xiaocheng Aug 17, 2015
  */
+@TimeLog
 public class TairOptimisticLock implements OptimisticLock {
 
-	private static final Logger log = getLogger(TairOptimisticLock.class);
+	private static final Logger log = getLogger(OptimisticLock.class);
 
 	private TairManager tairManager;
 	private Integer namespace;

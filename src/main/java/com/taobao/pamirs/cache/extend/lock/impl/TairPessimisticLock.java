@@ -8,6 +8,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 import org.slf4j.Logger;
 
 import com.taobao.pamirs.cache.extend.lock.PessimisticLock;
+import com.taobao.pamirs.cache.extend.timelog.annotation.TimeLog;
 import com.taobao.tair.Result;
 import com.taobao.tair.ResultCode;
 import com.taobao.tair.TairManager;
@@ -17,9 +18,10 @@ import com.taobao.tair.TairManager;
  * 
  * @author xiaocheng Aug 17, 2015
  */
+@TimeLog
 public class TairPessimisticLock implements PessimisticLock {
 
-	private static final Logger log = getLogger(TairPessimisticLock.class);
+	private static final Logger log = getLogger(PessimisticLock.class);
 
 	private TairManager tairManager;
 	private Integer namespace;

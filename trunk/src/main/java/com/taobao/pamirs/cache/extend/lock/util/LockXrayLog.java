@@ -1,4 +1,4 @@
-package com.taobao.pamirs.cache.extend.lock.impl;
+package com.taobao.pamirs.cache.extend.lock.util;
 
 import org.apache.commons.logging.LogFactory;
 
@@ -6,13 +6,15 @@ import com.taobao.pamirs.cache.util.asynlog.AsynWriter;
 import com.taobao.tair.Result;
 import com.taobao.tair.ResultCode;
 
+/**
+ * 分布式锁xray打印
+ * 
+ * @author xiaocheng Sep 29, 2015
+ */
 public class LockXrayLog {
 
 	private static AsynWriter<String> log = new AsynWriter<String>(
 			LogFactory.getLog(LockXrayLog.class));
-
-	public static final String LOCK = "TRY_LOCK";
-	public static final String UNLOCK = "UN_LOCK";
 
 	private static final String SEPARATOR = ",";
 

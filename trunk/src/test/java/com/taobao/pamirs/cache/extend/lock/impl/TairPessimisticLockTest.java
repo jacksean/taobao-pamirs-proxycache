@@ -8,28 +8,31 @@ import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByName;
 
-import com.taobao.pamirs.cache.extend.lock.DistributedLock;
+import com.taobao.pamirs.cache.extend.lock.PessimisticLock;
 
 @SpringApplicationContext({ "/store/tair-store.xml",
 		"/extend/lock/lock-tair.xml" })
-public class TairDistributedLockTest extends UnitilsJUnit4 {
+public class TairPessimisticLockTest extends UnitilsJUnit4 {
 
 	@SpringBeanByName
-	DistributedLock distributedLock;
+	PessimisticLock pessimisticLock;
 
 	@Test
 	public void test() {
-		boolean lock = distributedLock.lock(1, "a");
+		boolean lock = pessimisticLock.lock(1, "a");
 		assertThat(lock, is(true));
 
-		lock = distributedLock.lock(1, "a");
+		lock = pessimisticLock.lock(1, "a");
 		assertThat(lock, is(false));
 
-		boolean unLock = distributedLock.unlock(1, "a");
+		boolean unLock = pessimisticLock.unlock(1, "a");
 		assertThat(unLock, is(true));
 
-		lock = distributedLock.lock(1, "a");
+		lock = pessimisticLock.lock(1, "a");
 		assertThat(lock, is(true));
+
+		unLock = pessimisticLock.unlock(1, "a");
+		assertThat(unLock, is(true));
 	}
 
 }

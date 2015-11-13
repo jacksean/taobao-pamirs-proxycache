@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator;
 import org.springframework.beans.BeansException;
+import org.springframework.core.PriorityOrdered;
 
 import com.taobao.pamirs.cache.CacheManager;
 import com.taobao.pamirs.cache.framework.aop.advisor.CacheManagerAdvisor;
@@ -16,7 +17,8 @@ import com.taobao.pamirs.cache.util.ConfigUtil;
  * @author xuannan
  */
 @SuppressWarnings("serial")
-public class CacheManagerHandle extends AbstractAutoProxyCreator {
+public class CacheManagerHandle extends AbstractAutoProxyCreator implements
+		PriorityOrdered {
 
 	private static final Log log = LogFactory.getLog(CacheManagerHandle.class);
 
@@ -27,6 +29,7 @@ public class CacheManagerHandle extends AbstractAutoProxyCreator {
 	}
 
 	public CacheManagerHandle() {
+		this.setOrder(HIGHEST_PRECEDENCE);
 		this.setProxyTargetClass(true);
 		this.setExposeProxy(true);// do call another advised method on itself
 	}

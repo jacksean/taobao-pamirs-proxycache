@@ -18,7 +18,7 @@ package com.taobao.pamirs.cache.extend.lock;
  */
 public interface PessimisticLock {
 
-	public static final int DEFAULT_EXPIRE_SECONDS = 10;// 默认锁过期时间
+	public static final int DEFAULT_EXPIRE_SECONDS = 3;// 默认锁过期时间
 
 	/**
 	 * 尝试获取分布式锁（采用默认锁过期时间）

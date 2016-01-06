@@ -1,5 +1,8 @@
 package com.taobao.pamirs.cache.util;
 
+import static org.springframework.aop.support.AopUtils.isCglibProxy;
+import static org.springframework.aop.support.AopUtils.isJdkDynamicProxy;
+
 import java.lang.reflect.Field;
 
 import org.springframework.aop.framework.AdvisedSupport;
@@ -20,20 +23,21 @@ public class AopProxyUtil {
 	 * @return
 	 */
 	public static Object getPrimitiveProxyTarget(Object proxy) throws Exception {
-
-		if (!AopUtils.isAopProxy(proxy)) {
+		if (!AopUtils.isAopProxy(proxy))
 			return proxy;
+
+		Object target = proxy;
+		while (isJdkDynamicProxy(target) || isCglibProxy(target)) {
+			if (isJdkDynamicProxy(target))
+				target = getJdkDynamicProxyTargetObject(target);
+			else
+				target = getCglibProxyTargetObject(target);
 		}
 
-		if (AopUtils.isJdkDynamicProxy(proxy)) {
-			return getJdkDynamicProxyTargetObject(proxy);
-		} else {
-			return getCglibProxyTargetObject(proxy);
-		}
-
+		return target;
 	}
 
-	private static Object getJdkDynamicProxyTargetObject(Object proxy)
+	public static Object getJdkDynamicProxyTargetObject(Object proxy)
 			throws Exception {
 		Field h = proxy.getClass().getSuperclass().getDeclaredField("h");
 		h.setAccessible(true);
@@ -48,7 +52,7 @@ public class AopProxyUtil {
 		return target;
 	}
 
-	private static Object getCglibProxyTargetObject(Object proxy)
+	public static Object getCglibProxyTargetObject(Object proxy)
 			throws Exception {
 		Field h = proxy.getClass().getDeclaredField("CGLIB$CALLBACK_0");
 		h.setAccessible(true);

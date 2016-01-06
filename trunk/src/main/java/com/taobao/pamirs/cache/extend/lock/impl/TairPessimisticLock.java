@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 
 import com.taobao.pamirs.cache.extend.lock.PessimisticLock;
 import com.taobao.pamirs.cache.extend.timelog.annotation.TimeLog;
+import com.taobao.tair.DataEntry;
 import com.taobao.tair.Result;
 import com.taobao.tair.ResultCode;
 import com.taobao.tair.TairManager;
@@ -45,15 +46,20 @@ public class TairPessimisticLock implements PessimisticLock {
 		Result<Integer> incr = null;
 
 		try {
-			incr = tairManager.incr(namespace, key, CUR_VALUE, 0, es);// incr没有key数据时会创建
-			if (isTairTimeout(incr.getRc()))// 超时自动重试一次
-				incr = tairManager.incr(namespace, key, CUR_VALUE, 0, es);
+			// 查询一次，避免一直put不释放
+			Result<DataEntry> data = tairManager.get(namespace, key);
 
-			// 获取锁
-			if (ResultCode.SUCCESS.equals(incr.getRc())
-					&& incr.getValue() != null
-					&& incr.getValue().intValue() == CUR_VALUE)
-				success = true;
+			if (ResultCode.DATANOTEXSITS.equals(data.getRc())) {
+				incr = tairManager.incr(namespace, key, CUR_VALUE, 0, es);// incr没有key数据时会创建
+				if (isTairTimeout(incr.getRc()))// 超时自动重试一次
+					incr = tairManager.incr(namespace, key, CUR_VALUE, 0, es);
+
+				// 获取锁
+				if (ResultCode.SUCCESS.equals(incr.getRc())
+						&& incr.getValue() != null
+						&& incr.getValue().intValue() == CUR_VALUE)
+					success = true;
+			}
 		} catch (Throwable e) {
 			log.error("Get Lock Fail!", e);
 		}

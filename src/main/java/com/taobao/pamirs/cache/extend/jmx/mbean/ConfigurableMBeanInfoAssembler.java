@@ -21,6 +21,7 @@ import org.springframework.jmx.export.assembler.AbstractReflectiveMBeanInfoAssem
 
 import com.taobao.pamirs.cache.extend.jmx.annotation.JmxClass;
 import com.taobao.pamirs.cache.extend.jmx.annotation.JmxMethod;
+import com.taobao.pamirs.cache.util.AopProxyUtil;
 
 /**
  * 只需要配置这个bean与注解，就可以使用mbean了 目前不支持方法中参数是接口的Mbean注入
@@ -40,19 +41,10 @@ public class ConfigurableMBeanInfoAssembler extends
 			Object obj;
 			try {
 				obj = this.applicationContext.getBean(beanClass); // 抽象的类不能实现化
-				Class<?> clazz = obj.getClass();
-				if (clazz.getName().contains("EnhancerByCGLIB")) {
-					// 如果被cglib代理掉，类的所有属性都会丢失
-					// 所以找到原代理类的类名，然后找到相关注解信息
-					Object nObj = clazz.getSuperclass().newInstance();
-					if (nObj.getClass().isAnnotationPresent(JmxClass.class)) {
-						injectMbean(obj, beanClass);
-					}
-				} else {
-					if (clazz.isAnnotationPresent(JmxClass.class)) {
-						injectMbean(obj, beanClass);
-					}
-				}
+				// 取得被代理的原始对象
+				Object target = AopProxyUtil.getPrimitiveProxyTarget(obj);
+				if (target.getClass().isAnnotationPresent(JmxClass.class))
+					injectMbean(obj, beanClass);
 			} catch (Exception e) {
 				continue;
 			}
@@ -62,8 +54,8 @@ public class ConfigurableMBeanInfoAssembler extends
 	private void injectMbean(Object obj, String beanClass) {
 		try {
 			ModelMBean mbean = createAndConfigureMBean(obj, beanClass);
-			MBeanManagerFactory.registerMBean("Pamirs:name=$" + beanClass + "$",
-					mbean);
+			MBeanManagerFactory.registerMBean(
+					"Pamirs:name=$" + beanClass + "$", mbean);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -90,21 +82,36 @@ public class ConfigurableMBeanInfoAssembler extends
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ModelMBeanOperationInfo[] getOperationInfo(Object managedBean,
 			String beanKey) {
+
+		Object target = null;
+		try {
+			target = AopProxyUtil.getPrimitiveProxyTarget(managedBean);
+		} catch (Exception e) {
+		}
+
 		Method[] methods = getClassToExpose(managedBean).getMethods();
 		List infos = new ArrayList();
 
 		for (int i = 0; i < methods.length; ++i) {
 			Method method = methods[i];
-			if ((JdkVersion.isAtLeastJava15()) && (method.isSynthetic())) {
+			if ((JdkVersion.isAtLeastJava15()) && (method.isSynthetic()))
 				continue;
-			}
-			if (method.getDeclaringClass().equals(Object.class)) {
+
+			if (method.getDeclaringClass().equals(Object.class))
 				continue;
+
+			// 取得被代理的原始对象的方法，才能获得Annotation
+			Method targetMethod = method;
+			if (target != null && target != managedBean) {
+				try {
+					targetMethod = target.getClass().getMethod(
+							method.getName(), method.getParameterTypes());
+				} catch (Exception e) {
+				}
 			}
 
-			if (!method.isAnnotationPresent(JmxMethod.class)) {
+			if (!targetMethod.isAnnotationPresent(JmxMethod.class))
 				continue;
-			}
 
 			ModelMBeanOperationInfo info = null;
 			PropertyDescriptor pd = BeanUtils.findPropertyForMethod(method);

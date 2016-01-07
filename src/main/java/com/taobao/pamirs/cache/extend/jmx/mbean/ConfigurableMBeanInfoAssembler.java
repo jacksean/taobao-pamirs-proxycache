@@ -79,7 +79,6 @@ public class ConfigurableMBeanInfoAssembler extends
 	/**
 	 * 去除未注解的方法
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ModelMBeanOperationInfo[] getOperationInfo(Object managedBean,
 			String beanKey) {
 
@@ -90,7 +89,7 @@ public class ConfigurableMBeanInfoAssembler extends
 		}
 
 		Method[] methods = getClassToExpose(managedBean).getMethods();
-		List infos = new ArrayList();
+		List<ModelMBeanOperationInfo> infos = new ArrayList<ModelMBeanOperationInfo>();
 
 		for (int i = 0; i < methods.length; ++i) {
 			Method method = methods[i];
@@ -152,8 +151,7 @@ public class ConfigurableMBeanInfoAssembler extends
 				infos.add(info);
 			}
 		}
-		return ((ModelMBeanOperationInfo[]) (ModelMBeanOperationInfo[]) infos
-				.toArray(new ModelMBeanOperationInfo[infos.size()]));
+		return infos.toArray(new ModelMBeanOperationInfo[infos.size()]);
 	}
 
 	public void setApplicationContext(ApplicationContext aContext)
